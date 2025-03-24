@@ -1,0 +1,1 @@
+import home from "../components/home/home";
