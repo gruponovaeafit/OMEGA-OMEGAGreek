@@ -1,0 +1,1 @@
+import individualForm1 from "@/app/components/forms/individual_form_1";
