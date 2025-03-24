@@ -1,0 +1,1 @@
+import feedbackEmail from "@/app/components/emails/feedback_email";

@@ -1,0 +1,1 @@
+import InscriptionConfEmail from "../components/emails/inscription_confirmation_email";
