@@ -23,6 +23,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(400).json({ error: "Faltan datos requeridos" });
         }
 
+        //Validate that the birthdate is more tan 15 years old
+        const birthDate = new global.Date(birth_date);
+        const today = new global.Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        if (age < 15) {
+            return res.status(400).json({ error: "Debes tener al menos 15 años para registrarte" });
+        }
+
         // Validate that the email is in the correct format
         if (!institutional_email || !institutional_email.endsWith("@eafit.edu.co")) {
             console.error("Correo inválido o faltante:", { institutional_email });

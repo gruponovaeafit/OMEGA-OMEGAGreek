@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../db";
 
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse){
 
     // Db connection
