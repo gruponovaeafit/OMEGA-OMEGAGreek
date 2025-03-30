@@ -16,7 +16,9 @@ export function UserInscriptionForm(): React.ReactElement {
     institutional_email: '',
     preferred_rol_1: '',
     preferred_rol_2: '',
-  })
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target
@@ -33,6 +35,8 @@ export function UserInscriptionForm(): React.ReactElement {
       alert('Debes aceptar el tratamiento de datos.')
       return
     }
+  
+    setIsSubmitting(true)
   
     try {
       const res = await fetch('/api/UserInscriptionForm', {
@@ -66,8 +70,11 @@ export function UserInscriptionForm(): React.ReactElement {
     } catch (error) {
       console.error('Error al enviar:', error)
       alert('Error inesperado')
+    } finally {
+      setIsSubmitting(false)
     }
   }
+  
 
   return (
     <form onSubmit={onSubmit} className="max-w-md mx-auto my-2 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-md space-y-4 text-sm">
@@ -250,9 +257,14 @@ export function UserInscriptionForm(): React.ReactElement {
 
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 dark:hover:bg-blue-500 transition"
+        disabled={isSubmitting}
+        className={`w-full bg-blue-600 text-white py-2 rounded-xl transition ${
+          isSubmitting
+            ? 'opacity-50 cursor-not-allowed'
+            : 'hover:bg-blue-700 dark:hover:bg-blue-500'
+        }`}
       >
-        Enviar
+        {isSubmitting ? 'Enviando...' : 'Enviar'}
       </button>
     </form>
   )
