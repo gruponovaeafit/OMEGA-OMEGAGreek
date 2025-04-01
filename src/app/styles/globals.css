@@ -14,6 +14,65 @@
   }
 }
 
+@layer utilities{
+
+  .background {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background: black;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .background::before,
+  .background::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../../../public/Fondo_loding.svg') repeat; /* Ruta de la imagen */
+    opacity: 0.1;
+    animation: glitch-background 2s infinite;
+    z-index: 1; /* Fondo con z-index bajo */
+  }
+
+  .background::after {
+    opacity: 0.6;
+    animation: glitch-background 3s infinite;
+    z-index: 1; /* Fondo con z-index bajo */
+  }
+
+  .content {
+    position: relative;
+    z-index: 2; /* Contenido con z-index alto */
+  }
+
+  @keyframes glitch-background {
+    0% {
+      transform: translate(0, 0);
+    }
+    20% {
+      transform: translate(-10px, -10px);
+    }
+    40% {
+      transform: translate(10px, 10px);
+    }
+    60% {
+      transform: translate(-10px, 10px);
+    }
+    80% {
+      transform: translate(10px, -10px);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
