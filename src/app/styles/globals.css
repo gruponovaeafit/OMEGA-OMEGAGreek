@@ -16,6 +16,19 @@
 
 @layer utilities{
 
+  .background_home {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-color: black; 
+    background-image: url("/Background_home.svg"); 
+    background-size: cover; 
+    background-position: center; 
+    overflow: hidden;
+    z-index: 1;
+  }
+
   .background {
     position: relative;
     display: flex;

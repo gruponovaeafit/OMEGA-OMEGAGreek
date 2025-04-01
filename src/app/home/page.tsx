@@ -15,7 +15,7 @@ const handleClickGroup = () => {
 
 export default function Home() {
   return (
-    <div className='bg-black min-h-screen flex flex-col items-center py-4'>
+    <div className='background_home min-h-screen flex flex-col items-center py-4'>
       
         <ButtonHome text={<TextHome text='Registro Individual'/>} onClick={handleClickIndividual}/>
       
