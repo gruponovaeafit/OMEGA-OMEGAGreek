@@ -42,7 +42,7 @@
 
   .background::after {
     opacity: 0.6;
-    animation: glitch-background 3s infinite;
+    animation: glitch-background 2s infinite;
     z-index: 1; /* Fondo con z-index bajo */
   }
 
