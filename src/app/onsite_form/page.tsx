@@ -1,1 +1,0 @@
-import initialPresencialForm from "../components/forms/initial_form_presencial";
