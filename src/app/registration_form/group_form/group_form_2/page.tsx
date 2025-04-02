@@ -1,1 +1,1 @@
-import groupForm2 from "@/app/components/forms/group_form_2";
+import sendGroupForm from "@/app/components/forms/send_group_form";

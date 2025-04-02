@@ -1,1 +1,0 @@
-import sendIndividualform from "@/app/components/forms/send_indiv_form";
