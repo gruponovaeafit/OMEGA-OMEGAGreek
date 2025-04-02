@@ -4,26 +4,26 @@ import { Date, DateTime, Text, TinyInt, VarChar } from "mssql";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse){
 
-    //Db connection
     try {
         if (req.method !== "POST") {
             return res.status(405).json({ message: "Método no permitido" });
         }
 
+        //Db connection
         const pool = await connectToDatabase();
         res.status(200).json({ message: "Conexión exitosa" });
 
         // Get data from the request body
-        const {name , surname , institutional_email , id_number , phone , birth_date , how_did_hear , has_availability , previous_participation , preferred_rol_1 , preferred_rol_2 , data_treatment} = req.body;
+        const {name , surname , id_number , birth_date , phone , institutional_email , preferred_rol_1 , preferred_rol_2 , how_did_hear , has_availability , previous_participation ,  data_treatment} = req.body;
         console.log("Datos recibidos:", req.body);
 
 
         // Validate that the data is not empty
-        if (!name || !surname || !id_number || !phone || !birth_date || !how_did_hear || has_availability === undefined || previous_participation === undefined || data_treatment === undefined) {
+        if (!name || !surname || !id_number || !phone || !birth_date || !how_did_hear || has_availability === undefined || previous_participation === undefined || !preferred_rol_1 || !preferred_rol_2 || data_treatment === undefined) {
             return res.status(400).json({ error: "Faltan datos requeridos" });
         }
 
-        //Validate that the birthdate is more tan 15 years old
+        //Validate that the user is at least 15 years old
         const birthDate = new global.Date(birth_date);
         const today = new global.Date();
         const age = today.getFullYear() - birthDate.getFullYear();
