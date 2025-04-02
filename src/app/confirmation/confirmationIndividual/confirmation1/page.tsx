@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation"; // Importa useRouter
+import { useRouter } from "next/navigation"; 
 import QuestionConfirmationText from "@/app/components/forms/confirmation/individual/question";
 import { TextConfirmation } from "@/app/components/forms/confirmation/individual/text";
-import { SubmitButton } from "@/app/components/forms/confirmation/individual/buttons";
-import { CheckboxButton } from "@/app/components/forms/confirmation/individual/buttons";
+import { SubmitButtonIndividual } from "@/app/components/forms/confirmation/individual/buttons";
+import { CheckboxButtonIndividual } from "@/app/components/forms/confirmation/individual/buttons";
 
 export default function ParentComponent() {
-    const [inputValue, setInputValue] = useState(""); // Estado para el input de texto
-    const [isChecked, setIsChecked] = useState(false); // Estado para el checkbox
-    const router = useRouter(); // Inicializa useRouter
+    const [inputValue, setInputValue] = useState(""); 
+    const [isChecked, setIsChecked] = useState(false); 
+    const router = useRouter(); 
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
@@ -49,8 +49,8 @@ export default function ParentComponent() {
                     placeholder="pepito@institucion.edu.co"
                     onChange={handleInputChange}
                 />
-                <CheckboxButton onChange={handleCheckboxChange} />
-                <SubmitButton onClick={handleSubmit} />
+                <CheckboxButtonIndividual onChange={handleCheckboxChange} />
+                <SubmitButtonIndividual onClick={handleSubmit} />
                 <img src="/POWERED_BY_NOVA.svg" alt="" className="absolute bottom-4" />
             </div>
         </div>

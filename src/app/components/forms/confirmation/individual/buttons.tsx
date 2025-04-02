@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 // Componente CheckboxButton
-export const CheckboxButton: React.FC<{ onChange: (checked: boolean) => void }> = ({ onChange }) => {
+export const CheckboxButtonIndividual: React.FC<{ onChange: (checked: boolean) => void }> = ({ onChange }) => {
     const [isChecked, setIsChecked] = useState(false);
 
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +29,7 @@ export const CheckboxButton: React.FC<{ onChange: (checked: boolean) => void }> 
 };
 
 // Componente SubmitButton
-export const SubmitButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+export const SubmitButtonIndividual: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     return (
         <button
             onClick={onClick}
@@ -45,7 +45,7 @@ interface ButtonConfirmationProps {
     text: React.ReactNode;
     onClick: () => void;
   }
-export const ButtonConfirmation: React.FC<ButtonConfirmationProps> = ({ text, onClick }) => {
+export const ButtonConfirmationIndividual: React.FC<ButtonConfirmationProps> = ({ text, onClick }) => {
       return(
           <button 
             className="bg-red-500 text-black text-center p-6 rounded-lg max-w-xs w-full my-4 h-[268px]"
