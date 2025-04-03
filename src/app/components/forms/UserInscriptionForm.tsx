@@ -30,14 +30,14 @@ export function UserInscriptionForm(): React.ReactElement {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-  
+
     if (!formData.data_treatment) {
       alert('Debes aceptar el tratamiento de datos.')
       return
     }
-  
+
     setIsSubmitting(true)
-  
+
     try {
       const res = await fetch('/api/forms/userInscriptionForm', {
         method: 'POST',
@@ -46,7 +46,7 @@ export function UserInscriptionForm(): React.ReactElement {
         },
         body: JSON.stringify(formData),
       })
-  
+
       if (res.ok) {
         const data = await res.json()
         alert(data.message)
@@ -74,7 +74,7 @@ export function UserInscriptionForm(): React.ReactElement {
       setIsSubmitting(false)
     }
   }
-  
+
 
   return (
     <form onSubmit={onSubmit} className="max-w-md mx-auto my-2 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-md space-y-4 text-sm">

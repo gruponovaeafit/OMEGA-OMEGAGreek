@@ -67,6 +67,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     } catch (error) {
             console.error("Error al insertar en la base de datos:", error);
-            res.status(500).json({ error: "Error al insertar en la base de datos" });
-      }
+            res.status(500).json({ error: "Error al insertar en la base de datos" });
+      }
 }

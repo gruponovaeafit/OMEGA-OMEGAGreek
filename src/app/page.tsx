@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { UserInscriptionForm } from "./components/forms/UserInscriptionForm";
+import { TeamInscriptionForm } from "./components/forms/TeamInscriptionForm";
 
 export default function Home() {
   return (
-    <UserInscriptionForm />
+    <TeamInscriptionForm />
   );
 }
