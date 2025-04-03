@@ -44,4 +44,15 @@ export const InfoBox: React.FC<{
   );
 };
 
+export const teamsuccessMessage: React.FC<{
+  title?: string;
+  className?: string;
+}> = ({ title = '¡Tu respuesta ha sido enviada con éxito!', className = '' }) => {
+  return (
+    <div className={`bg-gray-300 p-8 rounded-md flex items-center justify-center ${className}`}>
+      <h2 className="text-black text-center font-medium text-xl">{title}</h2>
+    </div>
+  );
+};
+
 export default Text;
