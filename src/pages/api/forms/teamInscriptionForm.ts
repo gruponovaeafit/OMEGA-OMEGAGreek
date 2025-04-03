@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             });
         }
 
-        // Validate that the email exist in the database
+        // Validate that the email exist in Personal_data table
         const result = await pool.request()
             .input("leader_email", leader_email)
             .query("SELECT * FROM Personal_data WHERE institutional_email = @leader_email");
@@ -50,13 +50,52 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             });
         }
 
+        // Validate that leader_email is not already registered in Teams_data table
+        const result3 = await pool.request()
+            .input("leader_email", leader_email)
+            .query("SELECT * FROM Teams_data WHERE leader_email = @leader_email");
+        const rows2 = result3.recordset;
+        if (rows2.length > 0) {
+            console.error("El participante ya hace parte de un equipo:", { leader_email });
+            return res.status(400).json({
+                notification: {
+                    type: "error",
+                    message: "Ya estas dentro de un equipo.",
+                },
+            });
+        }
+
+        // Validate that the team_name is not already registered in Teams_data table
+        const result4 = await pool.request()
+            .input("team_name", team_name)
+            .query("SELECT * FROM Teams_data WHERE team_name = @team_name");
+        const rows3 = result4.recordset;
+        if (rows3.length > 0) {
+            console.error("El nombre del equipo ya existe:", { team_name });
+            return res.status(400).json({
+                notification: {
+                    type: "error",
+                    message: "El nombre del equipo ya existe.",
+                },
+            });
+        }
+
+        //consult last id_number from db
+        const result2 = await pool.request()
+            .query("SELECT TOP 1 id FROM Teams_data ORDER BY id DESC");
+        const lastId = result2.recordset[0].id;
+        console.log("Ultimo id_number:", lastId);
+        // Generate a new id_number based on the last one
+        const id = parseInt(lastId) + 1;
+        console.log("Nuevo id_number:", id);
+
         try {
             const timestamp = new global.Date(); // Get the current date and time
             pool.request()
                 .input("team_name", team_name)
                 .input("leader_email", leader_email)
-                .input("timestamp", timestamp)
-                .query("INSERT INTO Teams_data (team_name, leader_email, created_at) VALUES (@team_name, @leader_email, @timestamp)");
+                .input("id", id)
+                .query("INSERT INTO Teams_data (team_name, leader_email, id) VALUES (@team_name, @leader_email, @id)");
                 console.log("Equipo insertado:", { team_name, leader_email, timestamp });
 
                 return res.status(200).json({ message: "Inscripción exitosa" });

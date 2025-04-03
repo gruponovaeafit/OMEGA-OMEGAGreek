@@ -14,8 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(405).json({ message: "Método no permitido" });
         }
 
-        // const pool = await connectToDatabase();
-        // res.status(200).json({ message: "Conexión exitosa" });
+        const pool = await connectToDatabase();
+        res.status(200).json({ message: "Conexión exitosa" });
         // Get data from the request body;
 
         const {name , surname , institutional_email , id_number , phone , birth_date , how_did_hear , has_availability , previous_participation , preferred_rol_1 , preferred_rol_2 , data_treatment } = req.body;
@@ -47,29 +47,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             });
           }
 
-        // try {
-        //     const timestamp = new global.Date(); // Get the current date and time
-        //     pool.request()
-        //     .input("name", VarChar(50), name)
-        //     .input("surname", VarChar, surname)
-        //     .input("institutional_email", VarChar, institutional_email)
-        //     .input("id_number", VarChar, id_number)
-        //     .input("phone", VarChar, phone)
-        //     .input("birth_date", Date, birth_date)
-        //     .input("how_did_hear", Text, how_did_hear)
-        //     .input("has_availability", TinyInt, has_availability)
-        //     .input("previous_participation", TinyInt, previous_participation)
-        //     .input("preferred_rol_1", VarChar, preferred_rol_1)
-        //     .input("preferred_rol_2", VarChar, preferred_rol_2)
-        //     .input("data_treatment", TinyInt, data_treatment)
-        //     .input("time_stamp", DateTime, timestamp)
-        //     .query("INSERT INTO users (name, surname, id_number, phone, birth_date, how_did_hear, has_availability, previous_participation, data_treatment, time_stamp) VALUES (@name, @surname, @id_number, @phone, @birth_date, @how_did_hear, @has_availability, @previous_participation, @data_treatment, @time_stamp)");
+        try {
+            const timestamp = new global.Date(); // Get the current date and time
+            pool.request()
+            .input("name", VarChar(50), name)
+            .input("surname", VarChar, surname)
+            .input("institutional_email", VarChar, institutional_email)
+            .input("id_number", VarChar, id_number)
+            .input("phone", VarChar, phone)
+            .input("birth_date", Date, birth_date)
+            .input("how_did_hear", Text, how_did_hear)
+            .input("has_time", TinyInt, has_availability)
+            .input("previous_participation", TinyInt, previous_participation)
+            .input("preferred_rol_1", VarChar, preferred_rol_1)
+            .input("preferred_rol_2", VarChar, preferred_rol_2)
+            .input("data_treatment", TinyInt, data_treatment)
+            .query("INSERT INTO Personal_data (name, surname, institutional_email, id_number, phone, birth_date, how_did_hear, has_time, previous_participation, data_treatment) VALUES (@name, @surname, @institutional_email, @id_number, @phone, @birth_date, @how_did_hear, @has_time, @previous_participation, @data_treatment)");
 
-        //     return res.status(200).json({ message: "Usuario insertado correctamente" });
+            return res.status(200).json({ message: "Usuario insertado correctamente" });
 
-        // } catch (error) {
-        //     return res.status(400).json({ error: "Error al insertar el usuario en la base de datos" });
-        // }
+        } catch (error) {
+            return res.status(400).json({ error: "Error al insertar el usuario en la base de datos" });
+        }
 
       } catch (error) {
         res.status(500).json({ error: "Error conectando a la base de datos" });
