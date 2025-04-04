@@ -1,7 +1,6 @@
 "use client";
 
-import { Header } from "@/app/components/Extras";
-import { Footer } from "@/app/components/Extras";
+import { Header, Footer } from "@/app/layout";
 
 export default function View2() {
   return (
