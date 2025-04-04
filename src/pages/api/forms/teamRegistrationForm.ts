@@ -1,7 +1,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../db";
+import emailChecker from "../emailCheker";
+
+//Los roles se insertan en la tabla ROLES
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse){
+    const  departments = {
+        1: "Administración",
+        2: "mercadeo",
+        3: "desarrollo",
+        4: "diseño",
+    }
 
     //Db connection
     try {
@@ -13,8 +22,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(200).json({ message: "Conexión exitosa" });
 
         // Get data from the request body;
-        const { team_name, leader_email} = req.body;
+        const { team_name, leader_email, department} = req.body;
         console.log("Datos recibidos:", req.body);
+
+        //const departmentIndex = Object.keys(departments).find(key => departments[key] === department);
 
         // Validate that the data is not empty
         if (!team_name || !leader_email) {
@@ -22,15 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         // Validate that the email is in the correct format
-        if (!leader_email || !leader_email.endsWith("@eafit.edu.co")) {
-            console.error("Correo inválido o faltante:", { leader_email });
-            return res.status(400).json({
-              notification: {
-                type: "error",
-                message: "El correo debe ser del dominio @eafit.edu.co.",
-              },
-            });
-        }
+        emailChecker(req, res);
 
         // Validate that the email exist in Personal_data table
         const result = await pool.request()
@@ -93,7 +96,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 .input("leader_email", leader_email)
                 .input("id", id)
                 .query("INSERT INTO Teams_data (team_name, leader_email, id) VALUES (@team_name, @leader_email, @id)");
-                console.log("Equipo insertado:", { team_name, leader_email, timestamp });
+                console.log("Equipo insertado:", { team_name, leader_email});
 
                 return res.status(200).json({ message: "Registro exitoso" });
 

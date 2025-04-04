@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../db";
 import { Date, DateTime, Text, TinyInt, VarChar } from "mssql";
+import emailChecker from "../emailCheker";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse){
 
@@ -34,15 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         // Validate that the email is in the correct format
-        if (!institutional_email || !institutional_email.endsWith("@eafit.edu.co")) {
-            console.error("Correo inválido o faltante:", { institutional_email });
-            return res.status(400).json({
-              notification: {
-                type: "error",
-                message: "El correo debe ser del dominio @eafit.edu.co.",
-              },
-            });
-          }
+        emailChecker(req, res);
         // valitade that the institutional email is not already registered
 
         try {
