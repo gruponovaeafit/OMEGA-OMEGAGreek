@@ -2,9 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../db";
 import { Date, DateTime, Text, TinyInt, VarChar } from "mssql";
 
-
-
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse){
 
     //Db connection
@@ -33,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const age = today.getFullYear() - birthDate.getFullYear();
         if (age < 15) {
           console.error("Edad inválida:", { birth_date });
-            return res.status(400).json({ error: "Debes tener al menos 15 años para inscribirte." });
+            return res.status(400).json({ error: "Debes tener al menos 16 años para registrarte." });
         }
 
         // Validate that the email is in the correct format

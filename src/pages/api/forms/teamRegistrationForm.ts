@@ -1,9 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../db";
 
-
-
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse){
 
     //Db connection
@@ -98,7 +95,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 .query("INSERT INTO Teams_data (team_name, leader_email, id) VALUES (@team_name, @leader_email, @id)");
                 console.log("Equipo insertado:", { team_name, leader_email, timestamp });
 
-                return res.status(200).json({ message: "Inscripción exitosa" });
+                return res.status(200).json({ message: "Registro exitoso" });
 
         } catch (error) {
             return res.status(400).json({ error: "Error al insertar en la base de datos" });
