@@ -15,7 +15,7 @@ export default function Loading() {
 
     return (
       <div className="background min-h-screen flex flex-col justify-center items-center py-4">
-        <img src="/Logo.svg" alt="" className="w-40 h-auto"/>
+        <img src="/LOGO-GRANDE.svg" alt="" className="w-80 h-auto animate-breathing ml-[-20px]"/>
       </div>
     )
 }
