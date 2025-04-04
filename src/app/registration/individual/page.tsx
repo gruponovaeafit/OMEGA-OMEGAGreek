@@ -8,8 +8,8 @@ import { InputField } from '@/app/components/forms/registration/teams/question';
 import { SelectField } from '../../components/forms/registration/individual/question';
 import { DateField } from '../../components/forms/registration/individual/question';
 import { Checkbox } from '../../components/forms/registration/individual/question';
-import { Header } from "@/app/components/Extras";
-import { Footer } from "@/app/components/Extras";
+import { Header } from "@/app/layout";
+import { Footer } from "@/app/layout";
 
 
 const PersonalInfoForm = () => {
