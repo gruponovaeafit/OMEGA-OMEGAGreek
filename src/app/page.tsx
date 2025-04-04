@@ -8,7 +8,7 @@ export default function Loading() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push('/home');
+      router.push('/registration');
     }, 5000); 
     return () => clearTimeout(timer); 
   }, [router]); 

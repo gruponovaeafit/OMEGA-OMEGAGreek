@@ -3,9 +3,6 @@
 export const Header = () => {
     return (
       <header className="relative w-full flex justify-center items-center">
-        {/* Cuadrado negro detrás del logo */}
-        <div className="absolute top-0 left-0 w-full h-[65px] bg-black"></div>
-        {/* Logo */}
         <img 
           src="/LOGO-OMEGA.svg" 
           alt="Logo Omega"

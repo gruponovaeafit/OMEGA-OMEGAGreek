@@ -8,6 +8,9 @@ import { InputField } from '@/app/components/forms/registration/teams/question';
 import { SelectField } from '../../components/forms/registration/individual/question';
 import { DateField } from '../../components/forms/registration/individual/question';
 import { Checkbox } from '../../components/forms/registration/individual/question';
+import { Header } from "@/app/components/Extras";
+import { Footer } from "@/app/components/Extras";
+
 
 const PersonalInfoForm = () => {
   const router = useRouter();
@@ -86,15 +89,9 @@ const PersonalInfoForm = () => {
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
-      {/* Header */}
-      <div className="w-full bg-gray-200 p-4">
-        <h1 className="text-black text-center font-bold">OMEGALAB (LOGO)</h1>
-      </div>
-
-      <div className="bg-gray-800 p-2 mx-auto w-full max-w-md">
-        <p className="text-center text-white">Inscripción individual</p>
-      </div>
-
+        <Header />
+      {/* Componente con el titulo de la vista */}  
+      
       {/* Form */}
       <div className="flex-grow w-full max-w-md mx-auto p-4">
         <form onSubmit={handleSubmit}>
