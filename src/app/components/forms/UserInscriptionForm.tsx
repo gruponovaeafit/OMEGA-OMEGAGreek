@@ -39,7 +39,7 @@ export function UserInscriptionForm(): React.ReactElement {
     setIsSubmitting(true)
 
     try {
-      const res = await fetch('/api/forms/userInscriptionForm', {
+      const res = await fetch('/api/forms/userRegistrationForm', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

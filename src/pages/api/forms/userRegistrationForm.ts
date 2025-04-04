@@ -43,6 +43,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               },
             });
           }
+        // valitade that the institutional email is not already registered
+
+        try {
+            const result = await pool.request()
+                .input("institutional_email", VarChar(50), institutional_email)
+                .query("SELECT * FROM Personal_data WHERE institutional_email = @institutional_email");
+            if (result.recordset.length > 0) {
+                console.error("El correo ya está registrado:", { institutional_email });
+                return res.status(400).json({ error: "El correo ya está registrado" });
+            }
+        }
+        catch (error) {console.error("Error al verificar el correo:", error);}
+
 
         try {
             const timestamp = new global.Date(); // Get the current date and time
@@ -61,6 +74,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .input("data_treatment", TinyInt, data_treatment)
             .query("INSERT INTO Personal_data (name, surname, institutional_email, id_number, phone, birth_date, how_did_hear, has_time, previous_participation, data_treatment) VALUES (@name, @surname, @institutional_email, @id_number, @phone, @birth_date, @how_did_hear, @has_time, @previous_participation, @data_treatment)");
 
+            console.log("Usuario insertado correctamente:");
             return res.status(200).json({ message: "Usuario insertado correctamente" });
 
         } catch (error) {

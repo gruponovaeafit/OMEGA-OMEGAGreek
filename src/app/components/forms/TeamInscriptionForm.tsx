@@ -36,7 +36,7 @@ export function TeamInscriptionForm(): React.ReactElement {
     setIsSubmitting(true)
 
     try {
-      const res = await fetch('/api/forms/teamInscriptionForm', {
+      const res = await fetch('/api/forms/teamRegistrationForm', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
