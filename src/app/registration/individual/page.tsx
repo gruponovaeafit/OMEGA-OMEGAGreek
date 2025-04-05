@@ -1,175 +1,82 @@
 'use client';
 
-import React, { useState, ChangeEvent } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
-import Text from '../../components/forms/registration/individual/text';
-import Button from '../../components/forms/registration/individual/buttons';
-import { InputField } from '@/app/components/forms/registration/teams/question';
-import { SelectField } from '../../components/forms/registration/individual/question';
-import { DateField } from '../../components/forms/registration/individual/question';
-import { Checkbox } from '../../components/forms/registration/individual/question';
-import { Header } from "@/app/layout";
-import { Footer } from "@/app/layout";
+import Image from 'next/image';
+import { Button } from 'src/app/components/forms/registration/individual/buttons';
 
-
-const PersonalInfoForm = () => {
+const RegistrationConfirmationPage: React.FC = () => {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    tipoDocumento: '',
-    numeroDocumento: '',
-    fechaNacimiento: '',
-    aceptaTerminos: false
-  });
-  
-  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const handleStartOver = () => {
+    router.push('/');
   };
-
-  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: checked,
-    });
-  };
-
-  const handleDateChange = (date: string) => {
-    setFormData({
-      ...formData,
-      fechaNacimiento: date,
-    });
-  };
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-    if (!formData.nombre) newErrors.nombre = 'El nombre es requerido';
-    if (!formData.apellido) newErrors.apellido = 'El apellido es requerido';
-    if (!formData.tipoDocumento) newErrors.tipoDocumento = 'Seleccione un tipo de documento';
-    if (!formData.numeroDocumento) newErrors.numeroDocumento = 'El número de documento es requerido';
-    if (!formData.fechaNacimiento) newErrors.fechaNacimiento = 'La fecha de nacimiento es requerida';
-    if (!formData.aceptaTerminos) newErrors.aceptaTerminos = 'Debe aceptar los términos y condiciones';
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    
-    if (validateForm()) {
-      // Aquí guardarías los datos en un estado global o localStorage
-      console.log('Datos del formulario:', formData);
-      
-      // Navegar a la siguiente vista
-      router.push('/registration_form/individual_form/individual_form_2');
-    }
-  };
-
-  const documentTypes = [
-    { value: 'dni', label: 'DNI' },
-    { value: 'pasaporte', label: 'Pasaporte' },
-    { value: 'cedula', label: 'Cédula de Identidad' },
-  ];
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
-        <Header />
-      {/* Componente con el titulo de la vista */}  
-      
-      {/* Form */}
-      <div className="flex-grow w-full max-w-md mx-auto p-4">
-        <form onSubmit={handleSubmit}>
-          <InputField
-            label="Nombre"
-            name="nombre"
-            value={formData.nombre}
-            onChange={handleInputChange}
-            required
-            error={errors.nombre}
-            color="purple"
-            placeholder="Juan"
+    <div className="min-h-screen bg-gradient-to-b from-purple-900 to-indigo-900 relative flex flex-col">
+      {/* Logo Superior */}
+      <div className="absolute top-0 left-0 right-0 flex justify-center py-4">
+        <div className="w-16 h-16">
+          <Image 
+            src="/images/Componentes/Logo.svg" 
+            alt="Logo" 
+            width={64} 
+            height={64} 
           />
-
-          <InputField
-            label="Apellido"
-            name="apellido"
-            value={formData.apellido}
-            onChange={handleInputChange}
-            required
-            error={errors.apellido}
-            color="purple"
-            placeholder="Pérez"
-          />
-
-          <SelectField
-            label="Tipo de documento"
-            name="tipoDocumento"
-            value={formData.tipoDocumento}
-            onChange={handleSelectChange}
-            options={documentTypes}
-            required
-            error={errors.tipoDocumento}
-            color="amber"
-          />
-
-          <InputField
-            label="Número de documento"
-            name="numeroDocumento"
-            value={formData.numeroDocumento}
-            onChange={handleInputChange}
-            required
-            error={errors.numeroDocumento}
-            color="purple"
-            placeholder="12345678"
-          />
-
-          <DateField
-            label="Fecha de nacimiento"
-            name="fechaNacimiento"
-            value={formData.fechaNacimiento}
-            onChange={handleDateChange}
-            required
-            error={errors.fechaNacimiento}
-          />
-
-          <Checkbox
-            label="He leído y acepto los TyC"
-            name="aceptaTerminos"
-            checked={formData.aceptaTerminos}
-            onChange={handleCheckboxChange}
-            required
-            error={errors.aceptaTerminos}
-          />
-
-          <div className="flex justify-end mt-6">
-            <Button
-              text="Siguiente"
-              type="submit"
-              color="pink"
-            />
-          </div>
-        </form>
+        </div>
       </div>
 
-      <Footer />
+      {/* Elemento decorativo */}
+      <div className="absolute top-4 right-4">
+        <Image 
+          src="/images/Componentes/estrella.svg" 
+          alt="Estrella" 
+          width={50} 
+          height={50} 
+        />
+      </div>
+
+      <div className="flex-1 flex flex-col justify-center items-center px-4">
+        <div className="w-full max-w-md bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-lg text-center">
+          <h1 className="text-white text-2xl font-bold mb-6">
+            Formulario enviado con éxito
+          </h1>
+
+          <div className="flex justify-center mb-6">
+            <div className="w-64 h-64 relative">
+              <Image 
+                src="/images/Componentes/pachoatenea.svg" 
+                alt="Personaje" 
+                width={256} 
+                height={256} 
+              />
+            </div>
+          </div>
+
+          <p className="text-white text-sm mb-6">
+            Recibirás un correo con los detalles de tu inscripción pronto.
+          </p>
+
+          <Button
+            text="Volver al inicio"
+            onClick={handleStartOver}
+            color="pink"
+            className="w-full"
+          />
+        </div>
+      </div>
+
+      {/* Elementos inferiores */}
+      <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-4">
+        <Image 
+          src="/images/Componentes/Nova.svg" 
+          alt="Powered by Nova" 
+          width={150} 
+          height={50} 
+        />
+      </div>
     </div>
   );
 };
 
-export default PersonalInfoForm;
+export default RegistrationConfirmationPage;

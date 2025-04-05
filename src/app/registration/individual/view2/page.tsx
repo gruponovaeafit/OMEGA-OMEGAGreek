@@ -1,124 +1,108 @@
-'use client';
+import React from 'react';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Button from '../../../components/forms/registration/individual/buttons';
-import { RoleCard } from '../../../components/forms/registration/individual/question';
-import { InfoBox } from '../../../components/forms/registration/individual/text';
-
-// Definir el tipo para los roles
-interface Role {
-  id: string;
-  title: string;
-  description: string;
-}
-
-const roles: Role[] = [
-  {
-    id: 'administrador',
-    title: 'Administrador',
-    description: 'Descripción rol'
-  },
-  {
-    id: 'diseno',
-    title: 'Diseño',
-    description: 'Descripción rol'
-  },
-  {
-    id: 'mercadeo',
-    title: 'Mercadeo',
-    description: 'Descripción rol'
-  },
-  {
-    id: 'desarrollo',
-    title: 'Desarrollo',
-    description: 'Descripción rol'
-  }
-];
-
-const RoleSelectionPage = () => {
+const RegistrationOptionsPage: React.FC = () => {
   const router = useRouter();
-  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
-  const [error, setError] = useState('');
 
-  const toggleRoleSelection = (roleId: string) => {
-    if (selectedRoles.includes(roleId)) {
-      setSelectedRoles(selectedRoles.filter(id => id !== roleId));
-    } else {
-      setSelectedRoles([...selectedRoles, roleId]);
-    }
-    setError('');
+  const handleIndividualRegistration = () => {
+    router.push('/registration/individual/view3');
   };
 
-  const handleSubmit = () => {
-    if (selectedRoles.length === 0) {
-      setError('Por favor, selecciona al menos un rol');
-      return;
-    }
-    
-    // Aquí guardarías los datos en un estado global o localStorage
-    console.log('Roles seleccionados:', selectedRoles);
-    
-    // Navegar a la siguiente vista
-    router.push('/registration_form/individual_form/individual_form_3');
+  const handleGroupRegistration = () => {
+    router.push('/registration/group');
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
-      {/* Header */}
-      <div className="w-full bg-gray-200 p-4">
-        <h1 className="text-black text-center font-bold">OMEGALAB (LOGO)</h1>
-      </div>
-
-      <div className="bg-gray-800 p-2 mx-auto w-full max-w-md">
-        <p className="text-center text-white">Inscripción individual</p>
-      </div>
-
-      {/* Content */}
-      <div className="flex-grow w-full max-w-md mx-auto p-4">
-        <InfoBox title="Explicación roles">
-          <p className="text-center">
-            Selecciona los roles que te interesan para participar en OMEGALAB.
-            Cada rol tiene responsabilidades específicas dentro del equipo.
-          </p>
-        </InfoBox>
-
-        {/* Roles */}
-        <div className="space-y-4 mb-6">
-          {roles.map((role) => (
-            <RoleCard
-              key={role.id}
-              id={role.id}
-              title={role.title}
-              description={role.description}
-              isSelected={selectedRoles.includes(role.id)}
-              onClick={() => toggleRoleSelection(role.id)}
-              color="red"
-            />
-          ))}
-        </div>
-
-        {error && (
-          <div className="text-red-500 text-sm mb-4">
-            {error}
-          </div>
-        )}
-
-        <div className="flex justify-end">
-          <Button
-            text="Siguiente"
-            onClick={handleSubmit}
-            color="red"
+    <div className="min-h-screen bg-gradient-to-b from-purple-900 to-indigo-900 relative flex flex-col">
+      <div className="absolute top-0 left-0 right-0 flex justify-center py-4">
+        <div className="w-16 h-16">
+          <Image 
+            src="/images/Componentes/Logo.svg" 
+            alt="Logo" 
+            layout="responsive"
+            width={64} 
+            height={64} 
           />
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="w-full p-4 text-center text-gray-500 text-xs">
-        POWERED BY NOVA
+      <div className="flex-1 flex flex-col justify-center items-center px-4 space-y-6">
+        <div className="w-full max-w-md bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-lg">
+          <h1 className="text-white text-2xl font-bold text-center mb-6">
+            Formulario de Inscripción
+          </h1>
+
+          <div 
+            onClick={handleIndividualRegistration} 
+            className="mb-4 cursor-pointer"
+          >
+            <div className="bg-white/20 rounded-xl p-4 flex items-center">
+              <div className="w-24 h-24 mr-4">
+                <Image 
+                  src="/images/Componentes/personajeverde.svg" 
+                  alt="Inscripción Individual" 
+                  layout="responsive"
+                  width={96} 
+                  height={96} 
+                />
+              </div>
+              <span className="text-white text-lg font-semibold">
+                Inscripción Individual
+              </span>
+            </div>
+          </div>
+
+          <div 
+            onClick={handleGroupRegistration} 
+            className="cursor-pointer"
+          >
+            <div className="bg-white/20 rounded-xl p-4 flex items-center">
+              <div className="w-24 h-24 mr-4">
+                <Image 
+                  src="/images/Componentes/personajesgrupo.svg" 
+                  alt="Inscripción Grupal" 
+                  layout="responsive"
+                  width={96} 
+                  height={96} 
+                />
+              </div>
+              <span className="text-white text-lg font-semibold">
+                Inscripción Grupal
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-4">
+        <Image 
+          src="/images/Componentes/Nova.svg" 
+          alt="Powered by Nova" 
+          width={150} 
+          height={50} 
+        />
+      </div>
+
+      {/* Elementos decorativos */}
+      <div className="absolute top-4 right-4">
+        <Image 
+          src="/images/Componentes/esfera.svg" 
+          alt="Esfera" 
+          width={50} 
+          height={50} 
+        />
+      </div>
+      <div className="absolute top-4 left-4">
+        <Image 
+          src="/images/Componentes/ala.svg" 
+          alt="Ala" 
+          width={50} 
+          height={50} 
+        />
       </div>
     </div>
   );
 };
 
-export default RoleSelectionPage;
+export default RegistrationOptionsPage;
