@@ -17,6 +17,7 @@ export default function Home() {
   const [hasParticipated, setHasParticipated] = useState<boolean | null>(null);
   const [telefono, setTelefono] = useState("");
   const [conociste, setConociste] = useState("");
+  const [semestre, setSemestre] = useState("");
   const [disponible, setDisponible] = useState<boolean | null>(null);
 
   return (
@@ -34,6 +35,13 @@ export default function Home() {
           question="¿Haz participado antes en alguna versión de la Omega?"
           value={hasParticipated}
           onChange={setHasParticipated}
+        />
+
+        <TextQuestion
+          question="¿En qué semestre estás?"
+          value={semestre}
+          onChange={setSemestre}
+          placeholder="numero de semestre"
         />
 
         <TextQuestion
