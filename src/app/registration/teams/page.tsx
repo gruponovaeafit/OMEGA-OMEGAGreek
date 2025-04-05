@@ -7,7 +7,7 @@ export default function View2() {
     <div
       className="min-h-screen flex flex-col justify-between"
       style={{
-        backgroundImage: "url('/FONDO-APP.svg')",
+        backgroundImage: "url('/view3bg.svg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

@@ -167,10 +167,7 @@ const PersonalInfoForm = () => {
         </form>
       </div>
 
-      {/* Footer */}
-      <div className="w-full p-4 text-center text-gray-500 text-xs">
-        POWERED BY NOVA
-      </div>
+      <Footer />
     </div>
   );
 };
