@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../db";
 import { Date, Text, TinyInt, VarChar } from "mssql";
-import emailChecker from "../emailCheker";
+
+// Second view, where the personal data is stored
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse){
 
@@ -16,12 +17,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(200).json({ message: "Conexión exitosa" });
         // Get data from the request body;
 
-        const {name , surname , id_number , phone , birth_date , how_did_hear , has_availability , previous_participation , preferred_rol_1 , preferred_rol_2 , data_treatment } = req.body;
+        const {name , surname , id_number , phone , birth_date , data_treatment } = req.body;
         console.log("Datos recibidos:", req.body);
 
         // Validate that the data is not empty
 
-        if (!name || !surname || !id_number || !phone || !birth_date || !how_did_hear || has_availability === undefined || previous_participation === undefined || data_treatment === undefined) {
+        if (!name || !surname || !id_number || !phone || !birth_date || !data_treatment === undefined) {
             return res.status(400).json({ error: "Faltan datos requeridos" });
         }
 
@@ -34,24 +35,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(400).json({ error: "Debes tener al menos 16 años para registrarte." });
         }
 
-     
+
 
         try {
-   
+
             pool.request()
             .input("name", VarChar(50), name)
             .input("surname", VarChar, surname)
             .input("id_number", VarChar, id_number)
             .input("phone", VarChar, phone)
             .input("birth_date", Date, birth_date)
-            .input("how_did_hear", Text, how_did_hear)
-            .input("has_time", TinyInt, has_availability)
-            .input("previous_participation", TinyInt, previous_participation)
-            .input("preferred_rol_1", VarChar, preferred_rol_1)
-            .input("preferred_rol_2", VarChar, preferred_rol_2)
             .input("data_treatment", TinyInt, data_treatment)
-            .query("INSERT INTO Personal_data (name, surname, id_number, phone, birth_date, how_did_hear, has_time, previous_participation, data_treatment) VALUES (@name, @surname, @institutional_email, @id_number, @phone, @birth_date, @how_did_hear, @has_time, @previous_participation, @data_treatment)");
+            .query("INSERT INTO Personal_data (name, surname, id_number, phone, birth_date, data_treatment) VALUES (@name, @surname, @id_number, @phone, @birth_date, @data_treatment)");
 
+            // Routing to the third view is missing here
             console.log("Usuario insertado correctamente:");
             return res.status(200).json({ message: "Usuario insertado correctamente" });
 

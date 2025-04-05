@@ -14,6 +14,86 @@
   }
 }
 
+@layer utilities{
+
+  .background {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 1;
+    background: url('/Fondo_loding.svg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .background_home {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    background-image: url("/FONDO-APP-1.svg");
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    z-index: 1;
+    flex-direction: column;
+  }
+
+  .background_email {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    background-image: url("/bg_email_view.svg");
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    z-index: 1;
+    flex-direction: column;
+  }
+
+  .background_individual_view1 {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: center;
+    width: 100%;
+    background-color: black;
+    background-image: url("/bg_registration_individual_view1.svg");
+    background-size: cover;
+    background-position: center;
+    overflow-y: auto;
+    z-index: 1;
+  }
+
+  .background_individual_view2 {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: center;
+    width: 100%;
+    background-color: black;
+    background-image: url("/bg_registration_individual_view2.svg");
+    background-size: cover;
+    background-position: center;
+    overflow-y: auto;
+    z-index: 1;
+  }
+
+}
+
 body {
   color: var(--foreground);
   background: var(--background);

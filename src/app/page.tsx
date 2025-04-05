@@ -1,9 +1,24 @@
-import Image from "next/image";
-import { TeamInscriptionForm } from "./components/forms/TeamInscriptionForm";
-import { UserInscriptionForm } from "./components/forms/UserInscriptionForm";
+"use client";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
+export default function Loading() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push('/email');
+    },3500);
+    return () => clearTimeout(timer);
+  }, [router]);
+
   return (
-    <TeamInscriptionForm />
+    <div className="background">
+      <img 
+        src="/LOGO-GRANDE.svg" 
+        alt="Logo NOVA" 
+        className="w-80 h-auto animate-breathing -ml-6"
+      />
+    </div>
   );
 }
