@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../db";
-import { Date, DateTime, Text, TinyInt, VarChar } from "mssql";
+import { Date, Text, TinyInt, VarChar } from "mssql";
 import emailChecker from "../emailCheker";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse){
@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(200).json({ message: "Conexión exitosa" });
         // Get data from the request body;
 
-        const {name , surname , institutional_email , id_number , phone , birth_date , how_did_hear , has_availability , previous_participation , preferred_rol_1 , preferred_rol_2 , data_treatment } = req.body;
+        const {name , surname , id_number , phone , birth_date , how_did_hear , has_availability , previous_participation , preferred_rol_1 , preferred_rol_2 , data_treatment } = req.body;
         console.log("Datos recibidos:", req.body);
 
         // Validate that the data is not empty
@@ -34,28 +34,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(400).json({ error: "Debes tener al menos 16 años para registrarte." });
         }
 
-        // Validate that the email is in the correct format
-        emailChecker(req, res);
-        // valitade that the institutional email is not already registered
+     
 
         try {
-            const result = await pool.request()
-                .input("institutional_email", VarChar(50), institutional_email)
-                .query("SELECT * FROM Personal_data WHERE institutional_email = @institutional_email");
-            if (result.recordset.length > 0) {
-                console.error("El correo ya está registrado:", { institutional_email });
-                return res.status(400).json({ error: "El correo ya está registrado" });
-            }
-        }
-        catch (error) {console.error("Error al verificar el correo:", error);}
-
-
-        try {
-            const timestamp = new global.Date(); // Get the current date and time
+   
             pool.request()
             .input("name", VarChar(50), name)
             .input("surname", VarChar, surname)
-            .input("institutional_email", VarChar, institutional_email)
             .input("id_number", VarChar, id_number)
             .input("phone", VarChar, phone)
             .input("birth_date", Date, birth_date)
@@ -65,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .input("preferred_rol_1", VarChar, preferred_rol_1)
             .input("preferred_rol_2", VarChar, preferred_rol_2)
             .input("data_treatment", TinyInt, data_treatment)
-            .query("INSERT INTO Personal_data (name, surname, institutional_email, id_number, phone, birth_date, how_did_hear, has_time, previous_participation, data_treatment) VALUES (@name, @surname, @institutional_email, @id_number, @phone, @birth_date, @how_did_hear, @has_time, @previous_participation, @data_treatment)");
+            .query("INSERT INTO Personal_data (name, surname, id_number, phone, birth_date, how_did_hear, has_time, previous_participation, data_treatment) VALUES (@name, @surname, @institutional_email, @id_number, @phone, @birth_date, @how_did_hear, @has_time, @previous_participation, @data_treatment)");
 
             console.log("Usuario insertado correctamente:");
             return res.status(200).json({ message: "Usuario insertado correctamente" });
