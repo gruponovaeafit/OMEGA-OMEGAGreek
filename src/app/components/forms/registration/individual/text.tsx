@@ -44,4 +44,40 @@ export const InfoBox: React.FC<{
   );
 };
 
+export const TeamSuccessMessage: React.FC<{
+  title?: string;
+  className?: string;
+}> = ({ title = '¡Tu respuesta ha sido enviada con éxito!', className = '' }) => {
+  return (
+    <div className={`bg-gray-300 p-8 rounded-md flex items-center justify-center ${className}`}>
+      <h2 className="text-black text-center font-medium text-xl">{title}</h2>
+    </div>
+  );
+};
+
+// Componente para explicación de roles
+export const RoleExplanation: React.FC<{
+  role: string;
+  description: string;
+  icon?: React.ReactNode;
+  className?: string;
+}> = ({
+  role,
+  description,
+  icon,
+  className = ''
+}) => {
+  return (
+    <div className={`bg-gray-800 p-4 rounded-md mb-4 ${className}`}>
+      <div className="flex items-start">
+        {icon && <div className="mr-3">{icon}</div>}
+        <div>
+          <h3 className="font-bold text-white mb-1">{role}</h3>
+          <p className="text-sm text-gray-300">{description}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default Text;

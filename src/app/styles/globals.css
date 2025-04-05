@@ -14,8 +14,7 @@
   }
 }
 
-@layer utilities{
-
+@layer utilities {
   .background_home {
     position: relative;
     display: flex;
@@ -47,21 +46,21 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('../../../public/Fondo_loding.svg') repeat; /* Ruta de la imagen */
+    background: url('/images/Componentes/Fondo_loding.svg') repeat;
     opacity: 0.1;
     animation: glitch-background 2s infinite;
-    z-index: 1; /* Fondo con z-index bajo */
+    z-index: 1;
   }
 
   .background::after {
     opacity: 0.6;
     animation: glitch-background 2s infinite;
-    z-index: 1; /* Fondo con z-index bajo */
+    z-index: 1;
   }
 
   .content {
     position: relative;
-    z-index: 2; /* Contenido con z-index alto */
+    z-index: 2;
   }
 
   @keyframes glitch-background {
