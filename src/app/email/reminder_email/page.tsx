@@ -1,1 +1,4 @@
-import reminderEmails from "@/app/components/emails/reminder_email";
+export default function Confirmation2Page() {
+    return <div>Confirmation 2</div>;
+  }
+  

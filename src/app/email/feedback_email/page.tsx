@@ -1,1 +1,4 @@
-import feedbackEmail from "@/app/components/emails/feedback_email";
+export default function Confirmation2Page() {
+    return <div>Confirmation 2</div>;
+  }
+  

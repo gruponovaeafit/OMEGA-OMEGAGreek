@@ -1,1 +1,4 @@
-import confirmationForm3 from "@/app/components/forms/confirmation_form_3";
+export default function Confirmation2Page() {
+    return <div>Confirmation 2</div>;
+  }
+  

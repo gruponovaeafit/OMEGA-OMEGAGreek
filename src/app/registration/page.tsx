@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
-import { Footer } from '@/app/layout';
-import { Header } from '@/app/layout';
+import { Footer } from '@/app/components/Footer';
+import { Header } from '@/app/components/Header';
 
 const handleClickIndividual = () => {
   window.location.href = '/registration/individual';
