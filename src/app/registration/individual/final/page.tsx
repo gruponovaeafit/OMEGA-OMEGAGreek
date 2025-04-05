@@ -12,7 +12,7 @@ export default function Home() {
         <Header />
 
         <img 
-          src="/text_enviado_exito.svg" 
+          src="/text_enviado_exitoso.png" 
           alt="Formulario de Registro"
           className="w-52 h-auto"
         />

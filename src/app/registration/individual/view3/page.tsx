@@ -40,7 +40,7 @@ export default function Home() {
           question="Número celular"
           value={telefono}
           onChange={setTelefono}
-          placeholder="3024567890"
+          placeholder="Número"
         />
 
         <TextQuestion

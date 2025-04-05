@@ -12,8 +12,8 @@ const handleSiguiente = () => {
 };
 
 export default function Home() {
-  const [preferred_role1, setPreferred_role1] = useState("Administrador");
-  const [preferred_role2, setPreferred_role2] = useState("Diseñador");
+  const [preferred_role1, setPreferred_role1] = useState("Rol 1");
+  const [preferred_role2, setPreferred_role2] = useState("Rol 2");
 
   return (
     <div className="h-screen flex flex-col">
