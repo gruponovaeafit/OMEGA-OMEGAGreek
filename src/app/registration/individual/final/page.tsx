@@ -1,15 +1,8 @@
 "use client";
-import React, { useState } from "react";
-import { Footer, Header } from '@/app/layout';
-import {
-  Select,
-  YesNoQuestion,
-  TextQuestion,
-} from "@/app/components/forms/registration/individual/questions";
+import React from "react";
+import { Footer } from '@/app/components/Footer';
+import { Header } from '@/app/components/Header';
 
-const handleSiguiente = () => {
-  window.location.href = '/registration/individual/view3';
-};
 
 export default function Home() {
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { Header, Footer } from "@/app/layout";
+import { Footer } from '@/app/components/Footer';
+import { Header } from '@/app/components/Header';
 import { InfoBox } from "@/app/components/forms/registration/teams/text";
 
 export default function View2() {

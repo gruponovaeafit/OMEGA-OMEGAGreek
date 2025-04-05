@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { Footer, Header } from '@/app/layout';
+import { Footer } from '@/app/components/Footer';
+import { Header } from '@/app/components/Header';
+
 import {
   Select,
 } from "@/app/components/forms/registration/individual/questions";
