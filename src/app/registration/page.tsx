@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import TextHome from '@/app/components/forms/registration/text';
-import ButtonHome from '@/app/components/forms/registration/buttons';
+import { ButtonHome } from '../components/forms/registration/buttons';
 import { Footer } from '../layout';
 import { Header } from '../layout';
 
@@ -21,9 +21,9 @@ export default function Home() {
       <Header/>
       <div className='background_home min-h-screen flex flex-col items-center py-4'>
         
-        <ButtonHome text={<TextHome text='Registro Individual'/>} onClick={handleClickIndividual}/>
+        <ButtonHome text= "Inscripción Individual" imageSrc='/register_ind.svg' onClick={handleClickIndividual}/>
       
-        <ButtonHome text={<TextHome text='Registro Colectivo'/>} onClick={handleClickGroup}/>
+        <ButtonHome text='Inscripción Grupal' imageSrc= '/register_team.svg' onClick={handleClickGroup}/>
         <Footer/>
       </div>
     </div>
