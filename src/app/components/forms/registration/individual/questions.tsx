@@ -125,7 +125,7 @@ export const TextQuestion: React.FC<QuestionProps & {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full h-12 px-4 text-center text-base font-light text-white rounded-xl placeholder-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
+        className="w-full h-12 px-4 text-center text-base font-light text-white rounded-xl placeholder-white placeholder-opacity-25 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
         style={{
           backgroundImage: 'linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)'
         }}

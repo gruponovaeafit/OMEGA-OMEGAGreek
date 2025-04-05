@@ -72,13 +72,13 @@ export default function Home() {
 
           <img
             src="/pacho_hermes.svg"
-            alt="Pacho Zeus"
+            alt="Pacho hermes"
             className="w-54 h-auto"
           />
 
         <img
           src="/button_send.svg"
-          alt="Botón siguiente"
+          alt="Botón enviar"
           className="w-40 h-auto cursor-pointer mb-6"
           onClick={handleSiguiente}
         />
