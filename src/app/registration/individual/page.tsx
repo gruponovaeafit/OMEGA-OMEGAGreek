@@ -1,82 +1,99 @@
-'use client';
+"use client";
+import React, { useState } from "react";
+import { Footer, Header } from "@/app/layout";
+import {
+  TextQuestion,
+  Select,
+  Checkbox,
+  DateNativeQuestion
+} from "@/app/components/forms/registration/individual/questions";
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { Button } from 'src/app/components/forms/registration/individual/buttons';
+export default function Home() {
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [tipoDocumento, setTipoDocumento] = useState("C.C");
+  const [numeroDocumento, setNumeroDocumento] = useState("");
+  const [fechaNacimiento, setFechaNacimiento] = useState("");
+  const [aceptaTerminos, setAceptaTerminos] = useState(false);
 
-const RegistrationConfirmationPage: React.FC = () => {
-  const router = useRouter();
-
-  const handleStartOver = () => {
-    router.push('/');
+  const handleSiguiente = () => {
+    window.location.href = '/registration/individual/view2';
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-900 to-indigo-900 relative flex flex-col">
-      {/* Logo Superior */}
-      <div className="absolute top-0 left-0 right-0 flex justify-center py-4">
-        <div className="w-16 h-16">
-          <Image 
-            src="/images/Componentes/Logo.svg" 
-            alt="Logo" 
-            width={64} 
-            height={64} 
+    <div className="h-screen flex flex-col">
+      <div className="background_individual_view1 flex-1 flex flex-col items-center px-6 pt-6">
+        <Header />
+
+        <img
+          src="/text_registro_individual.svg"
+          alt="Formulario de Registro"
+          className="w-72 h-auto mb-4"
+        />
+
+        <TextQuestion
+          question="Nombre"
+          value={nombre}
+          onChange={setNombre}
+          placeholder="Nombre"
+        />
+
+        <TextQuestion
+          question="Apellido"
+          value={apellido}
+          onChange={setApellido}
+          placeholder="Apellido"
+        />
+
+        <div className="w-80 mb-6">
+          <h3 className="text-white font-bold text-sm mb-2 text-center">Tipo de documento</h3>
+          <Select
+            value={tipoDocumento}
+            onChange={setTipoDocumento}
+            options={["C.C", "T.I", "Pasaporte"]}
           />
         </div>
-      </div>
 
-      {/* Elemento decorativo */}
-      <div className="absolute top-4 right-4">
-        <Image 
-          src="/images/Componentes/estrella.svg" 
-          alt="Estrella" 
-          width={50} 
-          height={50} 
+        <TextQuestion
+          question="Número de documento"
+          value={numeroDocumento}
+          onChange={setNumeroDocumento}
+          placeholder="ID"
         />
-      </div>
 
-      <div className="flex-1 flex flex-col justify-center items-center px-4">
-        <div className="w-full max-w-md bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-lg text-center">
-          <h1 className="text-white text-2xl font-bold mb-6">
-            Formulario enviado con éxito
-          </h1>
+        <DateNativeQuestion
+          question="Fecha de nacimiento"
+          value={fechaNacimiento}
+          onChange={setFechaNacimiento}
+        />
 
-          <div className="flex justify-center mb-6">
-            <div className="w-64 h-64 relative">
-              <Image 
-                src="/images/Componentes/pachoatenea.svg" 
-                alt="Personaje" 
-                width={256} 
-                height={256} 
-              />
-            </div>
-          </div>
 
-          <p className="text-white text-sm mb-6">
-            Recibirás un correo con los detalles de tu inscripción pronto.
-          </p>
-
-          <Button
-            text="Volver al inicio"
-            onClick={handleStartOver}
-            color="pink"
-            className="w-full"
+        <div className="w-full flex justify-center mb-4">
+          <Checkbox
+            checked={aceptaTerminos}
+            onChange={setAceptaTerminos}
+            label="He leído y acepto los TyC"
           />
         </div>
-      </div>
 
-      {/* Elementos inferiores */}
-      <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-4">
-        <Image 
-          src="/images/Componentes/Nova.svg" 
-          alt="Powered by Nova" 
-          width={150} 
-          height={50} 
-        />
+
+        <div className="flex items-center justify-center gap-4 mt-10 mb-8">
+          <img
+            src="/pacho_zeus.svg"
+            alt="Pacho Zeus"
+            className="w-44 h-auto"
+          />
+          <img
+            src="/button_siguiente.svg"
+            alt="Botón siguiente"
+            className="w-32 h-auto cursor-pointer"
+            onClick={handleSiguiente}
+          />
+        </div>
+
+
+        <Footer />
       </div>
     </div>
   );
-};
-
-export default RegistrationConfirmationPage;
+}

@@ -1,6 +1,5 @@
 "use client";
 import React from 'react';
-import { ButtonHome } from '../components/forms/registration/buttons';
 import { Footer } from '@/app/layout';
 import { Header } from '@/app/layout';
 

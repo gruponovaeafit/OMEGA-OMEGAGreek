@@ -1,108 +1,77 @@
-import React from 'react';
-import { useRouter } from 'next/router';
-import Image from 'next/image';
+"use client";
+import React, { useState } from "react";
+import { Footer, Header } from '@/app/layout';
+import {
+  Select,
+} from "@/app/components/forms/registration/individual/questions";
 
-const RegistrationOptionsPage: React.FC = () => {
-  const router = useRouter();
+const handleSiguiente = () => {
+  window.location.href = '/registration/individual/view3';
+};
 
-  const handleIndividualRegistration = () => {
-    router.push('/registration/individual/view3');
-  };
-
-  const handleGroupRegistration = () => {
-    router.push('/registration/group');
-  };
+export default function Home() {
+  const [preferred_role1, setPreferred_role1] = useState("Administrador");
+  const [preferred_role2, setPreferred_role2] = useState("Diseñador");
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-900 to-indigo-900 relative flex flex-col">
-      <div className="absolute top-0 left-0 right-0 flex justify-center py-4">
-        <div className="w-16 h-16">
-          <Image 
-            src="/images/Componentes/Logo.svg" 
-            alt="Logo" 
-            layout="responsive"
-            width={64} 
-            height={64} 
+    <div className="h-screen flex flex-col">
+      <div className="background_individual_view2 flex-1 flex flex-col items-center gap-2">
+        <Header />
+
+        <img 
+          src="/text_registro_individual.svg" 
+          alt="Formulario de Registro"
+          className="w-72 h-auto"
+        />
+
+        <img 
+          src="/button_admin.svg" 
+          alt="Registro individual"
+          className="w-72 h-auto"
+        />
+        <img 
+          src="/button_designer.svg" 
+          alt="Registro individual"
+          className="w-72 h-auto"
+        />
+        <img 
+          src="/button_marketing.svg" 
+          alt="Registro individual"
+          className="w-72 h-auto"
+        />
+        <img 
+          src="/button_developer.svg" 
+          alt="Registro individual"
+          className="w-72 h-auto"
+        />
+
+        <div className="w-80 mb-6">
+          <h3 className="text-white font-bold text-sm mb-2 text-center">Rol preferido 1</h3>
+          <Select
+            value={preferred_role1}
+            onChange={setPreferred_role1}
+            options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
           />
         </div>
-      </div>
 
-      <div className="flex-1 flex flex-col justify-center items-center px-4 space-y-6">
-        <div className="w-full max-w-md bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-lg">
-          <h1 className="text-white text-2xl font-bold text-center mb-6">
-            Formulario de Inscripción
-          </h1>
-
-          <div 
-            onClick={handleIndividualRegistration} 
-            className="mb-4 cursor-pointer"
-          >
-            <div className="bg-white/20 rounded-xl p-4 flex items-center">
-              <div className="w-24 h-24 mr-4">
-                <Image 
-                  src="/images/Componentes/personajeverde.svg" 
-                  alt="Inscripción Individual" 
-                  layout="responsive"
-                  width={96} 
-                  height={96} 
-                />
-              </div>
-              <span className="text-white text-lg font-semibold">
-                Inscripción Individual
-              </span>
-            </div>
-          </div>
-
-          <div 
-            onClick={handleGroupRegistration} 
-            className="cursor-pointer"
-          >
-            <div className="bg-white/20 rounded-xl p-4 flex items-center">
-              <div className="w-24 h-24 mr-4">
-                <Image 
-                  src="/images/Componentes/personajesgrupo.svg" 
-                  alt="Inscripción Grupal" 
-                  layout="responsive"
-                  width={96} 
-                  height={96} 
-                />
-              </div>
-              <span className="text-white text-lg font-semibold">
-                Inscripción Grupal
-              </span>
-            </div>
-          </div>
+        <div className="w-80 mb-6">
+          <h3 className="text-white font-bold text-sm mb-2 text-center">Rol preferido 2</h3>
+          <Select
+            value={preferred_role2}
+            onChange={setPreferred_role2}
+            options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
+          />
         </div>
-      </div>
 
-      <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-4">
-        <Image 
-          src="/images/Componentes/Nova.svg" 
-          alt="Powered by Nova" 
-          width={150} 
-          height={50} 
+        <img
+          src="/button_siguiente.svg"
+          alt="Botón siguiente"
+          className="w-32 h-auto cursor-pointer"
+          onClick={handleSiguiente}
         />
-      </div>
-
-      {/* Elementos decorativos */}
-      <div className="absolute top-4 right-4">
-        <Image 
-          src="/images/Componentes/esfera.svg" 
-          alt="Esfera" 
-          width={50} 
-          height={50} 
-        />
-      </div>
-      <div className="absolute top-4 left-4">
-        <Image 
-          src="/images/Componentes/ala.svg" 
-          alt="Ala" 
-          width={50} 
-          height={50} 
-        />
+        
+        <Footer />
       </div>
     </div>
   );
-};
-
-export default RegistrationOptionsPage;
+}
