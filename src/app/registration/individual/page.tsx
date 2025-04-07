@@ -2,6 +2,9 @@
 import React, { useState } from "react";
 import { Footer } from '@/app/components/Footer';
 import { Header } from '@/app/components/Header';
+import { useRouter } from 'next/navigation';
+import { toast, ToastContainer } from "react-toastify";
+import { useEffect } from "react";
 
 import {
   TextQuestion,
@@ -11,6 +14,108 @@ import {
 } from "@/app/components/forms/registration/individual/questions";
 
 export default function Home() {
+  // Verifing cookies
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+
+      try {
+        const res = await fetch("/api/cookiesChecker", { method: "GET" });
+
+          if (res.status !== 200) {
+            router.push("/");
+          }
+        } catch (error) {
+          console.error("Error checking authentication:", error);
+          router.push("/");
+        }
+    }
+
+    checkAuthentication();
+    document.body.classList.add("no-scroll");
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, []);
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formElement = e.currentTarget;
+    const formData = new FormData(formElement);
+    const formObject = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("/api/forms/userRegistrationForm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formObject),
+      });
+
+      const result = await response.json();
+     
+
+      if (result.incompleteFields) {
+        setNombre(result.incompleteFields.name || "");
+        setApellido(result.incompleteFields.surname || "");
+        setNumeroDocumento(result.incompleteFields.id_number || "");
+        setFechaNacimiento(result.incompleteFields.birth_date || "");
+        setAceptaTerminos(result.incompleteFields.accept_terms || false);
+      }
+     
+
+      if (!response.ok) {
+        console.error("Error:", result.notification?.message || "En la respuesta del servidor.");
+        toast.error(result.notification?.message || "Error en el servidor.", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        return;
+      }
+   
+      switch (result.status) {
+        case 200:
+
+            toast.success(result.notification?.message || "Formulario enviado con éxito.", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            onClose: () => router.push(result.redirectUrl || "/registration/individual"),
+            });
+          break;
+        case 400:
+          toast.error(result.notification?.message || "Error al enviar el formulario", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+          break;
+      }
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error);
+      toast.error("Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  };
+
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [tipoDocumento, setTipoDocumento] = useState("C.C");
@@ -18,13 +123,11 @@ export default function Home() {
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [aceptaTerminos, setAceptaTerminos] = useState(false);
 
-  const handleSiguiente = () => {
-    window.location.href = '/registration/individual/view2';
-  };
+  
 
   return (
     <div className="h-screen flex flex-col">
-      <div className="background_individual_view1 flex-1 flex flex-col items-center px-6 pt-6">
+      <form onSubmit={handleFormSubmit} className="background_individual_view1 flex-1 flex flex-col items-center px-6 pt-6">
         <Header />
 
         <img
@@ -34,6 +137,7 @@ export default function Home() {
         />
 
         <TextQuestion
+          name="name"
           question="Nombre"
           value={nombre}
           onChange={setNombre}
@@ -41,6 +145,7 @@ export default function Home() {
         />
 
         <TextQuestion
+          name="surname"
           question="Apellido"
           value={apellido}
           onChange={setApellido}
@@ -50,6 +155,7 @@ export default function Home() {
         <div className="w-80 mb-6">
           <h3 className="text-white font-bold text-sm mb-2 text-center">Tipo de documento</h3>
           <Select
+            name="id_type"
             value={tipoDocumento}
             onChange={setTipoDocumento}
             options={["C.C", "T.I", "Pasaporte"]}
@@ -57,6 +163,7 @@ export default function Home() {
         </div>
 
         <TextQuestion
+          name="id_number"
           question="Número de documento"
           value={numeroDocumento}
           onChange={setNumeroDocumento}
@@ -72,6 +179,7 @@ export default function Home() {
 
         <div className="w-full flex justify-center mb-4">
           <Checkbox
+            name="birth_date"
             checked={aceptaTerminos}
             onChange={setAceptaTerminos}
             label="He leído y acepto los TyC"
@@ -85,17 +193,21 @@ export default function Home() {
             alt="Pacho Zeus"
             className="w-44 h-auto"
           />
+          <button type="submit" >
           <img
             src="/button_siguiente.svg"
             alt="Botón siguiente"
             className="w-32 h-auto cursor-pointer"
-            onClick={handleSiguiente}
           />
+
+          </button>
+          
         </div>
 
 
         <Footer />
-      </div>
+      </form>
+      <ToastContainer/>
     </div>
   );
 }

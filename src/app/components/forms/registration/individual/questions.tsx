@@ -33,10 +33,12 @@ export const Question: React.FC<QuestionProps & { children: React.ReactNode }> =
 // Pregunta Sí/No
 export const YesNoQuestion: React.FC<QuestionProps & {
   value: boolean | null;
+  name: string;
   onChange: (value: boolean) => void;
 }> = ({
   question,
   value,
+  name,
   onChange,
   className = ''
 }) => {
@@ -45,6 +47,7 @@ export const YesNoQuestion: React.FC<QuestionProps & {
       <div className="flex justify-center space-x-6">
         <button
           type="button"
+          name={name}
           onClick={() => onChange(true)}
           className={`w-20 h-10 rounded-full font-semibold transition-colors text-white
             ${value === true 
@@ -55,6 +58,7 @@ export const YesNoQuestion: React.FC<QuestionProps & {
         </button>
         <button
           type="button"
+          name={name}
           onClick={() => onChange(false)}
           className={`w-20 h-10 rounded-full font-semibold transition-colors text-white
             ${value === false 
@@ -109,11 +113,13 @@ export const MultipleChoiceQuestion: React.FC<QuestionProps & {
 // Campo de texto
 export const TextQuestion: React.FC<QuestionProps & {
   value: string;
+  name: string;
   onChange: (value: string) => void;
   placeholder?: string;
 }> = ({
   question,
   value,
+  name,
   onChange,
   placeholder = '',
   className = ''
@@ -123,9 +129,10 @@ export const TextQuestion: React.FC<QuestionProps & {
       <input
         type="text"
         value={value}
+        name={name}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full h-12 px-4 text-center text-base font-light text-white rounded-xl placeholder-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
+        className="w-full h-12 px-4 text-center text-base font-light text-white rounded-xl placeholder-white placeholder-opacity-25 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
         style={{
           backgroundImage: 'linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)'
         }}
@@ -147,6 +154,7 @@ export const DateNativeQuestion: React.FC<DateNativeQuestionProps> = ({
         <input
           type="date"
           value={value}
+          name= "birth_date"
           onChange={(e) => onChange(e.target.value)}
           className="w-full h-12 px-4 text-center text-base font-light text-white rounded-xl border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400 appearance-none"
           style={{
@@ -164,9 +172,10 @@ export const DateNativeQuestion: React.FC<DateNativeQuestionProps> = ({
 // Custom Select dropdown que se comporta visualmente como un input
 export const Select: React.FC<{
   value: string;
+  name: string;
   onChange: (value: string) => void;
   options: string[]; 
-}> = ({ value, onChange, options }) => {
+}> = ({ value, onChange, options, name }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -190,7 +199,12 @@ export const Select: React.FC<{
         }}
         onClick={() => setOpen(!open)}
       >
-        <span className="w-full text-center truncate">{value}</span>
+        <input
+          className="w-full text-center truncate bg-transparent border-none outline-none"
+          value={value}
+          name={name}
+          type="select"
+        />
       </div>
 
       {open && (
@@ -216,14 +230,16 @@ export const Select: React.FC<{
 // Checkbox
 export const Checkbox: React.FC<{
   checked: boolean;
+  name: string;
   onChange: (checked: boolean) => void;
   label: string;
-}> = ({ checked, onChange, label }) => {
+}> = ({ checked, name, onChange, label }) => {
   return (
     <div className="w-full flex justify-center mt-4">
       <label className="flex items-center gap-3 cursor-pointer">
         <div
           onClick={() => onChange(!checked)}
+          
           className="w-5 h-5 rounded-sm border-2 border-white flex items-center justify-center"
           style={{
             backgroundImage: checked
@@ -240,7 +256,7 @@ export const Checkbox: React.FC<{
             backgroundImage: 'linear-gradient(to right, #3B2F8C, #9A2C2C, #84A23C)',
           }}
         >
-          <span className="font-semibold">He leído y acepto</span> los TyC
+          <span className="font-semibold">{label}</span>
         </span>
       </label>
     </div>

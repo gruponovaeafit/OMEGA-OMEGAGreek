@@ -1,13 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../db";
 import { Date, Text, TinyInt, VarChar } from "mssql";
+import { get } from "http";
 import { getEmailFromCookies } from "../getEmailFromCookies";
+
 
 // Second view, where the personal data is stored
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse){
 
-    //Db connection
+
     try {
 
         if (req.method !== "POST") {
@@ -21,47 +23,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const pool = await connectToDatabase();
 
-        // Get data from the request body;
+        // set as index the roles names
+        const rolesNames: Record<number, string> = {
+            1: "Administrador",
+            2: "Diseño",
+            3: "Mercadeo",
+            4: "Desarrollo",
+          };
 
-        const {name , surname , id_number , phone , birth_date } = req.body;
-        console.log("Datos recibidos:", req.body);
+          let { preferred_role1, preferred_role2 } = req.body;
 
-        // Data treatment is missing in the request body, so we set it to 0 by default
-        const data_treatment = req.body.data_treatment || 0;
+          const roleNameToIndex = Object.entries(rolesNames).reduce((acc, [index, name]) => {
+            acc[name] = Number(index);
+            return acc;
+          }, {} as Record<string, number>);
+
+          preferred_role1 = roleNameToIndex[preferred_role1] || null;
+          preferred_role2 = roleNameToIndex[preferred_role2] || null;
+
+          console.log("preferred_role1 (index):", preferred_role1);
+          console.log("preferred_role2 (index):", preferred_role2);
+
 
         // Validate that the data is not empty
 
-        if (!name || !surname || !id_number || !birth_date || !data_treatment === undefined) {
-            console.error("Campos faltantes", { name, surname, id_number, phone, birth_date, data_treatment });
+        if (!preferred_role1 || !preferred_role2  === null) {
             return res.status(400).json({
                 notification: {
                     type: "error",
-                    message: "Faltan datos requeridos",
+                    message: "Seleccion invalida",
                     },
                 status: 400,
              });
         }
-
-        // Validate that the birthdate  is not very recent
-        const birthDate = new global.Date(birth_date);
-        const today = new global.Date();
-        const age = today.getFullYear() - birthDate.getFullYear();
-        if (age < 10) {
-          console.error("Edad inválida:", { birth_date });
-            return res.status(400).json({ 
-                notification: {
-                    type: "error",
-                    message: "La edad ingresada no es válida",
-                    },
-                status: 400,
-             });
-        }
-
-
 
         try {
 
-             // get the institutional email from the cookies
+            // get the institutional email from the cookies
             const userEmail = getEmailFromCookies(req, res);
 
             if (userEmail == null) {
@@ -73,26 +71,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
 
             console.log("Correo electrónico del usuario desde cookies:", userEmail);
-            
 
-            pool.request()
-            .input("name", VarChar(50), name)
-            .input("surname", VarChar, surname)
-            .input("id_number", VarChar, id_number)
-            .input("birth_date", Date, birth_date)
-            .input("data_treatment", TinyInt, data_treatment)
-            .input("userEmail", VarChar, userEmail)
-            .query(`
-
-                UPDATE Personal_data
-                SET name = @name,
-                    surname = @surname,
-                    id_number = @id_number,
-                    birth_date = @birth_date,
-                    data_treatment = @data_treatment
-                WHERE institutional_email = @userEmail
-
-            `);
+        
+            await pool.request()
+                .input("rol1", VarChar(20), preferred_role1)
+                .input("rol2", VarChar(20), preferred_role2)
+                .input("email", VarChar(255), userEmail)
+                .query("UPDATE Personal_data SET preferred_role_1 = @rol1, preferred_role_2 = @rol2 WHERE email = @email");
 
             // Routing to the third view
             console.log("Usuario insertado correctamente:");
@@ -102,7 +87,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     message: "Tus datos han sido guardados correctamente",
                     },
                 status: 200,
-                redirectUrl: "/registration/individual/view2",
+                redirectUrl: "/registration/individual/view3",
 
             });
 

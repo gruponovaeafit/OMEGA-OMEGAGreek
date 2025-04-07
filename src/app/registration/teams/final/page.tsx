@@ -18,8 +18,8 @@ export default function Home() {
         />
 
           <img
-            src="/pacho_atenea.svg"
-            alt="Pacho Zeus"
+            src="/pacho_apolo.svg"
+            alt="Pacho Apolo"
             className="w-54 h-auto"
           />
         
