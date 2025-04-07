@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 import { Footer } from "@/app/components/Footer";
 import { Header } from "@/app/components/Header";
 import { useRouter } from "next/navigation";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   const router = useRouter();
@@ -21,10 +23,8 @@ export default function Home() {
       }
     };
 
-    // Verificación inicial y cada 15 segundos
     checkAuthentication();
     const interval = setInterval(checkAuthentication, 15000);
-
     return () => clearInterval(interval);
   }, [router]);
 
@@ -35,13 +35,36 @@ export default function Home() {
 
       if (res.ok && result.redirectUrl) {
         router.push(result.redirectUrl);
-        return false; // Ya completó el formulario
+        return false;
       }
 
-      return true; // Puede continuar
+      return true;
     } catch (error) {
       console.error("Error al verificar estado del usuario:", error);
       return true;
+    }
+  };
+
+  const checkTeamStatus = async () => {
+    try {
+      const res = await fetch("/api/forms/teamCheckStatus", { method: "GET" });
+      const result = await res.json(); // ✅ siempre lee el body
+
+      if (res.status === 400 && result.notification?.message) {
+        toast.error(result.notification.message); // ✅ show toast
+        return false;
+      }
+
+      if (res.ok && result.redirectUrl) {
+        router.push(result.redirectUrl);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error al verificar estado del equipo:", error);
+      toast.error("Error inesperado al verificar estado del equipo.");
+      return false;
     }
   };
 
@@ -53,7 +76,7 @@ export default function Home() {
   };
 
   const handleClickGroup = async () => {
-    const canProceed = await checkUserStatus();
+    const canProceed = await checkTeamStatus();
     if (canProceed) {
       router.push("/registration/teams");
     }
@@ -86,6 +109,8 @@ export default function Home() {
 
         <Footer />
       </div>
+      
+      <ToastContainer />
     </div>
   );
 }
