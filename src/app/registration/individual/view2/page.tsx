@@ -1,103 +1,87 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Footer } from '@/app/components/Footer';
 import { Header } from '@/app/components/Header';
 import { useRouter } from 'next/navigation';
-import { useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 import {
   Select,
 } from "@/app/components/forms/registration/individual/questions";
-import { toast, ToastContainer } from "react-toastify";
-
-
 
 export default function Home() {
   const [preferred_role1, setPreferred_role1] = useState("Rol 1");
   const [preferred_role2, setPreferred_role2] = useState("Rol 2");
 
-   // Verifing cookies
-   const router = useRouter();
+  const router = useRouter();
 
-   useEffect(() => {
-     const checkAuthentication = async () => { 
-    
-       try {
-         const res = await fetch("/api/cookiesChecker", { method: "GET" });
-         
-         
-           if (res.status !== 200) {
-             router.push("/"); 
-           }
-         } catch (error) {
-           console.error("Error checking authentication:", error);
-           router.push("/"); 
-         }
-     }
-     
-     checkAuthentication();
-     document.body.classList.add("no-scroll");
-     return () => {
-       document.body.classList.remove("no-scroll");
-     };
-   }, []);
- 
-   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-     e.preventDefault();
-     const formElement = e.currentTarget;
-     const formData = new FormData(formElement);
-     const formObject = Object.fromEntries(formData.entries());
-     
-     try {
-       const response = await fetch("/api/forms/userRolesForm", {
-         method: "POST",
-         headers: {
-           "Content-Type": "application/json",
-         },
-         body: JSON.stringify(formObject),
-       });
-       
-       const result = await response.json();
+  // ⏱️ Verificar cookies al cargar y luego cada 30 segundos
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      try {
+        const res = await fetch("/api/cookiesChecker", { method: "GET" });
+        if (res.status !== 200) {
+          console.warn("🔒 Token inválido o expirado. Redirigiendo a /");
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("❌ Error verificando autenticación:", error);
+        router.push("/");
+      }
+    };
 
-      
- 
-       if (!response.ok) {
-         console.error("Error:", result.notification?.message || "En la respuesta del servidor.");
-         toast.error(result.notification?.message || "Error en el servidor.", {
-           position: "top-center",
-           autoClose: 3000,
-           hideProgressBar: false,
-           closeOnClick: true,
-           pauseOnHover: true,
-           draggable: true,
-         });
-         return;
-       }
+    checkAuthentication(); // Verifica al cargar
+
+    const interval = setInterval(() => {
+      checkAuthentication(); // Verifica cada 30 segundos
+    }, 30000);
+
+    document.body.classList.add("no-scroll");
+    return () => {
+      clearInterval(interval);
+      document.body.classList.remove("no-scroll");
+    };
+  }, [router]);
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formElement = e.currentTarget;
+    const formData = new FormData(formElement);
+    const formObject = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("/api/forms/userRolesForm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formObject),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        toast.error(result.notification?.message || "Error en el servidor.", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+        return;
+      }
 
       toast.success(result.notification?.message || "Formulario enviado con éxito.", {
         position: "top-center",
         autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
         onClose: () => router.push(result.redirectUrl || "/registration/individual/view2"),
       });
 
-
-     } catch (error) {
-       console.error("Error al enviar el formulario:", error);
-       toast.error("Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.", {
-         position: "top-center",
-         autoClose: 3000,
-         hideProgressBar: false,
-         closeOnClick: true,
-         pauseOnHover: true,
-         draggable: true,
-       });
-     }
-   };
- 
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error);
+      toast.error("Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+    }
+  };
 
   return (
     <div className="h-screen flex flex-col">
@@ -110,26 +94,10 @@ export default function Home() {
           className="w-72 h-auto"
         />
 
-        <img 
-          src="/button_admin.svg" 
-          alt="Registro individual"
-          className="w-72 h-auto"
-        />
-        <img 
-          src="/button_designer.svg" 
-          alt="Registro individual"
-          className="w-72 h-auto"
-        />
-        <img 
-          src="/button_marketing.svg" 
-          alt="Registro individual"
-          className="w-72 h-auto"
-        />
-        <img 
-          src="/button_developer.svg" 
-          alt="Registro individual"
-          className="w-72 h-auto"
-        />
+        <img src="/button_admin.svg" alt="Admin" className="w-72 h-auto" />
+        <img src="/button_designer.svg" alt="Diseño" className="w-72 h-auto" />
+        <img src="/button_marketing.svg" alt="Marketing" className="w-72 h-auto" />
+        <img src="/button_developer.svg" alt="Desarrollador" className="w-72 h-auto" />
 
         <div className="w-80 mb-6">
           <h3 className="text-white font-bold text-sm mb-2 text-center">Rol preferido 1</h3>
@@ -161,7 +129,7 @@ export default function Home() {
 
         <Footer />
       </form>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 }

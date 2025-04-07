@@ -203,7 +203,9 @@ export const Select: React.FC<{
           className="w-full text-center truncate bg-transparent border-none outline-none"
           value={value}
           name={name}
-          type="select"
+          type="text"
+          readOnly
+          onChange={() => {}}
         />
       </div>
 

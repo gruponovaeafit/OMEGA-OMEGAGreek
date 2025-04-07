@@ -1,10 +1,20 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Footer } from '@/app/components/Footer';
 import { Header } from '@/app/components/Header';
+import { useRouter } from "next/navigation";
 
 
 export default function Home() {
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push('/registration');
+    },10000);
+    return () => clearTimeout(timer);
+  }, [router]);
 
   return (
     <div className="h-screen flex flex-col">
