@@ -141,7 +141,7 @@ export default function Home() {
             options={[
               "Administrador",
               "Diseñador",
-              "Marketing",
+              "Mercadeo",
               "Desarrollador",
             ]}
           />
