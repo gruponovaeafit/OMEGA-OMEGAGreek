@@ -26,7 +26,7 @@
     background-color: black;
     overflow: hidden;
     z-index: 1;
-    background: url('/Fondo_loding.svg');
+    background: url('https://novaeafit.blob.core.windows.net/omega-2025/Fondo_loding.svg');
     background-size: cover;
     background-position: center;
   }
@@ -39,7 +39,7 @@
     width: 100%;
     height: 100vh;
     background-color: black;
-    background-image: url("/FONDO-APP-1.svg");
+    background-image: url("https://novaeafit.blob.core.windows.net/omega-2025/FONDO-APP-1.svg");
     background-size: cover;
     background-position: center;
     overflow: hidden;
@@ -55,7 +55,7 @@
     width: 100%;
     height: 100vh;
     background-color: black;
-    background-image: url("/bg_email_view.svg");
+    background-image: url("https://novaeafit.blob.core.windows.net/omega-2025/bg_email_view.svg");
     background-size: cover;
     background-position: center;
     overflow: hidden;
@@ -71,7 +71,7 @@
     align-items: center;
     width: 100%;
     background-color: black;
-    background-image: url("/bg_registration_individual_view1.svg");
+    background-image: url("https://novaeafit.blob.core.windows.net/omega-2025/bg_registration_individual_view1.svg");
     background-size: cover;
     background-position: center;
     overflow-y: auto;
@@ -86,7 +86,7 @@
     align-items: center;
     width: 100%;
     background-color: black;
-    background-image: url("/bg_registration_individual_view2.svg");
+    background-image: url("https://novaeafit.blob.core.windows.net/omega-2025/bg_registration_individual_view2.svg");
     background-size: cover;
     background-position: center;
     overflow-y: auto;
