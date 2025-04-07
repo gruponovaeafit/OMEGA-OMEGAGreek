@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'novaeafit.blob.core.windows.net',
         port: '',
-        pathname: '/*/**', 
+        pathname: '/omega-2025/**', 
       }
     ]
   }

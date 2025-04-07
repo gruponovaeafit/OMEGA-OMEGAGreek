@@ -116,7 +116,7 @@ export default function Home() {
         <Header />
 
         <img
-          src="/text_registro_individual.svg"
+          src="https://novaeafit.blob.core.windows.net/omega-2025/text_registro_individual.svg"
           alt="Formulario de Registro"
           className="w-72 h-auto"
         />
@@ -153,7 +153,7 @@ export default function Home() {
         />
 
         <img
-          src="/text_evento_a_cabo.svg"
+          src="https://novaeafit.blob.core.windows.net/omega-2025/text_evento_a_cabo.svg"
           alt="Información del evento"
           className="w-72 h-auto"
         />
@@ -166,14 +166,14 @@ export default function Home() {
         />
 
         <img
-          src="/pacho_hermes.svg"
+          src="https://novaeafit.blob.core.windows.net/omega-2025/pacho_hermes.svg"
           alt="Pacho hermes"
           className="w-54 h-auto"
         />
 
         <button type="submit">
           <img
-            src="/button_send.svg"
+            src="https://novaeafit.blob.core.windows.net/omega-2025/button_send.svg"
             alt="Botón enviar"
             className="w-40 h-auto cursor-pointer mb-6"
           />

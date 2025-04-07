@@ -88,20 +88,20 @@ export default function Home() {
         <Header />
 
         <img
-          src="/text_formulario_de_registro.svg"
+          src="https://novaeafit.blob.core.windows.net/omega-2025/text_formulario_de_registro.svg"
           alt="Formulario de Registro"
           className="w-72 h-auto"
         />
 
         <img
-          src="/button_registration_individual.svg"
+          src="https://novaeafit.blob.core.windows.net/omega-2025/button_registration_individual.svg"
           alt="Registro individual"
           className="w-72 h-auto"
           onClick={handleClickIndividual}
         />
 
         <img
-          src="/button_registration_team.svg"
+          src="https://novaeafit.blob.core.windows.net/omega-2025/button_registration_team.svg"
           alt="Registro grupal"
           className="w-72 h-auto mt-6"
           onClick={handleClickGroup}

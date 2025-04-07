@@ -89,15 +89,15 @@ export default function Home() {
         <Header />
 
         <img 
-          src="/text_registro_individual.svg" 
+          src="https://novaeafit.blob.core.windows.net/omega-2025/text_registro_individual.svg" 
           alt="Formulario de Registro"
           className="w-72 h-auto"
         />
 
-        <img src="/button_admin.svg" alt="Admin" className="w-72 h-auto" />
-        <img src="/button_designer.svg" alt="Diseño" className="w-72 h-auto" />
-        <img src="/button_marketing.svg" alt="Marketing" className="w-72 h-auto" />
-        <img src="/button_developer.svg" alt="Desarrollador" className="w-72 h-auto" />
+        <img src="https://novaeafit.blob.core.windows.net/omega-2025/button_admin.svg" alt="Admin" className="w-72 h-auto" />
+        <img src="https://novaeafit.blob.core.windows.net/omega-2025/button_designer.svg" alt="Diseño" className="w-72 h-auto" />
+        <img src="https://novaeafit.blob.core.windows.net/omega-2025/button_marketing.svg" alt="Marketing" className="w-72 h-auto" />
+        <img src="https://novaeafit.blob.core.windows.net/omega-2025/button_developer.svg" alt="Desarrollador" className="w-72 h-auto" />
 
         <div className="w-80 mb-6">
           <h3 className="text-white font-bold text-sm mb-2 text-center">Rol preferido 1</h3>
@@ -121,7 +121,7 @@ export default function Home() {
 
         <button type="submit">
           <img
-            src="/button_siguiente.svg"
+            src="https://novaeafit.blob.core.windows.net/omega-2025/button_siguiente.svg"
             alt="Botón siguiente"
             className="w-32 h-auto cursor-pointer"
           />
