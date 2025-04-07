@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent } from "react";
 
 interface InputFieldProps {
   label: string;
@@ -10,35 +10,38 @@ interface InputFieldProps {
   required?: boolean;
   error?: string;
   className?: string;
-  color?: 'purple' | 'blue' | 'default';
+  color?: "purple" | "blue" | "default";
 }
 
 export const InputField: React.FC<InputFieldProps> = ({
   label,
   name,
-  type = 'text',
+  type = "text",
   value,
   onChange,
-  placeholder = '',
+  placeholder = "",
   required = false,
   error,
-  className = '',
-  color = 'default'
+  className = "",
+  color = "default",
 }) => {
   const getColorClasses = () => {
-    switch(color) {
-      case 'purple':
-        return 'bg-purple-600 text-white';
-      case 'blue':
-        return 'bg-blue-500 text-white';
+    switch (color) {
+      case "purple":
+        return "bg-purple-600 text-white";
+      case "blue":
+        return "bg-blue-500 text-white";
       default:
-        return 'bg-white text-gray-800';
+        return "bg-white text-gray-800";
     }
   };
 
   return (
     <div className={`mb-4 ${className}`}>
-      <label htmlFor={name} className="block text-sm font-medium text-gray-300 mb-1">
+      <label
+        htmlFor={name}
+        className="block text-sm font-medium text-gray-300 mb-1"
+      >
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <input
@@ -66,7 +69,7 @@ interface SelectFieldProps {
   required?: boolean;
   error?: string;
   className?: string;
-  color?: 'amber' | 'blue' | 'default';
+  color?: "amber" | "blue" | "default";
 }
 
 export const SelectField: React.FC<SelectFieldProps> = ({
@@ -75,26 +78,29 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   value,
   onChange,
   options,
-  placeholder = 'Seleccionar...',
+  placeholder = "Seleccionar...",
   required = false,
   error,
-  className = '',
-  color = 'default'
+  className = "",
+  color = "default",
 }) => {
   const getColorClasses = () => {
-    switch(color) {
-      case 'amber':
-        return 'bg-amber-600 text-white';
-      case 'blue':
-        return 'bg-blue-300 text-gray-800';
+    switch (color) {
+      case "amber":
+        return "bg-amber-600 text-white";
+      case "blue":
+        return "bg-blue-300 text-gray-800";
       default:
-        return 'bg-white text-gray-800';
+        return "bg-white text-gray-800";
     }
   };
 
   return (
     <div className={`mb-4 ${className}`}>
-      <label htmlFor={name} className="block text-sm font-medium text-gray-300 mb-1">
+      <label
+        htmlFor={name}
+        className="block text-sm font-medium text-gray-300 mb-1"
+      >
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <select
@@ -135,12 +141,13 @@ export const ParticipantEmailField: React.FC<{
   index,
   error,
   required = false,
-  optional = false
+  optional = false,
 }) => {
   return (
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-300 mb-1">
-        {label} {required && <span className="text-red-500">*</span>} {optional && <span className="text-gray-400">(opcional)</span>}
+        {label} {required && <span className="text-red-500">*</span>}{" "}
+        {optional && <span className="text-gray-400">(opcional)</span>}
       </label>
       <input
         type="email"
@@ -171,15 +178,18 @@ export const TextAreaField: React.FC<{
   name,
   value,
   onChange,
-  placeholder = '',
+  placeholder = "",
   required = false,
   error,
-  className = '',
-  rows = 4
+  className = "",
+  rows = 4,
 }) => {
   return (
     <div className={`mb-4 ${className}`}>
-      <label htmlFor={name} className="block text-sm font-medium text-gray-300 mb-1">
+      <label
+        htmlFor={name}
+        className="block text-sm font-medium text-gray-300 mb-1"
+      >
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <textarea
@@ -201,5 +211,5 @@ export default {
   InputField,
   SelectField,
   ParticipantEmailField,
-  TextAreaField
+  TextAreaField,
 };

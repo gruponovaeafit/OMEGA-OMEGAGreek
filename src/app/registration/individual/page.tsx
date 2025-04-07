@@ -1,15 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Footer } from '@/app/components/Footer';
-import { Header } from '@/app/components/Header';
-import { useRouter } from 'next/navigation';
+import { Footer } from "@/app/components/Footer";
+import { Header } from "@/app/components/Header";
+import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 
 import {
   TextQuestion,
   Select,
   Checkbox,
-  DateNativeQuestion
+  DateNativeQuestion,
 } from "@/app/components/forms/registration/individual/questions";
 
 export default function Home() {
@@ -86,31 +86,31 @@ export default function Home() {
       }
 
       if (!response.ok) {
-        toast.error(result.notification?.message || "Error en el servidor.", {
-          position: "top-center",
-          autoClose: 3000,
-        });
+        toast.error(result.notification?.message || "Error en el servidor.");
         return;
       }
 
-      toast.success(result.notification?.message || "Formulario enviado con éxito.", {
-        position: "top-center",
-        autoClose: 3000,
-        onClose: () => router.push(result.redirectUrl || "/registration/individual/view2"),
-      });
-
+      toast.success(
+        result.notification?.message || "Formulario enviado con éxito.",
+        {
+          onClose: () =>
+            router.push(result.redirectUrl || "/registration/individual/view2"),
+        },
+      );
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
-      toast.error("Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.", {
-        position: "top-center",
-        autoClose: 3000,
-      });
+      toast.error(
+        "Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.",
+      );
     }
   };
 
   return (
     <div className="h-screen flex flex-col">
-      <form onSubmit={handleFormSubmit} className="background_individual_view1 flex-1 flex flex-col items-center px-6 pt-6">
+      <form
+        onSubmit={handleFormSubmit}
+        className="background_individual_view1 flex-1 flex flex-col items-center px-6 pt-6"
+      >
         <Header />
 
         <img
@@ -136,7 +136,9 @@ export default function Home() {
         />
 
         <div className="w-80 mb-6">
-          <h3 className="text-white font-bold text-sm mb-2 text-center">Tipo de documento</h3>
+          <h3 className="text-white font-bold text-sm mb-2 text-center">
+            Tipo de documento
+          </h3>
           <Select
             name="id_type"
             value={tipoDocumento}
@@ -185,7 +187,6 @@ export default function Home() {
 
         <Footer />
       </form>
-      <ToastContainer />
     </div>
   );
 }

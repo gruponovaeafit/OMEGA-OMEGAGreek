@@ -4,7 +4,10 @@ import { Int, VarChar } from "mssql";
 import { getEmailFromCookies } from "../getEmailFromCookies";
 
 // Segunda vista: guarda los roles preferidos del usuario
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   try {
     if (req.method !== "POST") {
       return res.status(405).json({
@@ -29,10 +32,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log("Roles seleccionados: ", preferred_role1, preferred_role2);
 
     // Invertimos el mapeo: nombre → índice
-    const roleNameToIndex = Object.entries(rolesNames).reduce((acc, [index, name]) => {
-      acc[name] = Number(index);
-      return acc;
-    }, {} as Record<string, number>);
+    const roleNameToIndex = Object.entries(rolesNames).reduce(
+      (acc, [index, name]) => {
+        acc[name] = Number(index);
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
 
     preferred_role1 = roleNameToIndex[preferred_role1] ?? null;
     preferred_role2 = roleNameToIndex[preferred_role2] ?? null;
@@ -69,7 +75,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         .input("rol2", Int, preferred_role2)
         .input("email", VarChar(255), userEmail)
         .query(
-          "UPDATE Personal_data SET preferred_role_1 = @rol1, preferred_role_2 = @rol2 WHERE institutional_email = @email"
+          "UPDATE Personal_data SET preferred_role_1 = @rol1, preferred_role_2 = @rol2 WHERE institutional_email = @email",
         );
 
       console.log("Usuario actualizado correctamente con roles.");

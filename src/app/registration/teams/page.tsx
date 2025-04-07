@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Footer } from '@/app/components/Footer';
-import { Header } from '@/app/components/Header';
+import { Footer } from "@/app/components/Footer";
+import { Header } from "@/app/components/Header";
 import { TextQuestion } from "@/app/components/forms/registration/individual/questions";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
@@ -10,26 +10,26 @@ export default function Home() {
   const [teamName, setTeamName] = useState("");
   const router = useRouter();
 
-  // Verificación continua de cookies/JWT cada 15 segundos
+  // Verificación JWT cada 15 segundos
   useEffect(() => {
-    const checkAuthentication = async () => {
+    const checkJWT = async () => {
       try {
         const res = await fetch("/api/cookiesChecker", { method: "GET" });
         if (res.status !== 200) {
-          console.warn("⛔ Cookie inválida o expirada. Redireccionando...");
+          toast.warn("Tu sesión ha expirado. Redirigiendo...");
           router.push("/");
         }
-      } catch (error) {
-        console.error("Error verificando cookie:", error);
+      } catch (err) {
+        console.error("Error al verificar JWT:", err);
         router.push("/");
       }
     };
 
-    // Ejecutar al cargar
-    checkAuthentication();
+    checkJWT(); // Ejecutar una vez al montar
 
-    // Ejecutar cada 15 segundos
-    const interval = setInterval(checkAuthentication, 15000);
+    const interval = setInterval(() => {
+      checkJWT();
+    }, 15000); // Cada 15 segundos
 
     return () => clearInterval(interval);
   }, [router]);
@@ -45,7 +45,9 @@ export default function Home() {
       const result = await res.json();
 
       if (!res.ok) {
-        toast.error(result.notification?.message || "Error al registrar el equipo.");
+        toast.error(
+          result.notification?.message || "Error al registrar el equipo.",
+        );
         return;
       }
 
@@ -54,7 +56,6 @@ export default function Home() {
           if (result.redirectUrl) router.push(result.redirectUrl);
         },
       });
-
     } catch (error) {
       toast.error("Error al enviar el formulario.");
     }
@@ -94,7 +95,6 @@ export default function Home() {
 
         <Footer />
       </div>
-      <ToastContainer />
     </div>
   );
 }

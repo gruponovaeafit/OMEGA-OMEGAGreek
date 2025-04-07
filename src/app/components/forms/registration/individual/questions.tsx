@@ -14,34 +14,27 @@ interface DateNativeQuestionProps {
 }
 
 // Componente base para preguntas
-export const Question: React.FC<QuestionProps & { children: React.ReactNode }> = ({
-  question,
-  children,
-  className = ''
-}) => {
+export const Question: React.FC<
+  QuestionProps & { children: React.ReactNode }
+> = ({ question, children, className = "" }) => {
   return (
-    <div className={`mb-6 flex flex-col gap-1 w-full max-w-xs items-center ${className}`}>
+    <div
+      className={`mb-6 flex flex-col gap-1 w-full max-w-xs items-center ${className}`}
+    >
       <h3 className="text-white font-bold text-base text-center">{question}</h3>
-      <div className="w-full">
-        {children}
-      </div>
+      <div className="w-full">{children}</div>
     </div>
   );
 };
 
-
 // Pregunta Sí/No
-export const YesNoQuestion: React.FC<QuestionProps & {
-  value: boolean | null;
-  name: string;
-  onChange: (value: boolean) => void;
-}> = ({
-  question,
-  value,
-  name,
-  onChange,
-  className = ''
-}) => {
+export const YesNoQuestion: React.FC<
+  QuestionProps & {
+    value: boolean | null;
+    name: string;
+    onChange: (value: boolean) => void;
+  }
+> = ({ question, value, name, onChange, className = "" }) => {
   return (
     <Question question={question} className={className}>
       <div className="flex justify-center space-x-6">
@@ -50,9 +43,11 @@ export const YesNoQuestion: React.FC<QuestionProps & {
           name={name}
           onClick={() => onChange(true)}
           className={`w-20 h-10 rounded-full font-semibold transition-colors text-white
-            ${value === true 
-              ? 'bg-pink-600' 
-              : 'bg-white/20 border border-white hover:bg-white/30'}`}
+            ${
+              value === true
+                ? "bg-pink-600"
+                : "bg-white/20 border border-white hover:bg-white/30"
+            }`}
         >
           Sí
         </button>
@@ -61,9 +56,11 @@ export const YesNoQuestion: React.FC<QuestionProps & {
           name={name}
           onClick={() => onChange(false)}
           className={`w-20 h-10 rounded-full font-semibold transition-colors text-white
-            ${value === false 
-              ? 'bg-pink-600' 
-              : 'bg-white/20 border border-white hover:bg-white/30'}`}
+            ${
+              value === false
+                ? "bg-pink-600"
+                : "bg-white/20 border border-white hover:bg-white/30"
+            }`}
         >
           No
         </button>
@@ -73,17 +70,13 @@ export const YesNoQuestion: React.FC<QuestionProps & {
 };
 
 // Selección múltiple tipo grid
-export const MultipleChoiceQuestion: React.FC<QuestionProps & {
-  options: string[];
-  value: string;
-  onChange: (value: string) => void;
-}> = ({
-  question,
-  options,
-  value,
-  onChange,
-  className = ''
-}) => {
+export const MultipleChoiceQuestion: React.FC<
+  QuestionProps & {
+    options: string[];
+    value: string;
+    onChange: (value: string) => void;
+  }
+> = ({ question, options, value, onChange, className = "" }) => {
   return (
     <Question question={question} className={className}>
       <div className="grid grid-cols-2 gap-4">
@@ -92,14 +85,17 @@ export const MultipleChoiceQuestion: React.FC<QuestionProps & {
             key={index}
             type="button"
             className={`p-3 rounded-xl font-medium text-white text-center text-sm transition-all
-              ${value === option 
-                ? 'bg-pink-600' 
-                : 'bg-white/20 border border-white hover:bg-white/30'}`}
+              ${
+                value === option
+                  ? "bg-pink-600"
+                  : "bg-white/20 border border-white hover:bg-white/30"
+              }`}
             onClick={() => onChange(option)}
             style={{
-              backgroundImage: value === option
-                ? undefined
-                : 'linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)'
+              backgroundImage:
+                value === option
+                  ? undefined
+                  : "linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)",
             }}
           >
             {option}
@@ -111,30 +107,26 @@ export const MultipleChoiceQuestion: React.FC<QuestionProps & {
 };
 
 // Campo de texto
-export const TextQuestion: React.FC<QuestionProps & {
-  value: string;
-  name: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-}> = ({
-  question,
-  value,
-  name,
-  onChange,
-  placeholder = '',
-  className = ''
-}) => {
+export const TextQuestion: React.FC<
+  QuestionProps & {
+    value: string;
+    name: string;
+    onChange: (value: string) => void;
+    placeholder?: string;
+  }
+> = ({ question, value, name, onChange, placeholder = "", className = "" }) => {
   return (
     <Question question={question} className={className}>
       <input
         type="text"
-        value={value}
+        value={value ?? ""}
         name={name}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className="w-full h-12 px-4 text-center text-base font-light text-white rounded-xl placeholder-white placeholder-opacity-25 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
         style={{
-          backgroundImage: 'linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)'
+          backgroundImage:
+            "linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)",
         }}
       />
     </Question>
@@ -154,11 +146,12 @@ export const DateNativeQuestion: React.FC<DateNativeQuestionProps> = ({
         <input
           type="date"
           value={value}
-          name= "birth_date"
+          name="birth_date"
           onChange={(e) => onChange(e.target.value)}
           className="w-full h-12 px-4 text-center text-base font-light text-white rounded-xl border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400 appearance-none"
           style={{
-            backgroundImage: 'linear-gradient(to right, #3B2F8C, #9A2C2C, #84A23C)',
+            backgroundImage:
+              "linear-gradient(to right, #3B2F8C, #9A2C2C, #84A23C)",
           }}
         />
         <div className="pointer-events-none absolute right-4 top-1/2 transform -translate-y-1/2 text-white opacity-70">
@@ -174,7 +167,7 @@ export const Select: React.FC<{
   value: string;
   name: string;
   onChange: (value: string) => void;
-  options: string[]; 
+  options: string[];
 }> = ({ value, onChange, options, name }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -194,8 +187,9 @@ export const Select: React.FC<{
       <div
         className="w-full h-12 px-4 text-base font-light text-white rounded-xl flex items-center justify-center cursor-pointer"
         style={{
-          backgroundImage: 'linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)',
-          border: '1px solid rgba(255,255,255,0.3)'
+          backgroundImage:
+            "linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)",
+          border: "1px solid rgba(255,255,255,0.3)",
         }}
         onClick={() => setOpen(!open)}
       >
@@ -241,12 +235,11 @@ export const Checkbox: React.FC<{
       <label className="flex items-center gap-3 cursor-pointer">
         <div
           onClick={() => onChange(!checked)}
-          
           className="w-5 h-5 rounded-sm border-2 border-white flex items-center justify-center"
           style={{
             backgroundImage: checked
-              ? 'linear-gradient(to bottom, #4102F9, #FF1D1D)'
-              : 'transparent',
+              ? "linear-gradient(to bottom, #4102F9, #FF1D1D)"
+              : "transparent",
           }}
         >
           {checked && <div className="w-2.5 h-2.5 bg-white rounded-sm"></div>}
@@ -255,7 +248,8 @@ export const Checkbox: React.FC<{
         <span
           className="text-white px-3 py-1 text-sm font-light rounded-md"
           style={{
-            backgroundImage: 'linear-gradient(to right, #3B2F8C, #9A2C2C, #84A23C)',
+            backgroundImage:
+              "linear-gradient(to right, #3B2F8C, #9A2C2C, #84A23C)",
           }}
         >
           <span className="font-semibold">{label}</span>

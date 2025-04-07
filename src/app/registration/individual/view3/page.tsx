@@ -67,43 +67,33 @@ export default function Home() {
         setConociste(result.incompleteFields.how_did_hear || "");
         setTelefono(result.incompleteFields.phone || "");
         setSemestre(result.incompleteFields.semester || "");
-        setHasParticipated(result.incompleteFields.previous_participation ?? null);
+        setHasParticipated(
+          result.incompleteFields.previous_participation ?? null,
+        );
         setDisponible(result.incompleteFields.has_time ?? null);
       }
 
       if (!response.ok) {
-        console.error("Error:", result.notification?.message || "En la respuesta del servidor.");
-        toast.error(result.notification?.message || "Error en el servidor.", {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
+        console.error(
+          "Error:",
+          result.notification?.message || "En la respuesta del servidor.",
+        );
+        toast.error(result.notification?.message || "Error en el servidor.");
         return;
       }
 
-      toast.success(result.notification?.message || "Formulario enviado con éxito.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        onClose: () => router.push(result.redirectUrl || "/registration/individual/final"),
-      });
-
+      toast.success(
+        result.notification?.message || "Formulario enviado con éxito.",
+        {
+          onClose: () =>
+            router.push(result.redirectUrl || "/registration/individual/final"),
+        },
+      );
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
-      toast.error("Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      toast.error(
+        "Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.",
+      );
     }
   };
 
@@ -123,7 +113,7 @@ export default function Home() {
 
         <YesNoQuestion
           name="has_participated"
-          question="¿Haz participado antes en alguna versión de la Omega?"
+          question="¿Has participado antes en alguna versión de la Omega?"
           value={hasParticipated}
           onChange={setHasParticipated}
         />
@@ -181,7 +171,6 @@ export default function Home() {
 
         <Footer />
       </form>
-      <ToastContainer />
     </div>
   );
 }

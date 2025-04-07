@@ -4,13 +4,13 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'novaeafit.blob.core.windows.net',
-        port: '',
-        pathname: '/omega-2025/**', 
-      }
-    ]
-  }
+        protocol: "https",
+        hostname: "novaeafit.blob.core.windows.net",
+        port: "",
+        pathname: "/omega-2025/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

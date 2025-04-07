@@ -8,7 +8,10 @@ function isNotNullOrUndefined(value: any) {
   return value !== null && value !== undefined;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   try {
     if (req.method !== "GET") {
       return res.status(405).json({ message: "Método no permitido" });
@@ -24,7 +27,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const userData = await pool
       .request()
       .input("email", sql.VarChar, email)
-      .query("SELECT TOP 1 * FROM Personal_data WHERE institutional_email = @email");
+      .query(
+        "SELECT TOP 1 * FROM Personal_data WHERE institutional_email = @email",
+      );
 
     const userInfo = userData.recordset[0];
 
@@ -52,7 +57,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     return res.status(200).json({}); // No redirige, usuario puede seguir
-
   } catch (error) {
     console.error("Error al verificar estado del usuario:", error);
     return res.status(500).json({

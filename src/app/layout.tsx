@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./styles/globals.css";
 
 const geistSans = Geist({
@@ -32,6 +34,17 @@ export default function RootLayout({
       >
         {children}
         <SpeedInsights />
+        <ToastContainer
+          position="bottom-center"
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          pauseOnHover={false}
+          pauseOnFocusLoss={false}
+          draggable
+          limit={1}
+        />
       </body>
     </html>
   );

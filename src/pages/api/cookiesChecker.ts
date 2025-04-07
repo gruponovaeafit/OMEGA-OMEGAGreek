@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import {parse} from "cookie"; 
+import { parse } from "cookie";
 
 export default function cookieCheck(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -9,7 +9,7 @@ export default function cookieCheck(req: NextApiRequest, res: NextApiResponse) {
     // Check if the cookie (jwtToken) exists
     if (!cookies.jwtToken) {
       // If no JWT cookie, return a 401 Unauthorized status
-      return res.status(401).json({ message: "No autorizado" }); 
+      return res.status(401).json({ message: "No autorizado" });
     }
 
     // If the cookie exists, you can continue with the request handling

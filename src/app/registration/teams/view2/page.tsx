@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Footer } from '@/app/components/Footer';
-import { Header } from '@/app/components/Header';
+import { Footer } from "@/app/components/Footer";
+import { Header } from "@/app/components/Header";
 import { TextQuestion } from "@/app/components/forms/registration/individual/questions";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
@@ -15,21 +15,19 @@ export default function Home() {
 
   const router = useRouter();
 
-  // Cargar miembros existentes del equipo
   const fetchTeamData = async () => {
     try {
       const res = await fetch("/api/forms/teamData", { method: "GET" });
       const data = await res.json();
 
       if (res.ok) {
-        const members = data.members || [];
+        const members = data.members || []; // ⬅️ Omite el líder
 
-        // Asignar correos por orden
-        if (members[0]) setPerson1(members[1]);
-        if (members[1]) setPerson2(members[2]);
-        if (members[2]) setPerson3(members[3]);
-        if (members[3]) setPerson4(members[4]);
-        if (members[4]) setPerson5(members[5]);
+        if (members[0]) setPerson1(members[0]);
+        if (members[1]) setPerson2(members[1]);
+        if (members[2]) setPerson3(members[2]);
+        if (members[3]) setPerson4(members[3]);
+        if (members[4]) setPerson5(members[4]);
       } else {
         toast.error("Error al obtener los miembros del equipo.");
       }
@@ -44,7 +42,9 @@ export default function Home() {
   }, []);
 
   const handleSubmit = async () => {
-    const emails = [person1, person2, person3, person4, person5].filter(Boolean);
+    const emails = [person1, person2, person3, person4, person5].filter(
+      Boolean,
+    );
 
     try {
       const res = await fetch("/api/forms/teamData", {
@@ -56,7 +56,11 @@ export default function Home() {
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data.error || "Error al guardar miembros.");
+        toast.error(
+          data.notification?.message ||
+            data.error ||
+            "Error al guardar miembros.",
+        );
         return;
       }
 
@@ -65,7 +69,6 @@ export default function Home() {
       if (data.redirectUrl) {
         router.push(data.redirectUrl);
       }
-      
     } catch (error) {
       console.error("Error al guardar los miembros:", error);
       toast.error("Error en el servidor.");
@@ -135,7 +138,6 @@ export default function Home() {
 
         <Footer />
       </div>
-      <ToastContainer />
     </div>
   );
 }

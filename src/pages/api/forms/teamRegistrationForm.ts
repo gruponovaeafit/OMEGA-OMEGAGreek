@@ -4,7 +4,10 @@ import { getEmailFromCookies } from "../getEmailFromCookies";
 import emailChecker from "../emailCheker";
 import sql from "mssql";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   try {
     if (req.method !== "POST") {
       return res.status(405).json({ message: "Método no permitido" });
@@ -22,7 +25,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     emailChecker(req, res);
 
     // Verificar existencia del líder en Personal_data
-    const userCheck = await pool.request()
+    const userCheck = await pool
+      .request()
       .input("email", sql.VarChar, leader_email)
       .query("SELECT * FROM Personal_data WHERE institutional_email = @email");
 
@@ -36,7 +40,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Verificar si ya hace parte de un equipo
-    const teamExistCheck = await pool.request()
+    const teamExistCheck = await pool
+      .request()
       .input("leader_email", sql.VarChar, leader_email)
       .query("SELECT * FROM Teams_data WHERE leader_email = @leader_email");
 
@@ -50,7 +55,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Verificar si el nombre del equipo ya existe
-    const nameCheck = await pool.request()
+    const nameCheck = await pool
+      .request()
       .input("team_name", sql.VarChar, team_name)
       .query("SELECT * FROM Teams_data WHERE team_name = @team_name");
 
@@ -64,21 +70,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Obtener último ID e insertar nuevo equipo
-    const lastIdQuery = await pool.request()
+    const lastIdQuery = await pool
+      .request()
       .query("SELECT TOP 1 id FROM Teams_data ORDER BY id DESC");
 
-    const newTeamId = lastIdQuery.recordset.length > 0
-      ? lastIdQuery.recordset[0].id + 1
-      : 1;
+    const newTeamId =
+      lastIdQuery.recordset.length > 0 ? lastIdQuery.recordset[0].id + 1 : 1;
 
-    await pool.request()
+    await pool
+      .request()
       .input("id", sql.Int, newTeamId)
       .input("leader_email", sql.VarChar, leader_email)
       .input("team_name", sql.VarChar, team_name)
-      .query("INSERT INTO Teams_data (id, leader_email, team_name) VALUES (@id, @leader_email, @team_name)");
+      .query(
+        "INSERT INTO Teams_data (id, leader_email, team_name) VALUES (@id, @leader_email, @team_name)",
+      );
 
     // ➕ Insertar líder en Teams_members
-    await pool.request()
+    await pool
+      .request()
       .input("team_id", sql.Int, newTeamId)
       .input("leader_email", sql.VarChar, leader_email)
       .input("institutional_email", sql.VarChar, leader_email)
@@ -93,9 +103,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         type: "success",
         message: "Equipo registrado correctamente.",
       },
-      redirectUrl: "/registration/teams/view2"
+      redirectUrl: "/registration/teams/view2",
     });
-
   } catch (error) {
     console.error("❌ Error:", error);
     return res.status(500).json({

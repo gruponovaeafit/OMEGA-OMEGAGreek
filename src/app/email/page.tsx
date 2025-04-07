@@ -64,25 +64,23 @@ const Loading: React.FC = () => {
       const result = await response.json();
 
       if (!response.ok) {
-        toast.error(result.notification?.message || "Error en el servidor.", {
-          position: "top-center",
-        });
+        toast.error(result.notification?.message || "Error en el servidor.");
         return;
       }
 
-      toast.success(result.notification?.message || "Formulario enviado con éxito.", {
-        position: "top-center",
-        onClose: () => {
-          if (result.redirectUrl) {
-            router.push(result.redirectUrl);
-          }
+      toast.success(
+        result.notification?.message || "Formulario enviado con éxito.",
+        {
+          onClose: () => {
+            if (result.redirectUrl) {
+              router.push(result.redirectUrl);
+            }
+          },
         },
-      });
+      );
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
-      toast.error("Hubo un error. Intenta nuevamente.", {
-        position: "top-center",
-      });
+      toast.error("Hubo un error. Intenta nuevamente.");
     }
   };
 
@@ -98,10 +96,7 @@ const Loading: React.FC = () => {
           className="w-64 h-auto"
         />
 
-        <EmailInput
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
 
         <button type="submit">
           <img
@@ -111,8 +106,6 @@ const Loading: React.FC = () => {
           />
         </button>
       </form>
-
-      <ToastContainer />
     </div>
   );
 };

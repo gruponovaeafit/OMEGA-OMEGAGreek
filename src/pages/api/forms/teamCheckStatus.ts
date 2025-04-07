@@ -3,56 +3,55 @@ import { connectToDatabase } from "../db";
 import sql from "mssql";
 import { getEmailFromCookies } from "../getEmailFromCookies";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  try {
-    if (req.method !== "GET") {
-      return res.status(405).json({ message: "Método no permitido" });
-    }
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  if (req.method !== "GET") {
+    return res.status(405).json({ message: "Método no permitido" });
+  }
 
+  try {
     const email = getEmailFromCookies(req, res);
     if (!email) {
       return res.status(200).json({ redirectUrl: "/email" });
     }
 
     const pool = await connectToDatabase();
+    const request = pool.request().input("email", sql.VarChar, email);
 
-    // Primero, verificar si ya está registrado como miembro de otro equipo (cuando no es el líder)
-    const memberResult = await pool.request()
-      .input("email", sql.VarChar, email)
-      .query(`
-        SELECT TOP 1 T.team_name, T.leader_email
-        FROM TEAMS_MEMBERS M
-        INNER JOIN TEAMS_DATA T ON M.team_id = T.id
-        WHERE M.institutional_email = @email AND T.leader_email != @email
-      `);
+    // Comprobar si el usuario es miembro de otro equipo
+    const memberQuery = `
+      SELECT TOP 1 T.team_name, T.leader_email
+      FROM TEAMS_MEMBERS M
+      INNER JOIN TEAMS_DATA T ON M.team_id = T.id
+      WHERE M.institutional_email = @email AND T.leader_email != @email
+    `;
+    const { recordset: memberRecordset } = await request.query(memberQuery);
 
-    if (memberResult.recordset.length > 0) {
-      const { team_name, leader_email } = memberResult.recordset[0];
+    if (memberRecordset.length > 0) {
+      const { team_name, leader_email } = memberRecordset[0];
       return res.status(400).json({
         notification: {
           type: "error",
-          message: `Ya estás inscrito en el equipo "${team_name}", liderado por ${leader_email}`,
+          message: `Ya estás inscrito en el equipo "${team_name}", liderado por ${leader_email}.`,
         },
       });
     }
 
-    // Luego, verificar si el usuario ya es líder de un equipo
-    const leaderResult = await pool
-      .request()
-      .input("email", sql.VarChar, email)
-      .query("SELECT TOP 1 team_name FROM Teams_data WHERE leader_email = @email");
+    // Comprobar si el usuario ya es líder
+    const leaderQuery = `
+      SELECT TOP 1 team_name FROM Teams_data WHERE leader_email = @email
+    `;
+    const { recordset: leaderRecordset } = await request.query(leaderQuery);
 
-    const team = leaderResult.recordset[0];
-
-    if (team && team.team_name) {
+    if (leaderRecordset.length > 0) {
       return res.status(200).json({
         redirectUrl: "/registration/teams/view2",
       });
     }
 
-    // Si no está registrado en ningún equipo
-    return res.status(200).json({});
-
+    return res.status(200).json({}); // Puede continuar
   } catch (error) {
     console.error("❌ Error al verificar estado del equipo:", error);
     return res.status(500).json({ message: "Error interno del servidor" });

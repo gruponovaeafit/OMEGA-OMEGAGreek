@@ -14,8 +14,7 @@
   }
 }
 
-@layer utilities{
-
+@layer utilities {
   .background {
     position: relative;
     display: flex;
@@ -26,11 +25,10 @@
     overflow: hidden;
     z-index: 1;
     background-color: black; /* color base */
-    background-image: url('https://novaeafit.blob.core.windows.net/omega-2025/Fondo_loding.svg');
+    background-image: url("https://novaeafit.blob.core.windows.net/omega-2025/Fondo_loding.svg");
     background-size: cover;
     background-position: center;
   }
-  
 
   .background_home {
     position: relative;
@@ -68,7 +66,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; 
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
     background-color: black;
@@ -83,7 +81,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; 
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
     background-color: black;
@@ -93,7 +91,6 @@
     overflow-y: auto;
     z-index: 1;
   }
-
 }
 
 body {
