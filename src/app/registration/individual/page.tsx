@@ -162,12 +162,26 @@ export default function Home() {
         />
 
         <div className="w-full flex justify-center mb-4">
-          <Checkbox
-            name="data_treatment"
-            checked={aceptaTerminos}
-            onChange={setAceptaTerminos}
-            label="He leído y acepto los TyC"
-          />
+          <div className="max-w-xs w-full">
+            <Checkbox
+              name="data_treatment"
+              checked={aceptaTerminos}
+              onChange={setAceptaTerminos}
+              label={
+                <>
+                  He leído y acepto la{" "}
+                  <a
+                    href="https://www.eafit.edu.co/datospersonales"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline text-blue-300 hover:text-blue-100 transition"
+                  >
+                    Política de tratamiento de datos de EAFIT
+                  </a>
+                </>
+              }
+            />
+          </div>
         </div>
 
         <div className="flex items-center justify-center gap-4 mt-10 mb-8">

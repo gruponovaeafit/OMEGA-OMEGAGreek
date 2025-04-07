@@ -8,6 +8,8 @@ export default function emailChecker(
     "@eafit.edu.co",
     "@unal.edu.co",
     "@pascualbravo.edu.co",
+    "@itm.edu.co",
+    "@udea.edu.co",
   ];
 
   // Check if the email is valid

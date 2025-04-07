@@ -122,16 +122,22 @@ export default function Home() {
           name="semester"
           question="¿En qué semestre estás?"
           value={semestre}
-          onChange={setSemestre}
+          onChange={(val) => {
+            if (/^\d*$/.test(val)) setSemestre(val); // Solo números
+          }}
           placeholder="Número de semestre"
+          type="number"
         />
 
         <TextQuestion
           name="phone"
           question="Número celular"
           value={telefono}
-          onChange={setTelefono}
+          onChange={(val) => {
+            if (/^\d*$/.test(val)) setTelefono(val); // Solo números
+          }}
           placeholder="Número"
+          type="tel" // Puedes usar "tel" si quieres mantener el teclado numérico en móviles
         />
 
         <TextQuestion

@@ -113,12 +113,13 @@ export const TextQuestion: React.FC<
     name: string;
     onChange: (value: string) => void;
     placeholder?: string;
+    type?: string;
   }
 > = ({ question, value, name, onChange, placeholder = "", className = "" }) => {
   return (
     <Question question={question} className={className}>
       <input
-        type="text"
+        type="{type}"
         value={value ?? ""}
         name={name}
         onChange={(e) => onChange(e.target.value)}
@@ -228,7 +229,7 @@ export const Checkbox: React.FC<{
   checked: boolean;
   name: string;
   onChange: (checked: boolean) => void;
-  label: string;
+  label: React.ReactNode; // 👈 cambio aquí
 }> = ({ checked, name, onChange, label }) => {
   return (
     <div className="w-full flex justify-center mt-4">

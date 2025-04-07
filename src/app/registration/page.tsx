@@ -96,14 +96,14 @@ export default function Home() {
         <img
           src="https://novaeafit.blob.core.windows.net/omega-2025/button_registration_individual.svg"
           alt="Registro individual"
-          className="w-72 h-auto"
+          className="w-72 h-auto cursor-pointer transition-transform duration-200 hover:scale-105 hover:brightness-110"
           onClick={handleClickIndividual}
         />
 
         <img
           src="https://novaeafit.blob.core.windows.net/omega-2025/button_registration_team.svg"
           alt="Registro grupal"
-          className="w-72 h-auto mt-6"
+          className="w-72 h-auto mt-6 cursor-pointer transition-transform duration-200 hover:scale-105 hover:brightness-110"
           onClick={handleClickGroup}
         />
 
