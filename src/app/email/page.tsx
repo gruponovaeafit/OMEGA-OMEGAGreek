@@ -1,26 +1,66 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import EmailInput from "@/app/components/emails/text_field";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import "react-toastify/dist/ReactToastify.css";
+
+// Añadir propiedad a Window para evitar errores TS
+declare global {
+  interface Window {
+    grecaptcha: any;
+  }
+}
 
 const Loading: React.FC = () => {
   const [email, setEmail] = useState("");
+  const [recaptchaReady, setRecaptchaReady] = useState(false);
   const router = useRouter();
+
+  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+
+  // Cargar reCAPTCHA Enterprise
+  useEffect(() => {
+    const scriptId = "recaptcha-enterprise";
+    if (document.getElementById(scriptId)) return;
+
+    const script = document.createElement("script");
+    script.id = scriptId;
+    script.src = `https://www.google.com/recaptcha/enterprise.js?render=${siteKey}`;
+    script.async = true;
+    script.onload = () => setRecaptchaReady(true);
+    document.body.appendChild(script);
+  }, [siteKey]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formElement = e.currentTarget;
-    const formData = new FormData(formElement);
+    if (!recaptchaReady || !window.grecaptcha) {
+      toast.error("reCAPTCHA aún no está listo. Intenta de nuevo.");
+      return;
+    }
 
     try {
-      const response = await fetch("api/forms/userEmailForm", {
+      const token = await window.grecaptcha.enterprise.execute(siteKey, {
+        action: "LOGIN",
+      });
+
+      if (!token) {
+        toast.error("No se pudo obtener el token de reCAPTCHA.");
+        return;
+      }
+
+      console.log("🔐 Token generado:", token); // Puedes quitar esta línea en producción
+
+      const response = await fetch("/api/forms/userEmailForm", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(Object.fromEntries(formData.entries())),
+        body: JSON.stringify({
+          institutional_email: email,
+          recaptchaToken: token,
+        }),
       });
 
       const result = await response.json();
@@ -28,22 +68,12 @@ const Loading: React.FC = () => {
       if (!response.ok) {
         toast.error(result.notification?.message || "Error en el servidor.", {
           position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
         });
         return;
       }
 
       toast.success(result.notification?.message || "Formulario enviado con éxito.", {
         position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
         onClose: () => {
           if (result.redirectUrl) {
             router.push(result.redirectUrl);
@@ -52,13 +82,8 @@ const Loading: React.FC = () => {
       });
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
-      toast.error("Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.", {
+      toast.error("Hubo un error. Intenta nuevamente.", {
         position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
       });
     }
   };
