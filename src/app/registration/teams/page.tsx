@@ -72,6 +72,13 @@ export default function Home() {
           className="w-72 h-auto"
         />
 
+        <img
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/text_info_team.svg"
+          alt="Botón siguiente"
+          className="w-68 h-auto cursor-pointer"
+          onClick={handleSubmit}
+        />
+
         <TextQuestion
           name="teamname"
           question="Nombre del equipo"
