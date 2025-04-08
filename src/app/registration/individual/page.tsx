@@ -29,11 +29,9 @@ export default function Home() {
       try {
         const res = await fetch("/api/cookiesChecker", { method: "GET" });
         if (res.status !== 200) {
-          console.warn("⛔ Cookie inválida o expirada. Redireccionando...");
           router.push("/");
         }
       } catch (error) {
-        console.error("Error verificando cookie:", error);
         router.push("/");
       }
     };

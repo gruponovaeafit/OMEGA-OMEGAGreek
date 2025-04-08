@@ -131,8 +131,8 @@ export default function Home() {
         />
 
         <img
-          src="https://novaeafit.blob.core.windows.net/omega-2025/pacho_dioniso.svg"
-          alt="Pacho dioniso"
+          src="https://novaeafit.blob.core.windows.net/omega-2025/pacho_artemisa.svg"
+          alt="Pacho artemisa"
           className="w-48 h-auto"
         />
 
