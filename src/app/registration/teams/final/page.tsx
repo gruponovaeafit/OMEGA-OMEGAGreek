@@ -10,13 +10,13 @@ export default function Home() {
         <Header />
 
         <img
-          src="https://novaeafit.blob.core.windows.net/omega-2025/text_enviado_exitoso.png"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/text_enviado_exitoso.png"
           alt="Formulario de Registro"
           className="w-52 h-auto"
         />
 
         <img
-          src="https://novaeafit.blob.core.windows.net/omega-2025/pacho_apolo.svg"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/pacho_apolo.svg"
           alt="Pacho Apolo"
           className="w-54 h-auto"
         />

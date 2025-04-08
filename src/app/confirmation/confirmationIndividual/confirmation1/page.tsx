@@ -52,7 +52,7 @@ export default function ParentComponent() {
         <CheckboxButtonIndividual onChange={handleCheckboxChange} />
         <SubmitButtonIndividual onClick={handleSubmit} />
         <img
-          src="https://novaeafit.blob.core.windows.net/omega-2025/POWERED_BY_NOVA.svg"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/POWERED_BY_NOVA.svg"
           alt=""
           className="absolute bottom-4"
         />

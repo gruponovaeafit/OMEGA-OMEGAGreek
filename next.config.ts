@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "novaeafit.blob.core.windows.net",
+        hostname: "novaeafit2.blob.core.windows.net",
         port: "",
         pathname: "/omega-2025/**",
       },

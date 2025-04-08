@@ -112,7 +112,7 @@ export default function Home() {
         <Header />
 
         <img
-          src="https://novaeafit.blob.core.windows.net/omega-2025/text_registro_individual.svg"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/text_registro_individual.svg"
           alt="Formulario de Registro"
           className="w-72 h-auto mb-4"
         />
@@ -184,13 +184,13 @@ export default function Home() {
 
         <div className="flex items-center justify-center gap-4 mt-10 mb-8">
           <img
-            src="https://novaeafit.blob.core.windows.net/omega-2025/pacho_zeus.svg"
+            src="https://novaeafit2.blob.core.windows.net/omega-2025/pacho_zeus.svg"
             alt="Pacho Zeus"
             className="w-44 h-auto"
           />
           <button type="submit">
             <img
-              src="https://novaeafit.blob.core.windows.net/omega-2025/button_siguiente.svg"
+              src="https://novaeafit2.blob.core.windows.net/omega-2025/button_siguiente.svg"
               alt="Botón siguiente"
               className="w-32 h-auto cursor-pointer"
             />
