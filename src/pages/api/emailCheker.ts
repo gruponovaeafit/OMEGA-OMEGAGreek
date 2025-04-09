@@ -11,7 +11,8 @@ export default function emailChecker(
     "@itm.edu.co",
     "@udea.edu.co",
     "@upb.edu.co",
-    "@salazaryherrera.edu.co"
+    "@iush.edu.co",
+    "@comunidad.iush.edu.co"
   ];
 
   // Check if the email is valid
