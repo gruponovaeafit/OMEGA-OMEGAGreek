@@ -9,6 +9,7 @@ export default function emailChecker(
     "@unal.edu.co",
     "@pascualbravo.edu.co",
     "@itm.edu.co",
+    "@correo.itm.edu.co",
     "@udea.edu.co",
     "@upb.edu.co",
     "@iush.edu.co",
