@@ -100,7 +100,7 @@ export default async function handler(
         expiresIn: "20m",
       },
     );
-
+    // Generate Cookies and store JWT in it
     res.setHeader(
       "Set-Cookie",
       serialize("jwtToken", jwtToken, {
