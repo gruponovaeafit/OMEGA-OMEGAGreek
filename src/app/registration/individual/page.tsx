@@ -120,6 +120,7 @@ export default function Home() {
         <TextQuestion
           name="name"
           question="Nombre"
+          questionLabelId="name"
           value={nombre}
           onChange={setNombre}
           placeholder="Nombre"
@@ -128,6 +129,7 @@ export default function Home() {
         <TextQuestion
           name="surname"
           question="Apellido"
+          questionLabelId="surname"
           value={apellido}
           onChange={setApellido}
           placeholder="Apellido"
@@ -148,6 +150,7 @@ export default function Home() {
         <TextQuestion
           name="id_number"
           question="Número de documento"
+          questionLabelId="idNumber"
           value={numeroDocumento}
           onChange={setNumeroDocumento}
           placeholder="ID"
@@ -155,6 +158,7 @@ export default function Home() {
 
         <DateNativeQuestion
           question="Fecha de nacimiento"
+          questionLabelId="dateOfBirth"
           value={fechaNacimiento}
           onChange={setFechaNacimiento}
         />

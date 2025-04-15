@@ -3,11 +3,13 @@ import React, { useState, useRef, useEffect } from "react";
 // Props base para cualquier pregunta
 interface QuestionProps {
   question: string;
+  questionLabelId?: string;
   className?: string;
 }
 
 interface DateNativeQuestionProps {
   question: string;
+  questionLabelId: string;
   value: string;
   onChange: (value: string) => void;
   className?: string;
@@ -16,12 +18,12 @@ interface DateNativeQuestionProps {
 // Componente base para preguntas
 export const Question: React.FC<
   QuestionProps & { children: React.ReactNode }
-> = ({ question, children, className = "" }) => {
+> = ({ question, questionLabelId, children, className = "" }) => {
   return (
     <div
       className={`mb-6 flex flex-col gap-1 w-full max-w-xs items-center ${className}`}
     >
-      <h3 className="text-white font-bold text-base text-center">{question}</h3>
+      <label htmlFor={questionLabelId} className="text-white font-bold text-base text-center">{question}</label>
       <div className="w-full">{children}</div>
     </div>
   );
@@ -36,7 +38,7 @@ export const YesNoQuestion: React.FC<
   }
 > = ({ question, value, name, onChange, className = "" }) => {
   return (
-    <Question question={question} className={className}>
+    <Question question={question} questionLabelId="" className={className}>
       <div className="flex justify-center space-x-6">
         <button
           type="button"
@@ -115,11 +117,12 @@ export const TextQuestion: React.FC<
     placeholder?: string;
     type?: string;
   }
-> = ({ question, value, name, onChange, placeholder = "", className = "" }) => {
+> = ({ question, questionLabelId, value, name, onChange, placeholder = "", className = "" }) => {
   return (
-    <Question question={question} className={className}>
+    <Question question={question} questionLabelId={questionLabelId} className={className}>
       <input
         type="{type}"
+        id={questionLabelId}
         value={value ?? ""}
         name={name}
         onChange={(e) => onChange(e.target.value)}
@@ -137,15 +140,17 @@ export const TextQuestion: React.FC<
 // Campo de fecha
 export const DateNativeQuestion: React.FC<DateNativeQuestionProps> = ({
   question,
+  questionLabelId,
   value,
   onChange,
   className = "",
 }) => {
   return (
-    <Question question={question} className={className}>
+    <Question question={question} questionLabelId={questionLabelId} className={className}>
       <div className="relative w-full">
         <input
           type="date"
+          id={questionLabelId}
           value={value}
           name="birth_date"
           onChange={(e) => onChange(e.target.value)}

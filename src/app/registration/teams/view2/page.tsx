@@ -89,6 +89,7 @@ export default function Home() {
         <TextQuestion
           name="person1"
           question="Correo participante 1"
+          questionLabelId="person1"
           value={person1}
           onChange={setPerson1}
           placeholder="participante1@institucion.edu.co"
@@ -97,6 +98,7 @@ export default function Home() {
         <TextQuestion
           name="person2"
           question="Correo participante 2"
+          questionLabelId="person2"
           value={person2}
           onChange={setPerson2}
           placeholder="participante2@institucion.edu.co"
@@ -104,6 +106,7 @@ export default function Home() {
         <TextQuestion
           name="person3"
           question="Correo participante 3"
+          questionLabelId="person3"
           value={person3}
           onChange={setPerson3}
           placeholder="participante3@institucion.edu.co"
@@ -111,6 +114,7 @@ export default function Home() {
         <TextQuestion
           name="person4"
           question="Correo participante 4"
+          questionLabelId="person4"
           value={person4}
           onChange={setPerson4}
           placeholder="participante4@institucion.edu.co"
@@ -118,6 +122,7 @@ export default function Home() {
         <TextQuestion
           name="person5"
           question="Correo participante 5"
+          questionLabelId="person5"
           value={person5}
           onChange={setPerson5}
           placeholder="participante5@institucion.edu.co"
