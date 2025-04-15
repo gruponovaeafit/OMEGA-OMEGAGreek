@@ -195,7 +195,6 @@ export default function Home() {
           />
           <Button type="submit" label="Siguiente" />
         </div>
-
         <Footer />
       </form>
     </div>
