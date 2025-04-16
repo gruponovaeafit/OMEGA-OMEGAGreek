@@ -36,48 +36,6 @@ export default function View3() {
     return () => clearInterval(interval);
   }, [router]);
 
-  const checkUserStatus = async () => {
-    try {
-      const res = await fetch("/api/forms/userCheckStatusConfirmation", {
-        method: "GET",
-      });
-      const result = await res.json();
-
-      if (res.ok && result.redirectUrl) {
-        router.push(result.redirectUrl);
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error("Error al verificar estado del usuario:", error);
-      return true;
-    }
-  };
-
-  const checkTeamStatus = async () => {
-    try {
-      const res = await fetch("/api/forms/teamCheckStatus", { method: "GET" });
-      const result = await res.json(); // ✅ siempre lee el body
-
-      if (res.status === 400 && result.notification?.message) {
-        toast.error(result.notification.message); // ✅ show toast
-        return false;
-      }
-
-      if (res.ok && result.redirectUrl) {
-        router.push(result.redirectUrl);
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error("Error al verificar estado del equipo:", error);
-      toast.error("Error inesperado al verificar estado del equipo.");
-      return false;
-    }
-  };
-
   const [formData, setFormData] = useState({
     eps: "",
     emergency_contact_name: "",
@@ -88,7 +46,30 @@ export default function View3() {
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+  
+    try {
+      const response = await fetch("/api/forms/userMedicalInfo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+  
+      const result = await response.json();
+  
+      if (!response.ok) {
+        toast.error(result.notification?.message || "Error al guardar.");
+        return;
+      }
+  
+      toast.success(result.notification?.message || "Guardado exitosamente.", {
+        onClose: () => router.push(result.redirectUrl || "/confirmation/individual/view4"),
+      });
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error);
+      toast.error("Error interno al guardar la información.");
+    }
   };
+  
 
   const handleChange = (name: string, value: string) => {
     setFormData((prev) => ({
@@ -112,20 +93,15 @@ export default function View3() {
           />
         </div>
 
-        <div className="w-full max-w-[320px] mb-6">
-          <Select
-            placeholder="Selecciona tu EPS"
-            label="EPS"
-            name="eps"
-            value={formData.eps}
-            onChange={(val) => handleChange("eps", val)}
-            options={[
-              "Administrador",
-              "Diseñador",
-              "Mercadeo",
-              "Desarrollador",
-            ]}
-          />
+        <div className="w-full max-w-[320px]">
+        <TextQuestion
+          question="EPS"
+          questionLabelId="eps"
+          name="eps"
+          value={formData.eps}
+          onChange={(val) => handleChange("eps", val)}
+          placeholder="Escribe tu EPS"
+        />
         </div>
 
         <TextQuestion
@@ -140,10 +116,16 @@ export default function View3() {
         <TextQuestion
           question="Número celular del contacto de emergencia"
           questionLabelId="emergency_contact_phone"
+          type="number"
           name="emergency_contact_phone"
           value={formData.emergency_contact_phone}
-          onChange={(val) => handleChange("emergency_contact_phone", val)}
+          onChange={(val) => {
+            if (/^\d*$/.test(val)) {
+              handleChange("emergency_contact_phone", val);
+            }
+          }}
           placeholder="Escribe el número de tu contacto"
+
         />
 
         <TextQuestion
@@ -166,7 +148,7 @@ export default function View3() {
 
         <div className="flex flex-wrap justify-between items-center gap-4 w-full max-w-[320px]">
           <img src="/Afrodita.svg" alt="Afrodita" className="w-40 h-42" />
-          <Button label="Siguiente" />
+          <Button label="Siguiente" type="submit" />
         </div>
 
         <Footer />

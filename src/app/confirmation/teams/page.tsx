@@ -90,12 +90,13 @@ export default function Confirmation2() {
           onChange={setTeamName}
           placeholder="Ingrese nombre de equipo"
         />
-        <div className="flex justify-center items-center">
-          <img src="/Dionisio.svg" alt="Dionisio" className="w-50 h-50" />
+        <div className="flex justify-center items-center max-w-xs ">
+          <img src="/Dionisio.svg" alt="Dionisio" className="w-40 h-40" />
           <button type="submit">
             <img src="/Siguiente.svg" alt="Siguiente" />
           </button>
         </div>
+
         <Footer />
       </form>
       <ToastContainer />

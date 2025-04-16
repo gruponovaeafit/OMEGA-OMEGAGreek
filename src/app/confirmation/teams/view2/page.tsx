@@ -118,8 +118,8 @@ export default function Home() {
             className="w-72 h-auto"
           />
 
-          <div className="border-y">
-            <div className="w-80 mb-6">
+          <div className="border-b">
+            <div className="w-80 mb-4 mt-4">
               <Select
                 placeholder="Rol del lider"
                 label="Rol Lider"
@@ -138,15 +138,15 @@ export default function Home() {
 
           <div className="border-b">
             <TextQuestion //email 2
-              question="Correo electronico del participante 2"
+              question="Participante 2"
               value={email2}
               onChange={setEmail2}
               placeholder="Participante2@institucion.edu.co"
               name="member2_email"
             />
-            <div className="w-80 mb-6">
+            <div className="w-80 mb-4 mt-4">
               <Select
-                placeholder="Rol del participante 2"
+                placeholder="Participante 2"
                 label="Rol Participante 2"
                 value={rol2}
                 onChange={setRol2}
@@ -163,7 +163,7 @@ export default function Home() {
 
           <div className="border-b">
             <TextQuestion //email 3
-              question="Correo electronico del participante 3"
+              question="Participante 3"
               value={email3}
               onChange={setEmail3}
               placeholder="participante3@institucion.edu.co"
@@ -188,7 +188,7 @@ export default function Home() {
 
           <div className="border-b">
             <TextQuestion //email 4
-              question="Correo electronico del participante 4"
+              question="Participante 4"
               value={email4}
               onChange={setEmail4}
               placeholder="participante4@institucion.edu.co"
@@ -213,7 +213,7 @@ export default function Home() {
 
           <div className="border-b">
             <TextQuestion //email 5
-              question="Correo electronico del participante 5"
+              question="Participante 5"
               value={email5}
               onChange={setEmail5}
               placeholder="participante5@institucion.edu.co"
@@ -236,9 +236,9 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="border-b">
+          <div className="">
             <TextQuestion //email 6
-              question="Correo electronico del participante 6"
+              question="Participante 6"
               value={email6}
               onChange={setEmail6}
               placeholder="participante6@institucion.edu.co"
@@ -261,11 +261,11 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center justify-center gap-4 mb-8">
+          <div className="flex flex-col items-center justify-center">
             <img //bottom pacho artemisa and send.
               src="/personajes_teams.svg"
               alt="Personajes Teams"
-              className="w-70 h-auto"
+              className="w-70 h-auto mb-4"
             />
             <Button label="Enviar" type="submit" variant="secondary" />
           </div>

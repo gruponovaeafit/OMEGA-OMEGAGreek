@@ -25,7 +25,7 @@ export const Question: React.FC<
     >
       <label
         htmlFor={questionLabelId}
-        className="text-white font-bold text-2xl text-center"
+        className="text-white font-bold text-l text-center"
       >
         {question}
       </label>
@@ -146,7 +146,7 @@ export const TextQuestion: React.FC<
         name={name}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full h-12 px-4 font-light text-white rounded-lg placeholder-white placeholder-opacity-90 border border-white focus:outline-none focus:ring-2 focus:ring-purple-400 text-base"
+        className="w-full h-12 px-4 font-light text-white rounded-lg placeholder-white placeholder-opacity-70 border border-white focus:outline-none focus:ring-2 focus:ring-purple-400 text-base"
         style={{
           backgroundImage:
             "linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)",
@@ -216,7 +216,7 @@ export const Select: React.FC<{
   return (
     <div className="w-full">
       {label && (
-        <label className="text-white font-bold text-2xl mb-2 text-center block">
+        <label className="text-white font-bold text-l mb-2 text-center block">
           {label}
         </label>
       )}
@@ -232,7 +232,7 @@ export const Select: React.FC<{
           onClick={() => setOpen(!open)}
         >
           <input
-            className="w-full truncate bg-transparent border-none outline-none cursor-pointer text-base placeholder-white placeholder-opacity-90"
+            className="w-full truncate bg-transparent border-none outline-none cursor-pointer text-base placeholder-white placeholder-opacity-70"
             value={value}
             name={name}
             type="text"

@@ -21,26 +21,33 @@ export default async function handler(
     const { recordset } = await pool
       .request()
       .input("email", sql.VarChar, email)
-      .query("SELECT * FROM Personal_data WHERE institutional_email = @email");
+      .query("SELECT * FROM APPLICANT_DETAILS WHERE institutional_email = @email");
 
     const user = recordset[0];
     if (!user)
-      return res.status(404).json({ message: "Usuario no encontrado" });
+      return res.status(200).json({ redirectUrl: "/confirmation/individual" });
 
     const isFilled = (fields: any[]) => fields.every(isNotNullOrUndefined);
 
+    // Vista 1: disponibilidad
     const f1 = isFilled([user.date_availability]);
+
+    // Vista 2: datos académicos
     const f2 = isFilled([user.university, user.study_area, user.career]);
+
+    // Vista 3: información médica y contacto
     const f3 = isFilled([
       user.eps,
       user.emergency_contact_name,
       user.emergency_contact_phone,
-      user.emergency_contact_relationship,
+      user.relationship,
       user.medical_info,
     ]);
+
+    // Vista 4: preferencias alimentarias
     const f4 = isFilled([user.food_preferences]);
 
-    let redirectUrl = null;
+    let redirectUrl = "";
 
     if (!f1) {
       redirectUrl = "/confirmation/individual";
@@ -55,6 +62,7 @@ export default async function handler(
     }
 
     return res.status(200).json({ redirectUrl });
+
   } catch (error) {
     console.error("❌ Error al verificar estado del usuario:", error);
     return res.status(500).json({

@@ -51,10 +51,10 @@ export default function Confirmation() {
   const checkTeamStatus = async () => {
     try {
       const res = await fetch("/api/forms/teamCheckStatus", { method: "GET" });
-      const result = await res.json(); // ✅ siempre lee el body
+      const result = await res.json(); 
 
       if (res.status === 400 && result.notification?.message) {
-        toast.error(result.notification.message); // ✅ show toast
+        toast.error(result.notification.message); 
         return false;
       }
 
@@ -94,14 +94,14 @@ export default function Confirmation() {
         className="w-72 h-auto"
       />
       <img
-        src="/Inscripcion_Individual_Boton.svg"
+        src="/Confirmacion_Individual.svg"
         alt="Registro individual"
         className="w-72 h-auto cursor-pointer transition-transform duration-200 hover:scale-105 hover:brightness-110"
         onClick={handleClickIndividual}
       />
 
       <img
-        src="/Inscripcion_Grupal_Boton.svg"
+        src="/Confirmacion_Grupal.svg"
         alt="Registro grupal"
         className="w-72 h-auto mt-6 cursor-pointer transition-transform duration-200 hover:scale-105 hover:brightness-110"
         onClick={handleClickGroup}

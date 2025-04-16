@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Button } from "@/app/components/UI/Button";
@@ -8,22 +8,27 @@ import { Select } from "@/app/components/forms/registration/individual/questions
 import { CheckboxButtonIndividual } from "@/app/components/forms/confirmation/individual/buttons";
 import FormHeader from "@/app/components/UI/FormHeader";
 import { useRouter } from "next/navigation";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import React, { useEffect } from "react";
-import { map } from "mssql";
+
+interface StudyArea {
+  id: number;
+  area_name: string;
+}
+
+interface Career {
+  id: number;
+  career_name: string;
+}
 
 export default function View2() {
   const router = useRouter();
 
-  // Verificación continua del JWT
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
         const res = await fetch("/api/cookiesChecker", { method: "GET" });
-        if (res.status !== 200) {
-          router.push("/");
-        }
+        if (res.status !== 200) router.push("/");
       } catch (error) {
         console.error("Error verificando autenticación:", error);
         router.push("/");
@@ -35,60 +40,81 @@ export default function View2() {
     return () => clearInterval(interval);
   }, [router]);
 
-  const checkUserStatus = async () => {
-    try {
-      const res = await fetch("/api/forms/userCheckStatusConfirmation", {
-        method: "GET",
-      });
-      const result = await res.json();
-
-      if (res.ok && result.redirectUrl) {
-        router.push(result.redirectUrl);
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error("Error al verificar estado del usuario:", error);
-      return true;
-    }
-  };
-
   const [formData, setFormData] = useState({
     university: "",
     study_area: "",
     career: "",
   });
 
+  const [studyAreas, setStudyAreas] = useState<StudyArea[]>([]);
+  const [careers, setCareers] = useState<Career[]>([]);
+  const [studyAreaId, setStudyAreaId] = useState<number | null>(null);
+  const [careerId, setCareerId] = useState<number | null>(null);
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleFormSubmit = async (
-    name: string,
-    value: string,
-    name1: string,
-    value1: string,
-    name2: string,
-    value2: string,
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-      [name1]: value1,
-      [name2]: value2,
-    }));
-    console.log("Form data:", formData, "Checkbox checked:", isChecked);
+  const handleChangeUniversity = async (university: string) => {
+    setFormData((prev) => ({ ...prev, university, study_area: "", career: "" }));
+    setCareers([]);
+    setStudyAreaId(null);
+    setCareerId(null);
 
     try {
-      const response = await fetch("/api/forms/userAcademicForm", {
+      const response = await fetch("/api/forms/getAreas", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ university }),
+      });
+
+      const result = await response.json();
+      if (response.ok && Array.isArray(result.areas)) setStudyAreas(result.areas);
+      else toast.error(result.notification?.message);
+    } catch (error) {
+      console.error("Error al obtener áreas:", error);
+    }
+  };
+
+  const handleChangeStudyArea = async (areaName: string) => {
+    const selected = studyAreas.find((a) => a.area_name === areaName);
+    if (!selected) return;
+
+    setFormData((prev) => ({ ...prev, study_area: areaName, career: "" }));
+    setStudyAreaId(selected.id);
+    setCareerId(null);
+
+    try {
+      const response = await fetch("/api/forms/getCareers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ study_area_id: selected.id }),
+      });
+
+      const result = await response.json();
+      if (response.ok && Array.isArray(result.careers)) setCareers(result.careers);
+      else toast.error(result.notification?.message);
+    } catch (error) {
+      console.error("Error al obtener carreras:", error);
+    }
+  };
+
+  const handleChangeCareer = (careerName: string) => {
+    const selected = careers.find((c) => c.career_name === careerName);
+    if (!selected) return;
+    setFormData((prev) => ({ ...prev, career: careerName }));
+    setCareerId(selected.id);
+  };
+
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("/api/forms/saveApplication", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          [name]: value,
-          [name1]: value1,
-          [name2]: value2,
-          data_treatment: isChecked,
+          university: formData.university,
+          study_area_id: studyAreaId,
+          career_id: careerId,
+          data_treatment: isChecked ? 1 : 0,
         }),
       });
 
@@ -99,157 +125,19 @@ export default function View2() {
         return;
       }
 
-      console.log("Respuesta de la API:", result);
-      console.log();
-      toast.success(
-        result.notification?.message || "Formulario enviado con éxito.",
-        {
-          onClose: () =>
-            router.push(result.redirectUrl || "/confirmation/individual/view3"),
-        },
-      );
-    } catch (error) {
-      console.error("Error al enviar el formulario:", error);
-      toast.error(
-        "Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.",
-      );
-    }
-  };
-
-  // Enviamos el correo y obtenemos la lista de areas
-  const handleChange = async (name: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    try {
-      const response = await fetch("/api/forms/userAcademicForm", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ [name]: value }),
+      toast.success(result.notification?.message, {
+        onClose: () => router.push(result.redirectUrl || "/confirmation/individual/view3"),
       });
-
-      if (!response.ok) {
-        console.error("Error al enviar el valor:", await response.text());
-        return;
-      }
-      console.log("Valor enviado:", name, value);
-      const result = await response.json();
-      console.log("Respuesta de la API:", result.study_area);
-      return result.study_area;
     } catch (error) {
-      console.error("Error en la solicitud:", error);
+      console.error("Error al guardar datos:", error);
+      toast.error("Error interno al guardar los datos.");
     }
   };
-
-  // Enviamos el correo y la area y obtenemos la lista de carreras
-  const handleChange2 = async (
-    name: string,
-    value: string,
-    name1: string,
-    value1: string,
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-      [name1]: value1,
-    }));
-
-    try {
-      const response = await fetch("/api/forms/userAcademicForm", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ [name]: value, [name1]: value1 }),
-      });
-
-      if (!response.ok) {
-        console.error("Error al enviar el valor:", await response.text());
-        return;
-      }
-      console.log("Valor enviado:", name, value, name1, value1);
-      const result = await response.json();
-      console.log("Respuesta de la API:", result.careers);
-      return result.careers;
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-    }
-  };
-
-  // Enviamos el correo, la area y la carrera y obtenemos el id de la carrera y el id del area
-  const handleChange3 = async (
-    name: string,
-    value: string,
-    name1: string,
-    value1: string,
-    name2: string,
-    value2: string,
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-      [name1]: value1,
-      [name2]: value2,
-    }));
-
-    try {
-      const response = await fetch("/api/forms/userAcademicForm", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          [name]: value,
-          [name1]: value1,
-          [name2]: value2,
-        }),
-      });
-
-      if (!response.ok) {
-        console.error("Error al enviar el valor:", await response.text());
-        return;
-      }
-      console.log("Valor enviado:", name, value, name1, value1, name2, value2);
-      const result = await response.json();
-      console.log("Respuesta de la API:", result.careers_id);
-      return result.careers_id, result.study_area_id;
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-    }
-  };
-
-  const handleCheckboxChange = (checked: boolean) => {
-    setIsChecked(checked);
-  };
-
-  const [studyAreaResult, setStudyAreaResult] = useState<string[] | null>(null);
-  const [careerResult, setcareerResult] = useState<string[] | null>(null);
-  const [careerIdResult, setcareerIdResult] = useState<string[] | null>(null);
-  const [studyAreaIdResult, setstudyAreaIdResult] = useState<string | null>(
-    null,
-  );
-  const university = formData.university;
-  const studyArea = formData.study_area;
 
   return (
-    //submit con los datos previamente guardados en el estado correspondiente
     <div className="h-screen flex flex-col">
       <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          await handleFormSubmit(
-            "university",
-            university,
-            "study_area",
-            studyAreaIdResult ? studyAreaIdResult[0] : "",
-            "career",
-            careerIdResult ? careerIdResult[0] : "",
-          );
-        }}
+        onSubmit={handleFormSubmit}
         className="background_individual_view2 flex-1 flex flex-col items-center gap-2"
       >
         <Header />
@@ -264,12 +152,7 @@ export default function View2() {
             label="Universidad"
             name="university"
             value={formData.university}
-            onChange={async (val) => {
-              const result = await handleChange("university", val); //utilizamos el handleChange para obtener las areas
-              if (result && Array.isArray(result)) {
-                setStudyAreaResult(result); // Guarda el array completo en el estado
-              }
-            }}
+            onChange={handleChangeUniversity}
             options={[
               "Universidad Nacional",
               "Universidad de Antioquia",
@@ -288,23 +171,8 @@ export default function View2() {
             label="Área de estudio"
             name="study_area"
             value={formData.study_area}
-            onChange={async (val) => {
-              const result = await handleChange2(
-                "university",
-                university,
-                "study_area",
-                val,
-              ); //utilizamos el handleChange2 para obtener las carreras
-              if (result && Array.isArray(result)) {
-                setcareerResult(result); // Guarda el array completo en el estado
-                console.log("Áreas de estudio disponibles:", result);
-              }
-            }}
-            options={
-              studyAreaResult
-                ? studyAreaResult.map((area) => area) //mapeamos las opciones
-                : []
-            }
+            onChange={handleChangeStudyArea}
+            options={studyAreas.map((a) => a.area_name)}
           />
         </div>
 
@@ -314,34 +182,18 @@ export default function View2() {
             label="Programa académico"
             name="career"
             value={formData.career}
-            onChange={async (val) => {
-              const result = await handleChange3(
-                "university",
-                university,
-                "study_area",
-                studyArea,
-                "career",
-                val,
-              ); //utilizamos el handleChange3 para obtener el id de la carrera y el id del area
-              if (result && Array.isArray(result)) {
-                setcareerIdResult(result[0]); // Guarda el array completo en el estado
-                setstudyAreaIdResult(result[1]); // Guarda el array completo en el estado
-              }
-            }}
-            options={
-              careerResult
-                ? careerResult.map((carrera) => carrera) //mapeamos las opciones
-                : []
-            }
+            onChange={handleChangeCareer}
+            options={careers.map((c) => c.career_name)}
           />
         </div>
 
-        <CheckboxButtonIndividual onChange={handleCheckboxChange} />
+        <CheckboxButtonIndividual onChange={(checked) => setIsChecked(checked)} />
 
         <div className="flex flex-wrap justify-center items-center gap-4 w-full max-w-[320px]">
           <img src="/Hefesto.svg" alt="Hefesto" className="w-42 h-44" />
           <Button label="Siguiente" type="submit" />
         </div>
+
         <Footer />
       </form>
     </div>

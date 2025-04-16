@@ -1,25 +1,23 @@
 "use client";
 
 import { Footer } from "@/app/components/Footer";
-import { YesNoQuestion } from "@/app/components/forms/registration/individual/questions";
 import { Header } from "@/app/components/Header";
-import FormHeader from "@/app/components/UI/FormHeader";
-import FormStaticAlert from "@/app/components/UI/FormStaticAlert";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
 export default function View1() {
-  const [dateAvailability, setDateAvailability] = useState<boolean | null>(
-    null,
-  );
-
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  };
-
+    const router = useRouter();
+  
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        router.push("/confirmation");
+      }, 10000);
+      return () => clearTimeout(timer);
+    }, [router]);
+    
   return (
     <div className="h-screen flex flex-col">
       <form
-        onSubmit={handleFormSubmit}
         className="background_individual_view2 flex-1 flex flex-col items-center gap-2"
       >
         <Header />
@@ -32,7 +30,7 @@ export default function View1() {
 
         <img
           src="/Poseidon.svg"
-          alt="Confirmación de formulario enviado"
+          alt="Pacho poseidon"
           className="mt-5 w-max-70 h-auto"
         />
         <Footer />
