@@ -41,7 +41,7 @@ export default function ParentComponent() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="min-h-screen flex items-center justify-center flex-col bg-[url('https://novaeafit2.blob.core.windows.net/omega-2025/FONDO-APP-1.svg')] bg-cover bg-center bg-no-repeat">      
       <div className="text-center w-full max-w-2xl px-8">
         <TextConfirmation text="Correo Electronico" />
         <QuestionConfirmationText
