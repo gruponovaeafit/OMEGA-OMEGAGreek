@@ -4,11 +4,51 @@ import { Footer } from "@/app/components/Footer";
 import { TextButton } from "@/app/components/forms/confirmation/individual/text";
 import { TextQuestion } from "@/app/components/forms/registration/individual/questions";
 import { useState } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
-import router from "next/router";
+
 
 
 export default function Confirmation2() {
+
+    const router = useRouter();
+
+      // Verificación continua del JWT
+      useEffect(() => {
+        const checkAuthentication = async () => {
+          try {
+            const res = await fetch("/api/cookiesChecker", { method: "GET" });
+            if (res.status !== 200) {
+              router.push("/");
+            }
+          } catch (error) {
+            console.error("Error verificando autenticación:", error);
+            router.push("/");
+          }
+        };
+
+        checkAuthentication();
+        const interval = setInterval(checkAuthentication, 15000);
+        return () => clearInterval(interval);
+      }, [router]);
+
+      const checkUserStatus = async () => {
+        try {
+          const res = await fetch("/api/forms/userCheckStatus", { method: "GET" });
+          const result = await res.json();
+
+          if (res.ok && result.redirectUrl) {
+            router.push(result.redirectUrl);
+            return false;
+          }
+
+          return true;
+        } catch (error) {
+          console.error("Error al verificar estado del usuario:", error);
+          return true;
+        }
+      };
 
     const [teamName, setTeamName] = useState("");
 
@@ -17,7 +57,7 @@ export default function Confirmation2() {
         const formObject = {
           teamName: teamName,
         };
-    
+
         try {
           const response = await fetch("/api/forms/teamNameConfirmation", {
             method: "POST",
@@ -26,18 +66,18 @@ export default function Confirmation2() {
             },
             body: JSON.stringify(formObject),
           });
-    
+
           const result = await response.json();
-    
+
           if (result.teamName) {
             setTeamName(result.teamName || "");
           }
-    
+
           if (!response.ok) {
             toast.error(result.notification?.message || "Error en el servidor.");
             return;
           }
-    
+
           toast.success(
             result.notification?.message || "Formulario enviado con éxito.",
             {

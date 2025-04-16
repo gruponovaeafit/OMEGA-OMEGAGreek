@@ -83,7 +83,7 @@ export default async function handler(
         type: "success",
         message: "Correo electrónico guardado correctamente.",
         },
-        redirectUrl: "/userHasAvailability",
+        redirectUrl: "/confirmation"
     });
 } catch (error) {
     console.error("Error en la conexión a la base de datos:", error);
