@@ -3,16 +3,12 @@ import { connectToDatabase } from "../db";
 import { getEmailFromCookies } from "../getEmailFromCookies";
 import sql from "mssql";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Método no permitido" });
   }
 
   const {
-    leader_email,
     leader_rol,
     member2_rol,
     member2_email,
@@ -25,6 +21,8 @@ export default async function handler(
     member6_rol,
     member6_email,
   } = req.body;
+
+  const leader_email = getEmailFromCookies(req, res);
 
   const roleMap: Record<string, number> = {
     Administrador: 1,
@@ -66,26 +64,16 @@ export default async function handler(
     `);
 
     const noFieldsProvided =
-      !leader_email &&
       !leader_rol &&
-      !member2_email &&
-      !member2_rol &&
-      !member3_email &&
-      !member3_rol &&
-      !member4_email &&
-      !member4_rol &&
-      !member5_email &&
-      !member5_rol &&
-      !member6_email &&
-      !member6_rol;
+      !member2_email && !member2_rol &&
+      !member3_email && !member3_rol &&
+      !member4_email && !member4_rol &&
+      !member5_email && !member5_rol &&
+      !member6_email && !member6_rol;
 
     if (noFieldsProvided) {
-      const existingMemberEmail = teamData.recordset.map(
-        (row) => row.institutional_email,
-      );
-      const existingRoles = teamData.recordset.map(
-        (row) => inverseRoleMap[row.role] || "Seleccione Rol",
-      );
+      const existingMemberEmail = teamData.recordset.map((row) => row.institutional_email);
+      const existingRoles = teamData.recordset.map((row) => inverseRoleMap[row.role] || "Seleccione Rol");
 
       return res.status(200).json({
         notification: {
@@ -126,9 +114,7 @@ export default async function handler(
         }
         teamRoles.push(field.role);
 
-        const isValidDomain = emailDomains.some((domain) =>
-          field.email.endsWith(domain),
-        );
+        const isValidDomain = emailDomains.some((domain) => field.email.endsWith(domain));
 
         if (isValidDomain) {
           teamEmails.push(field.email);
@@ -136,8 +122,7 @@ export default async function handler(
           return res.status(400).json({
             notification: {
               type: "error",
-              message:
-                "El correo electronico de todos los integrantes debe ser de un dominio valido",
+              message: "El correo electronico de todos los integrantes debe ser de un dominio valido",
             },
           });
         }
@@ -216,9 +201,7 @@ export default async function handler(
       });
     }
 
-    const existingMemberEmail = teamData.recordset.map(
-      (row) => row.institutional_email,
-    );
+    const existingMemberEmail = teamData.recordset.map((row) => row.institutional_email);
 
     for (let i = 0; i < teamEmails.length; i++) {
       const email = teamEmails[i];

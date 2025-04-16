@@ -13,7 +13,6 @@ export default function Confirmation2() {
   const [teamName, setTeamName] = useState("");
   const [defaultTeamName, setDefaultTeamName] = useState("");
 
-  // Verificación continua del JWT
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
