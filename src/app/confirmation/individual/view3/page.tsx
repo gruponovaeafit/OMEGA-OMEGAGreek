@@ -8,7 +8,7 @@ import { Select } from "@/app/components/forms/registration/individual/questions
 import { CheckboxButtonIndividual } from "@/app/components/forms/confirmation/individual/buttons";
 import FormHeader from "@/app/components/UI/FormHeader";
 
-export default function Confirmation3() {
+export default function View3() {
   const [formData, setFormData] = useState({
     university: "",
     study_area: "",
@@ -41,12 +41,13 @@ export default function Confirmation3() {
       >
         <Header />
 
-        <div className="w-full max-w-[320px] mb-6 px-4">
+        <div className="w-full max-w-[320px] mb-6">
           <FormHeader title="Formulario de confirmación" />
         </div>
 
-        <div className="w-full max-w-[320px] mb-6 px-4">
+        <div className="w-full max-w-[320px] mb-6">
           <Select
+            placeholder="Selecciona tu universidad"
             label="Universidad"
             name="university"
             value={formData.university}
@@ -55,8 +56,9 @@ export default function Confirmation3() {
           />
         </div>
 
-        <div className="w-full max-w-[320px] mb-6 px-4">
+        <div className="w-full max-w-[320px] mb-6">
           <Select
+            placeholder="Selecciona tu área de estudio"
             label="Área de estudio"
             name="study_area"
             value={formData.study_area}
@@ -65,8 +67,9 @@ export default function Confirmation3() {
           />
         </div>
 
-        <div className="w-full max-w-[320px] mb-6 px-4">
+        <div className="w-full max-w-[320px] mb-6">
           <Select
+            placeholder="Selecciona tu programa académico"
             label="Programa académico"
             name="career"
             value={formData.career}
@@ -77,11 +80,11 @@ export default function Confirmation3() {
 
         <CheckboxButtonIndividual onChange={handleCheckboxChange} />
 
-        <div className="flex flex-wrap justify-center items-center gap-4 px-4">
+        <div className="flex flex-wrap justify-center items-center gap-4 w-full max-w-[320px]">
           <img
             src="/Hefesto.svg"
-            alt="Dionisio"
-            className="w-48 h-48"
+            alt="Hefesto"
+            className="w-42 h-44"
           />
           <Button label="Siguiente" />
         </div>
