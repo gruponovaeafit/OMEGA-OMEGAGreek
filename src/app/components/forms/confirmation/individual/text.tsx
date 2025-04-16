@@ -5,7 +5,7 @@ interface TextConfirmationProps {
 export const TextConfirmation: React.FC<TextConfirmationProps> = ({ text }) => {
   return (
     <div>
-      <h1 className="text-4xl font-bold">{text}</h1>
+      <h1 className="text-6xl font-bold">{text}</h1>
     </div>
   );
 };
@@ -13,7 +13,7 @@ export const TextConfirmation: React.FC<TextConfirmationProps> = ({ text }) => {
 export const TextButton: React.FC<TextConfirmationProps> = ({ text }) => {
   return (
     <div>
-      <h1>{text}</h1>
+      <h1 className="text-2xl font-bold">{text}</h1>
     </div>
   );
 };

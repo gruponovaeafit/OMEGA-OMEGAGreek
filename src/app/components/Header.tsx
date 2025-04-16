@@ -2,7 +2,7 @@ export const Header = () => {
   return (
     <header className="relative w-full flex justify-center items-center">
       <img
-        src="https://novaeafit.blob.core.windows.net/omega-2025/LOGO-OMEGA.svg"
+        src="https://novaeafit2.blob.core.windows.net/omega-2025/LOGO-OMEGA.svg"
         alt="Logo Omega"
         width={60}
         height={60}

@@ -30,7 +30,7 @@ export const NavigationButton: React.FC<NavigationButtonProps> = ({
       {text}
       <span className="ml-2">
         <Image
-          src="https://novaeafit.blob.core.windows.net/omega-2025/next-icon.svg"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/next-icon.svg"
           alt="Siguiente"
           width={20}
           height={20}

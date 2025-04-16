@@ -28,14 +28,24 @@ export default async function handler(
     });
   }
 
-  const birthDate = new globalThis.Date(birth_date);
-  const age = new Date().getFullYear() - birthDate.getFullYear();
-
-  if (isNaN(birthDate.getTime()) || age < 10) {
+  // ✅ Validar que se haya aceptado la política de tratamiento de datos
+  if (data_treatment !== true && data_treatment !== 1) {
     return res.status(400).json({
       notification: {
         type: "error",
-        message: "La edad ingresada no es válida",
+        message: "Debes aceptar la política de tratamiento de datos para continuar.",
+      },
+    });
+  }
+
+  const birthDate = new globalThis.Date(birth_date);
+  const age = new Date().getFullYear() - birthDate.getFullYear();
+
+  if (isNaN(birthDate.getTime()) || age < 15) {
+    return res.status(400).json({
+      notification: {
+        type: "error",
+        message: "La edad ingresada no es válida, debes ser mayor a 15 años",
       },
     });
   }
@@ -54,7 +64,7 @@ export default async function handler(
       .input("surname", VarChar(50), surname)
       .input("id_number", VarChar(50), id_number)
       .input("birth_date", SqlDate, birth_date)
-      .input("data_treatment", TinyInt, data_treatment)
+      .input("data_treatment", TinyInt, 1)
       .input("userEmail", VarChar(100), userEmail).query(`
         UPDATE Personal_data
         SET name = @name,

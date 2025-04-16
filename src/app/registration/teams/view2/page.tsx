@@ -81,7 +81,7 @@ export default function Home() {
         <Header />
 
         <img
-          src="https://novaeafit.blob.core.windows.net/omega-2025/text_registro_grupal.svg"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/text_registro_grupal.svg"
           alt="Formulario de Registro grupal"
           className="w-72 h-auto"
         />
@@ -89,6 +89,7 @@ export default function Home() {
         <TextQuestion
           name="person1"
           question="Correo participante 1"
+          questionLabelId="person1"
           value={person1}
           onChange={setPerson1}
           placeholder="participante1@institucion.edu.co"
@@ -97,6 +98,7 @@ export default function Home() {
         <TextQuestion
           name="person2"
           question="Correo participante 2"
+          questionLabelId="person2"
           value={person2}
           onChange={setPerson2}
           placeholder="participante2@institucion.edu.co"
@@ -104,6 +106,7 @@ export default function Home() {
         <TextQuestion
           name="person3"
           question="Correo participante 3"
+          questionLabelId="person3"
           value={person3}
           onChange={setPerson3}
           placeholder="participante3@institucion.edu.co"
@@ -111,6 +114,7 @@ export default function Home() {
         <TextQuestion
           name="person4"
           question="Correo participante 4"
+          questionLabelId="person4"
           value={person4}
           onChange={setPerson4}
           placeholder="participante4@institucion.edu.co"
@@ -118,21 +122,22 @@ export default function Home() {
         <TextQuestion
           name="person5"
           question="Correo participante 5"
+          questionLabelId="person5"
           value={person5}
           onChange={setPerson5}
           placeholder="participante5@institucion.edu.co"
         />
 
         <img
-          src="https://novaeafit.blob.core.windows.net/omega-2025/button_siguiente.svg"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/button_siguiente.svg"
           alt="Botón siguiente"
           className="w-32 h-auto cursor-pointer"
           onClick={handleSubmit}
         />
 
         <img
-          src="https://novaeafit.blob.core.windows.net/omega-2025/pacho_dioniso.svg"
-          alt="Pacho dioniso"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/pacho_artemisa.svg"
+          alt="Pacho artemisa"
           className="w-48 h-auto"
         />
 
