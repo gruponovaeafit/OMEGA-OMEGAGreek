@@ -1,1 +1,0 @@
-import initialFormConf from "../components/forms/initial_form_confirmation";

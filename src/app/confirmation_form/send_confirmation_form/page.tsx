@@ -1,1 +1,0 @@
-import sendConfirmationForm from "@/app/components/forms/send_confirmation_form";

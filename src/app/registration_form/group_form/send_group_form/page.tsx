@@ -1,1 +1,0 @@
-import sendGroupForm from "@/app/components/forms/send_group_form";
