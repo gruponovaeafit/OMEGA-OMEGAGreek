@@ -121,6 +121,7 @@ export default function Home() {
         <TextQuestion
           name="semester"
           question="¿En qué semestre estás?"
+          questionLabelId="semester"
           value={semestre}
           onChange={(val) => {
             if (/^\d*$/.test(val)) setSemestre(val); // Solo números
@@ -132,6 +133,7 @@ export default function Home() {
         <TextQuestion
           name="phone"
           question="Número celular"
+          questionLabelId="phone"
           value={telefono}
           onChange={(val) => {
             if (/^\d*$/.test(val)) setTelefono(val); // Solo números
@@ -143,6 +145,7 @@ export default function Home() {
         <TextQuestion
           name="how_did_hear"
           question="¿Cómo nos conociste?"
+          questionLabelId="howDidHear"
           value={conociste}
           onChange={setConociste}
           placeholder="Redes, amigos, etc."
