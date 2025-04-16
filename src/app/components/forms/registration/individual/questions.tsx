@@ -35,10 +35,12 @@ export const YesNoQuestion: React.FC<
     value: boolean | null;
     name: string;
     onChange: (value: boolean) => void;
+    children?: React.ReactNode;
   }
-> = ({ question, value, name, onChange, className = "" }) => {
+> = ({ question, value, name, onChange, children, className = "" }) => {
   return (
     <Question question={question} questionLabelId="" className={className}>
+      {children}
       <div className="flex justify-center space-x-6">
         <button
           type="button"
@@ -47,7 +49,7 @@ export const YesNoQuestion: React.FC<
           className={`w-20 h-10 rounded-full font-semibold transition-colors text-white
             ${
               value === true
-                ? "bg-pink-600"
+                ? "bg-purple-800"
                 : "bg-white/20 border border-white hover:bg-white/30"
             }`}
         >
