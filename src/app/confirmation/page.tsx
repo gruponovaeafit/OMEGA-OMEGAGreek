@@ -9,7 +9,7 @@ export default function Confirmation() {
       <Header />
       <TextButton text="Confirmación Individual"/>
       <img 
-      src="./Confirmacion_individual.svg" 
+      src="/Confirmacion_individual.svg" 
       alt="Confirmación Individual"
       className="w-72 h-auto cursor-pointer transition-transform duration-200 hover:scale-105 hover:brightness-110"
       onClick={() =>
@@ -19,7 +19,7 @@ export default function Confirmation() {
       />
       <TextButton text="Confirmación Grupal"/>
       <img 
-      src="./Confirmacion_Grupal.svg" 
+      src="/Confirmacion_Grupal.svg" 
       alt="Confirmación Grupal"
       className="w-72 h-auto cursor-pointer transition-transform duration-200 hover:scale-105 hover:brightness-110"
       onClick={() =>
