@@ -41,46 +41,6 @@ export default function Home() {
       return () => clearInterval(interval);
     }, [router]);
 
-    const checkUserStatus = async () => {
-      try {
-        const res = await fetch("/api/forms/userCheckStatus", { method: "GET" });
-        const result = await res.json();
-
-        if (res.ok && result.redirectUrl) {
-          router.push(result.redirectUrl);
-          return false;
-        }
-
-        return true;
-      } catch (error) {
-        console.error("Error al verificar estado del usuario:", error);
-        return true;
-      }
-    };
-
-    const checkTeamStatus = async () => {
-      try {
-        const res = await fetch("/api/forms/teamCheckStatus", { method: "GET" });
-        const result = await res.json(); // ✅ siempre lee el body
-
-        if (res.status === 400 && result.notification?.message) {
-          toast.error(result.notification.message); // ✅ show toast
-          return false;
-        }
-
-        if (res.ok && result.redirectUrl) {
-          router.push(result.redirectUrl);
-          return false;
-        }
-
-        return true;
-      } catch (error) {
-        console.error("Error al verificar estado del equipo:", error);
-        toast.error("Error inesperado al verificar estado del equipo.");
-        return false;
-      }
-    };
-
   const [leaderEmail, setLeaderEmail] = useState("");
   const [leaderRol, setLeaderRol] = useState("Seleccione Rol Lider");
 

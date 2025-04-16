@@ -32,7 +32,7 @@ export default function Confirmation() {
 
     const checkUserStatus = async () => {
       try {
-        const res = await fetch("/api/forms/userCheckStatus", { method: "GET" });
+        const res = await fetch("/api/forms/userCheckStatusConfirmation", { method: "GET" });
         const result = await res.json();
 
         if (res.ok && result.redirectUrl) {

@@ -1,62 +1,41 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import QuestionConfirmationText from "@/app/components/forms/confirmation/individual/question";
-import { TextConfirmation } from "@/app/components/forms/confirmation/individual/text";
-import { SubmitButtonIndividual } from "@/app/components/forms/confirmation/individual/buttons";
-import { CheckboxButtonIndividual } from "@/app/components/forms/confirmation/individual/buttons";
+import { Footer } from "@/app/components/Footer";
+import { YesNoQuestion } from "@/app/components/forms/registration/individual/questions";
+import { Header } from "@/app/components/Header";
+import FormHeader from "@/app/components/UI/FormHeader";
+import { useState } from "react";
 
-export default function ParentComponent() {
-  const [inputValue, setInputValue] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
-  const router = useRouter();
+export default function View1() {
+  const [dateAvailability, setDateAvailability] = useState<boolean | null>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleCheckboxChange = (checked: boolean) => {
-    setIsChecked(checked);
-  };
-
-  const handleSubmit = () => {
-    if (!inputValue) {
-      console.log("Por favor, ingresa un correo electrónico.");
-      return;
-    }
-
-    if (!isChecked) {
-      console.log("Por favor, acepta los términos y condiciones.");
-      return;
-    }
-
-    console.log("Formulario enviado con éxito:", {
-      email: inputValue,
-      termsAccepted: isChecked,
-    });
-
-    // Redirigir usando useRouter
-    router.push("/confirmation/confirmation2");
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center flex-col bg-[url('https://novaeafit2.blob.core.windows.net/omega-2025/FONDO-APP-1.svg')] bg-cover bg-center bg-no-repeat">      
-      <div className="text-center w-full max-w-2xl px-8">
-        <TextConfirmation text="Correo Electronico" />
-        <QuestionConfirmationText
-          value={inputValue}
-          placeholder="pepito@institucion.edu.co"
-          onChange={handleInputChange}
+    <div className="h-screen flex flex-col">
+      <form
+        onSubmit={handleFormSubmit}
+        className="background_individual_view2 flex-1 flex flex-col items-center gap-2"
+      >
+        <Header />
+
+        <div className="w-full max-w-[320px] mb-6">
+          <FormHeader
+            title="Formulario de confirmación"
+          />
+        </div>
+
+        <YesNoQuestion
+          name="date_availability"
+          question="¿Estás disponible para asistir al evento?"
+          value={dateAvailability}
+          onChange={setDateAvailability}
         />
-        <CheckboxButtonIndividual onChange={handleCheckboxChange} />
-        <SubmitButtonIndividual onClick={handleSubmit} />
-        <img
-          src="https://novaeafit2.blob.core.windows.net/omega-2025/POWERED_BY_NOVA.svg"
-          alt=""
-          className="absolute bottom-4"
-        />
-      </div>
+
+        <Footer />
+      </form>
     </div>
   );
 }
