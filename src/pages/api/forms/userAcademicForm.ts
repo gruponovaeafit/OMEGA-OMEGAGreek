@@ -13,7 +13,7 @@ export default async function handler(
         return res.status(405).json({ message: "Método no permitido" });
     }
 
-    const {recaptchaToken , university , study_area , career , data_treatment} = req.body;
+    const {university , study_area , career , data_treatment} = req.body;
 
     // Validate data
     if(!university || !study_area || !career || data_treatment === undefined){
@@ -38,16 +38,16 @@ export default async function handler(
 
     // Ask if we have to send to another url if the recaptcha fails
     // Validate the recaptcha
-    const isHuman = await verifyRecaptchaEnterprise(recaptchaToken);
+    // const isHuman = await verifyRecaptchaEnterprise(recaptchaToken);
 
-    if (!isHuman) {
-        return res.status(400).json({
-            notification: {
-              type: "error",
-              message: "Validación reCAPTCHA fallida. Intenta de nuevo.",
-            },
-        });
-    }
+    // if (!isHuman) {
+    //     return res.status(400).json({
+    //         notification: {
+    //           type: "error",
+    //           message: "Validación reCAPTCHA fallida. Intenta de nuevo.",
+    //         },
+    //     });
+    // }
 
     // Get the email from the cookies
     const userEmail = getEmailFromCookies(req, res);

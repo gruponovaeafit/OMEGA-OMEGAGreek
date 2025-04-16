@@ -15,35 +15,34 @@ export default async function handler(
     }
   
     const {
-      recaptchaToken,
       eps,
       emergency_contact_name,
       emergency_contact_phone,
       relationship
     } = req.body;
 
-    if (
-      !recaptchaToken
-      // || !eps
-      // || !emergency_contact_name
-      // || !emergency_contact_phone
-      // || !relationship
-    ) {
-      return res.status(400).json({
-        notification: { type: "error", message: "Faltan datos requeridos." },
-      });
-    }
-  
+    // if (
+    //   // || !eps
+    //   // || !emergency_contact_name
+    //   // || !emergency_contact_phone
+    //   // || !relationship
+
+    // ) {
+    //   return res.status(400).json({
+    //     notification: { type: "error", message: "Faltan datos requeridos." },
+    //   });
+    // }
+
     // Validar reCAPTCHA (posible cuello de botella)
-    const isHuman = await verifyRecaptchaEnterprise(recaptchaToken);
-    if (!isHuman) {
-      return res.status(400).json({
-        notification: {
-          type: "error",
-          message: "Validación reCAPTCHA fallida. Intenta de nuevo.",
-        },
-      });
-    }
+    // const isHuman = await verifyRecaptchaEnterprise(recaptchaToken);
+    // if (!isHuman) {
+    //   return res.status(400).json({
+    //     notification: {
+    //       type: "error",
+    //       message: "Validación reCAPTCHA fallida. Intenta de nuevo.",
+    //     },
+    //   });
+    // }
 
     const userEmail = getEmailFromCookies(req, res);
     if (!userEmail) {
@@ -65,7 +64,7 @@ export default async function handler(
           relationship = @relationship, emergency_contact_name = @emergency_contact_name
           WHERE institutional_email = @email
         `);
-  
+
       return res.status(200).json({
         notification: {
           type: "info",
