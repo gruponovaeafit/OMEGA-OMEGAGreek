@@ -41,12 +41,13 @@ export default function Confirmation3() {
       >
         <Header />
 
-        <div className="w-full max-w-[320px] mb-6 px-4">
+        <div className="w-full max-w-[320px] mb-6">
           <FormHeader title="Formulario de confirmación" />
         </div>
 
-        <div className="w-full max-w-[320px] mb-6 px-4">
+        <div className="w-full max-w-[320px] mb-6">
           <Select
+            placeholder="Selecciona tu universidad"
             label="Universidad"
             name="university"
             value={formData.university}
@@ -55,8 +56,9 @@ export default function Confirmation3() {
           />
         </div>
 
-        <div className="w-full max-w-[320px] mb-6 px-4">
+        <div className="w-full max-w-[320px] mb-6">
           <Select
+            placeholder="Selecciona tu área de estudio"
             label="Área de estudio"
             name="study_area"
             value={formData.study_area}
@@ -65,8 +67,9 @@ export default function Confirmation3() {
           />
         </div>
 
-        <div className="w-full max-w-[320px] mb-6 px-4">
+        <div className="w-full max-w-[320px] mb-6">
           <Select
+            placeholder="Selecciona tu programa académico"
             label="Programa académico"
             name="career"
             value={formData.career}
@@ -80,7 +83,7 @@ export default function Confirmation3() {
         <div className="flex flex-wrap justify-center items-center gap-4 px-4">
           <img
             src="/Hefesto.svg"
-            alt="Dionisio"
+            alt="Hefesto"
             className="w-48 h-48"
           />
           <Button label="Siguiente" />
