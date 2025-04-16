@@ -170,11 +170,12 @@ export const DateNativeQuestion: React.FC<DateNativeQuestionProps> = ({
 
 // Custom Select dropdown que se comporta visualmente como un input
 export const Select: React.FC<{
+  label?: string;
   value: string;
   name: string;
   onChange: (value: string) => void;
   options: string[];
-}> = ({ value, onChange, options, name }) => {
+}> = ({ label, value, onChange, options, name }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -189,42 +190,49 @@ export const Select: React.FC<{
   }, []);
 
   return (
-    <div ref={ref} className="relative w-full">
-      <div
-        className="w-full h-12 px-4 text-base font-light text-white rounded-xl flex items-center justify-center cursor-pointer"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)",
-          border: "1px solid rgba(255,255,255,0.3)",
-        }}
-        onClick={() => setOpen(!open)}
-      >
-        <input
-          className="w-full text-center truncate bg-transparent border-none outline-none"
-          value={value}
-          name={name}
-          type="text"
-          readOnly
-          onChange={() => {}}
-        />
-      </div>
-
-      {open && (
-        <div className="absolute top-full mt-1 w-full bg-white/30 backdrop-blur-md rounded-xl shadow-lg z-10">
-          {options.map((option, idx) => (
-            <div
-              key={idx}
-              onClick={() => {
-                onChange(option);
-                setOpen(false);
-              }}
-              className="px-4 py-2 text-white hover:bg-white/40 cursor-pointer text-sm text-center"
-            >
-              {option}
-            </div>
-          ))}
-        </div>
+    <div className="w-full mb-6">
+      {label && (
+        <label className="text-white font-bold text-sm mb-2 text-center block">
+          {label}
+        </label>
       )}
+  
+      <div ref={ref} className="relative w-full">
+        <div
+          className="w-full h-12 px-4 text-base font-light text-white rounded-xl flex items-center justify-center cursor-pointer"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)",
+            border: "1px solid rgba(255,255,255,0.3)",
+          }}
+          onClick={() => setOpen(!open)}
+        >
+          <input
+            className="w-full text-center truncate bg-transparent border-none outline-none cursor-pointer"
+            value={value}
+            name={name}
+            type="text"
+            readOnly
+          />
+        </div>
+  
+        {open && (
+          <div className="absolute top-full mt-1 w-full bg-white/30 backdrop-blur-md rounded-xl shadow-lg z-10">
+            {options.map((option, idx) => (
+              <div
+                key={idx}
+                onClick={() => {
+                  onChange(option);
+                  setOpen(false);
+                }}
+                className="px-4 py-2 text-white hover:bg-white/40 cursor-pointer text-sm text-center"
+              >
+                {option}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
