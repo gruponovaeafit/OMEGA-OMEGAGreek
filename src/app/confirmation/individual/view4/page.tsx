@@ -5,11 +5,10 @@ import { useState } from "react";
 import { Button } from "@/app/components/UI/Button";
 import { Select } from "@/app/components/forms/registration/individual/questions";
 import FormHeader from "@/app/components/UI/FormHeader";
+import FormStaticAlert from "@/app/components/UI/FormStaticAlert";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import React, { useEffect } from "react";
-
+import { toast } from "react-toastify";
 
 const handleSiguiente = () => {
     window.location.href = '/confirmation/teams/send';
@@ -97,12 +96,11 @@ export default function View4() {
             />
         </div>
 
-        <img
-            src="/Confirmation_Individual_Reminder.svg"
-            alt="Confirmation_Individual_Reminder"
-            className="-mt-8"
-        />
-
+        <div className="w-full max-w-[320px] mt-10">
+          <FormStaticAlert iconName="hammer">
+            <p className="text-xl text-center">Antes del evento, te estaremos enviando recomendaciones e información importante a tu correo. <strong>¡Mantente atento/a!</strong></p>
+          </FormStaticAlert>
+        </div>
 
         <div className="flex justify-center items-center gap-0 mt-7">
             <img
