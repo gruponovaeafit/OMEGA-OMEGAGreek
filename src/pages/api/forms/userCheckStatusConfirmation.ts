@@ -30,23 +30,34 @@ export default async function handler(
     const isFilled = (fields: any[]) => fields.every(isNotNullOrUndefined);
 
     const f1 = isFilled([
-      user.teamName
+      user.date_availability,
     ]);
-    const f2 = isFilled([user.preferred_role_1, user.preferred_role_2]);
-    const f3 = isFilled([
+    const f2 = isFilled([
       user.university,
       user.study_area,
       user.career
+    ]);
+    const f3 = isFilled([
+      user.eps,
+      user.emergency_contact_name,
+      user.emergency_contact_phone,
+      user.emergency_contact_relationship,
+      user.medical_info,
+    ]);
+    const f4 = isFilled([
+      user.food_preferences,
     ]);
 
     let redirectUrl = null;
 
     if (!f1) {
-      redirectUrl = "/confirmation/confirmation1";
+      redirectUrl = "/confirmation/individual";
     } else if (!f2) {
-      redirectUrl = "/confirmation/confirmation2";
+      redirectUrl = "/confirmation/individual/view2";
     } else if (!f3) {
-      redirectUrl = "/confirmation/confirmation3";
+      redirectUrl = "/confirmation/individual/view3";
+    }else if (!f4) {
+      redirectUrl = "/confirmation/individual/view4";
     } else {
       redirectUrl = "/registration/individual/final";
     }

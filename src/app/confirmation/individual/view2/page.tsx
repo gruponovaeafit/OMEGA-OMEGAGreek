@@ -7,8 +7,75 @@ import { Button } from "@/app/components/UI/Button";
 import { Select } from "@/app/components/forms/registration/individual/questions";
 import { CheckboxButtonIndividual } from "@/app/components/forms/confirmation/individual/buttons";
 import FormHeader from "@/app/components/UI/FormHeader";
+import { useRouter } from "next/navigation";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect } from "react";
+
 
 export default function View2() {
+
+  const router = useRouter();
+
+      // Verificación continua del JWT
+      useEffect(() => {
+        const checkAuthentication = async () => {
+          try {
+            const res = await fetch("/api/cookiesChecker", { method: "GET" });
+            if (res.status !== 200) {
+              router.push("/");
+            }
+          } catch (error) {
+            console.error("Error verificando autenticación:", error);
+            router.push("/");
+          }
+        };
+
+        checkAuthentication();
+        const interval = setInterval(checkAuthentication, 15000);
+        return () => clearInterval(interval);
+      }, [router]);
+
+      const checkUserStatus = async () => {
+        try {
+          const res = await fetch("/api/forms/userCheckStatusConfirmation", { method: "GET" });
+          const result = await res.json();
+
+          if (res.ok && result.redirectUrl) {
+            router.push(result.redirectUrl);
+            return false;
+          }
+
+          return true;
+        } catch (error) {
+          console.error("Error al verificar estado del usuario:", error);
+          return true;
+        }
+      };
+
+      const checkTeamStatus = async () => {
+        try {
+          const res = await fetch("/api/forms/teamCheckStatus", { method: "GET" });
+          const result = await res.json(); // ✅ siempre lee el body
+
+          if (res.status === 400 && result.notification?.message) {
+            toast.error(result.notification.message); // ✅ show toast
+            return false;
+          }
+
+          if (res.ok && result.redirectUrl) {
+            router.push(result.redirectUrl);
+            return false;
+          }
+
+          return true;
+        } catch (error) {
+          console.error("Error al verificar estado del equipo:", error);
+          toast.error("Error inesperado al verificar estado del equipo.");
+          return false;
+        }
+      };
+
   const [formData, setFormData] = useState({
     university: "",
     study_area: "",
@@ -19,7 +86,40 @@ export default function View2() {
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formElement = e.currentTarget;
+    const formData = new FormData(formElement);
+    const formObject = Object.fromEntries(formData.entries());
     console.log("Form data:", formData, "Checkbox checked:", isChecked);
+
+    try {
+      const response = await fetch("/api/forms/userAcademicForm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formObject),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        toast.error(result.notification?.message || "Error en el servidor.");
+        return;
+      }
+
+      toast.success(
+        result.notification?.message || "Formulario enviado con éxito.",
+        {
+          onClose: () =>
+            router.push(result.redirectUrl || "/confirmation/individual/view3"),
+        },
+      );
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error);
+      toast.error(
+        "Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.",
+      );
+    }
   };
 
   const handleChange = (name: string, value: string) => {
