@@ -5,6 +5,8 @@ import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
 import sql from "mssql";
 
+//Validar que esté en la vista de confirmación y redireccionar a los formularios correspondientes
+
 // Validación de reCAPTCHA con timeout
 async function verifyRecaptchaEnterprise(token: string): Promise<boolean> {
   const apiKey = process.env.RECAPTCHA_ENTERPRISE_API_KEY;
