@@ -32,7 +32,7 @@ function updateSrcAttributes(dir) {
       // 2. Reemplazar URLs antiguas por las nuevas
       updatedContent = updatedContent.replace(
         /https:\/\/novaeafit\.blob\.core\.windows\.net\/omega-2025/g,
-        newBaseUrl
+        newBaseUrl,
       );
 
       if (content !== updatedContent) {

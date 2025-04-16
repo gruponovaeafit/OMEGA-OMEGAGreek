@@ -119,6 +119,7 @@ export default function Home() {
           </h3>
           <Select
             name="preferred_role1"
+            placeholder="Rol preferido 1"
             value={preferred_role1}
             onChange={setPreferred_role1}
             options={[
@@ -136,6 +137,7 @@ export default function Home() {
           </h3>
           <Select
             name="preferred_role2"
+            placeholder="Rol preferido 2"
             value={preferred_role2}
             onChange={setPreferred_role2}
             options={[

@@ -33,7 +33,8 @@ export default async function handler(
     return res.status(400).json({
       notification: {
         type: "error",
-        message: "Debes aceptar la política de tratamiento de datos para continuar.",
+        message:
+          "Debes aceptar la política de tratamiento de datos para continuar.",
       },
     });
   }

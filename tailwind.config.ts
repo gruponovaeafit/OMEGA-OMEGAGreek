@@ -15,6 +15,12 @@ const config: Config = {
           "50%": { transform: "scale(1.05)", opacity: "0.8" },
         },
       },
+      backgroundImage: {
+        "primary-button":
+          "linear-gradient(90deg, #131313 0%, #3F4B33 45.19%, #866A42 100%)",
+        "secondary-button":
+          "linear-gradient(90deg, #131313 0%, #F338A7 41.35%, #E83C64 100%)",
+      },
     },
   },
   plugins: [],
