@@ -8,8 +8,6 @@ import { connectToDatabase } from "../db";
 //Implementar reCaptcha y usarlo para validar si está autorizado para ver la vista.
 //Implementar el userCheckStatus (Crear otro archivo)
 
-
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,

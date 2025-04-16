@@ -29,14 +29,8 @@ export default async function handler(
 
     const isFilled = (fields: any[]) => fields.every(isNotNullOrUndefined);
 
-    const f1 = isFilled([
-      user.date_availability,
-    ]);
-    const f2 = isFilled([
-      user.university,
-      user.study_area,
-      user.career
-    ]);
+    const f1 = isFilled([user.date_availability]);
+    const f2 = isFilled([user.university, user.study_area, user.career]);
     const f3 = isFilled([
       user.eps,
       user.emergency_contact_name,
@@ -44,9 +38,7 @@ export default async function handler(
       user.emergency_contact_relationship,
       user.medical_info,
     ]);
-    const f4 = isFilled([
-      user.food_preferences,
-    ]);
+    const f4 = isFilled([user.food_preferences]);
 
     let redirectUrl = null;
 
@@ -56,7 +48,7 @@ export default async function handler(
       redirectUrl = "/confirmation/individual/view2";
     } else if (!f3) {
       redirectUrl = "/confirmation/individual/view3";
-    }else if (!f4) {
+    } else if (!f4) {
       redirectUrl = "/confirmation/individual/view4";
     } else {
       redirectUrl = "/registration/individual/final";

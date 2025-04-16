@@ -22,22 +22,22 @@ export default async function handler(
     //Validate that the email and captcha is not empty
     const { institutional_email, recaptchaToken } = req.body;
     if (!institutional_email || !recaptchaToken) {
-        return res.status(400).json({
-            notification: { type: "error", message: "Faltan datos requeridos." },
-        });
-        }
+      return res.status(400).json({
+        notification: { type: "error", message: "Faltan datos requeridos." },
+      });
+    }
 
     const emailLower = institutional_email.toLowerCase();
 
     // Validar reCAPTCHA (posible cuello de botella)
     const isHuman = await verifyRecaptchaEnterprise(recaptchaToken);
     if (!isHuman) {
-    return res.status(400).json({
+      return res.status(400).json({
         notification: {
-        type: "error",
-        message: "Validación reCAPTCHA fallida. Intenta de nuevo.",
+          type: "error",
+          message: "Validación reCAPTCHA fallida. Intenta de nuevo.",
         },
-    });
+      });
     }
 
     const pool = await connectToDatabase();
@@ -46,24 +46,25 @@ export default async function handler(
       .request()
       .input("institutional_email", sql.VarChar, emailLower)
       .query(
-        "SELECT * FROM Personal_data WHERE institutional_email = @institutional_email");
+        "SELECT * FROM Personal_data WHERE institutional_email = @institutional_email",
+      );
 
     if (result.recordset.length === 0) {
-    return res.status(400).json({
+      return res.status(400).json({
         notification: {
-        type: "error",
-        message: "El correo no ha sido registrado.",
+          type: "error",
+          message: "El correo no ha sido registrado.",
         },
-    });
+      });
     }
 
     // Generar JWT
     const jwtToken = jwt.sign(
-    { email: emailLower },
-    process.env.JWT_KEY as string,
-    {
+      { email: emailLower },
+      process.env.JWT_KEY as string,
+      {
         expiresIn: "20m",
-    }
+      },
     );
 
     // Generate cookies and store JWT in it
@@ -75,23 +76,23 @@ export default async function handler(
         maxAge: 3600,
         path: "/",
         sameSite: "strict",
-        }),
+      }),
     );
 
     return res.status(200).json({
-        notification: {
+      notification: {
         type: "success",
         message: "Correo electrónico guardado correctamente.",
-        },
-        redirectUrl: "/confirmation"
+      },
+      redirectUrl: "/confirmation",
     });
-} catch (error) {
+  } catch (error) {
     console.error("Error en la conexión a la base de datos:", error);
     return res.status(500).json({
-        notification: {
+      notification: {
         type: "error",
         message: "Error en la conexión a la base de datos.",
-        },
+      },
     });
-    }
+  }
 }

@@ -23,7 +23,12 @@ export const Question: React.FC<
     <div
       className={`mb-6 flex flex-col gap-1 w-full max-w-xs items-center ${className}`}
     >
-      <label htmlFor={questionLabelId} className="text-white font-bold text-2xl text-center">{question}</label>
+      <label
+        htmlFor={questionLabelId}
+        className="text-white font-bold text-2xl text-center"
+      >
+        {question}
+      </label>
       <div className="w-full">{children}</div>
     </div>
   );
@@ -119,9 +124,21 @@ export const TextQuestion: React.FC<
     placeholder?: string;
     type?: string;
   }
-> = ({ question, questionLabelId, value, name, onChange, placeholder = "", className = "" }) => {
+> = ({
+  question,
+  questionLabelId,
+  value,
+  name,
+  onChange,
+  placeholder = "",
+  className = "",
+}) => {
   return (
-    <Question question={question} questionLabelId={questionLabelId} className={className}>
+    <Question
+      question={question}
+      questionLabelId={questionLabelId}
+      className={className}
+    >
       <input
         type="{type}"
         id={questionLabelId}
@@ -148,7 +165,11 @@ export const DateNativeQuestion: React.FC<DateNativeQuestionProps> = ({
   className = "",
 }) => {
   return (
-    <Question question={question} questionLabelId={questionLabelId} className={className}>
+    <Question
+      question={question}
+      questionLabelId={questionLabelId}
+      className={className}
+    >
       <div className="relative w-full">
         <input
           type="date"
@@ -199,7 +220,7 @@ export const Select: React.FC<{
           {label}
         </label>
       )}
-  
+
       <div ref={ref} className="relative w-full border border-white rounded-lg">
         <div
           className="w-full h-12 px-4 text-lg font-light text-white rounded-lg flex items-center justify-center cursor-pointer"
@@ -219,7 +240,7 @@ export const Select: React.FC<{
             readOnly
           />
         </div>
-  
+
         {open && (
           <div className="absolute top-full mt-1 w-full bg-white/30 backdrop-blur-md rounded-xl shadow-lg z-10">
             {options.map((option, idx) => (

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Footer } from "@/app/components/Footer";
 import { YesNoQuestion } from "@/app/components/forms/registration/individual/questions";
@@ -8,7 +8,9 @@ import FormStaticAlert from "@/app/components/UI/FormStaticAlert";
 import { useState } from "react";
 
 export default function View1() {
-  const [dateAvailability, setDateAvailability] = useState<boolean | null>(null);
+  const [dateAvailability, setDateAvailability] = useState<boolean | null>(
+    null,
+  );
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

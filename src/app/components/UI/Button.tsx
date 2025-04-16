@@ -20,7 +20,7 @@ export const Button: React.FC<ButtonProps> = ({
   isDisabled = false,
   className = "",
   variant = "primary",
-  iconName = "chevron-right"
+  iconName = "chevron-right",
 }) => {
   const getColorClasses = () => {
     switch (variant) {

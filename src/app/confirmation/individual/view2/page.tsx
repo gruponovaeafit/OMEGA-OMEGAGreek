@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { Header } from "@/app/components/Header";
@@ -13,46 +13,46 @@ import "react-toastify/dist/ReactToastify.css";
 import React, { useEffect } from "react";
 import { map } from "mssql";
 
-
 export default function View2() {
-
   const router = useRouter();
 
-      // Verificación continua del JWT
-      useEffect(() => {
-        const checkAuthentication = async () => {
-          try {
-            const res = await fetch("/api/cookiesChecker", { method: "GET" });
-            if (res.status !== 200) {
-              router.push("/");
-            }
-          } catch (error) {
-            console.error("Error verificando autenticación:", error);
-            router.push("/");
-          }
-        };
-
-        checkAuthentication();
-        const interval = setInterval(checkAuthentication, 15000);
-        return () => clearInterval(interval);
-      }, [router]);
-
-      const checkUserStatus = async () => {
-        try {
-          const res = await fetch("/api/forms/userCheckStatusConfirmation", { method: "GET" });
-          const result = await res.json();
-
-          if (res.ok && result.redirectUrl) {
-            router.push(result.redirectUrl);
-            return false;
-          }
-
-          return true;
-        } catch (error) {
-          console.error("Error al verificar estado del usuario:", error);
-          return true;
+  // Verificación continua del JWT
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      try {
+        const res = await fetch("/api/cookiesChecker", { method: "GET" });
+        if (res.status !== 200) {
+          router.push("/");
         }
-      };
+      } catch (error) {
+        console.error("Error verificando autenticación:", error);
+        router.push("/");
+      }
+    };
+
+    checkAuthentication();
+    const interval = setInterval(checkAuthentication, 15000);
+    return () => clearInterval(interval);
+  }, [router]);
+
+  const checkUserStatus = async () => {
+    try {
+      const res = await fetch("/api/forms/userCheckStatusConfirmation", {
+        method: "GET",
+      });
+      const result = await res.json();
+
+      if (res.ok && result.redirectUrl) {
+        router.push(result.redirectUrl);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error al verificar estado del usuario:", error);
+      return true;
+    }
+  };
 
   const [formData, setFormData] = useState({
     university: "",
@@ -62,8 +62,15 @@ export default function View2() {
 
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleFormSubmit = async (name: string, value: string, name1: string, value1: string, name2: string, value2: string) => {
-    setFormData(prev => ({
+  const handleFormSubmit = async (
+    name: string,
+    value: string,
+    name1: string,
+    value1: string,
+    name2: string,
+    value2: string,
+  ) => {
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
       [name1]: value1,
@@ -77,7 +84,12 @@ export default function View2() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ [name]: value, [name1]: value1, [name2]: value2, data_treatment: isChecked }),
+        body: JSON.stringify({
+          [name]: value,
+          [name1]: value1,
+          [name2]: value2,
+          data_treatment: isChecked,
+        }),
       });
 
       const result = await response.json();
@@ -88,7 +100,7 @@ export default function View2() {
       }
 
       console.log("Respuesta de la API:", result);
-      console.log()
+      console.log();
       toast.success(
         result.notification?.message || "Formulario enviado con éxito.",
         {
@@ -106,7 +118,7 @@ export default function View2() {
 
   // Enviamos el correo y obtenemos la lista de areas
   const handleChange = async (name: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -134,8 +146,13 @@ export default function View2() {
   };
 
   // Enviamos el correo y la area y obtenemos la lista de carreras
-  const handleChange2 = async (name: string, value: string, name1: string, value1: string) => {
-    setFormData(prev => ({
+  const handleChange2 = async (
+    name: string,
+    value: string,
+    name1: string,
+    value1: string,
+  ) => {
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
       [name1]: value1,
@@ -164,8 +181,15 @@ export default function View2() {
   };
 
   // Enviamos el correo, la area y la carrera y obtenemos el id de la carrera y el id del area
-  const handleChange3 = async (name: string, value: string, name1: string, value1: string, name2: string, value2: string) => {
-    setFormData(prev => ({
+  const handleChange3 = async (
+    name: string,
+    value: string,
+    name1: string,
+    value1: string,
+    name2: string,
+    value2: string,
+  ) => {
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
       [name1]: value1,
@@ -178,7 +202,11 @@ export default function View2() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ [name]: value, [name1]: value1, [name2]: value2 }),
+        body: JSON.stringify({
+          [name]: value,
+          [name1]: value1,
+          [name2]: value2,
+        }),
       });
 
       if (!response.ok) {
@@ -201,7 +229,9 @@ export default function View2() {
   const [studyAreaResult, setStudyAreaResult] = useState<string[] | null>(null);
   const [careerResult, setcareerResult] = useState<string[] | null>(null);
   const [careerIdResult, setcareerIdResult] = useState<string[] | null>(null);
-  const [studyAreaIdResult, setstudyAreaIdResult] = useState<string | null>(null);
+  const [studyAreaIdResult, setstudyAreaIdResult] = useState<string | null>(
+    null,
+  );
   const university = formData.university;
   const studyArea = formData.study_area;
 
@@ -217,7 +247,7 @@ export default function View2() {
             "study_area",
             studyAreaIdResult ? studyAreaIdResult[0] : "",
             "career",
-            (careerIdResult ? careerIdResult[0] : "")
+            careerIdResult ? careerIdResult[0] : "",
           );
         }}
         className="background_individual_view2 flex-1 flex flex-col items-center gap-2"
@@ -235,7 +265,7 @@ export default function View2() {
             name="university"
             value={formData.university}
             onChange={async (val) => {
-              const result = await handleChange("university", val);//utilizamos el handleChange para obtener las areas
+              const result = await handleChange("university", val); //utilizamos el handleChange para obtener las areas
               if (result && Array.isArray(result)) {
                 setStudyAreaResult(result); // Guarda el array completo en el estado
               }
@@ -259,7 +289,12 @@ export default function View2() {
             name="study_area"
             value={formData.study_area}
             onChange={async (val) => {
-              const result = await handleChange2("university", university, "study_area", val);//utilizamos el handleChange2 para obtener las carreras
+              const result = await handleChange2(
+                "university",
+                university,
+                "study_area",
+                val,
+              ); //utilizamos el handleChange2 para obtener las carreras
               if (result && Array.isArray(result)) {
                 setcareerResult(result); // Guarda el array completo en el estado
                 console.log("Áreas de estudio disponibles:", result);
@@ -280,7 +315,14 @@ export default function View2() {
             name="career"
             value={formData.career}
             onChange={async (val) => {
-              const result = await handleChange3("university", university, "study_area", studyArea, "career", val);//utilizamos el handleChange3 para obtener el id de la carrera y el id del area
+              const result = await handleChange3(
+                "university",
+                university,
+                "study_area",
+                studyArea,
+                "career",
+                val,
+              ); //utilizamos el handleChange3 para obtener el id de la carrera y el id del area
               if (result && Array.isArray(result)) {
                 setcareerIdResult(result[0]); // Guarda el array completo en el estado
                 setstudyAreaIdResult(result[1]); // Guarda el array completo en el estado
@@ -297,11 +339,7 @@ export default function View2() {
         <CheckboxButtonIndividual onChange={handleCheckboxChange} />
 
         <div className="flex flex-wrap justify-center items-center gap-4 w-full max-w-[320px]">
-          <img
-            src="/Hefesto.svg"
-            alt="Hefesto"
-            className="w-42 h-44"
-          />
+          <img src="/Hefesto.svg" alt="Hefesto" className="w-42 h-44" />
           <Button label="Siguiente" type="submit" />
         </div>
         <Footer />

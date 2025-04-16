@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../db";
-import verifyRecaptchaEnterprise from '../verifyRecaptchaEnterprise';
-import { getEmailFromCookies } from '../getEmailFromCookies';
+import verifyRecaptchaEnterprise from "../verifyRecaptchaEnterprise";
+import { getEmailFromCookies } from "../getEmailFromCookies";
 import { VarChar } from "mssql";
 
 export default async function handler(
@@ -16,7 +16,7 @@ export default async function handler(
 
     const { food_preferences } = req.body;
 
-    if ( !food_preferences ) {
+    if (!food_preferences) {
       return res.status(400).json({
         notification: { type: "error", message: "Faltan datos requeridos." },
       });
@@ -44,13 +44,12 @@ export default async function handler(
         .request()
         // !TODO: Check if these fields are going to be optional or required:
         .input("food_preferences", VarChar(50), food_preferences)
-        .input("email", VarChar(100), userEmail)
-        .query(`
+        .input("email", VarChar(100), userEmail).query(`
           UPDATE Applicant_details
           SET food_preferences = @food_preferences
           WHERE institutional_email = @email
         `);
-  
+
       return res.status(200).json({
         notification: {
           type: "info",
@@ -58,7 +57,7 @@ export default async function handler(
         },
         redirectUrl: "/confirmation/individual/final",
       });
-    } catch(error) {
+    } catch (error) {
       console.error("❌ Error al guardar los datos:", error);
       return res.status(500).json({
         notification: {
@@ -67,7 +66,6 @@ export default async function handler(
         },
       });
     }
-
   } catch (error) {
     res.status(500).json({ error: "Error conectando a la base de datos" });
   }

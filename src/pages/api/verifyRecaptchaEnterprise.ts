@@ -1,4 +1,6 @@
-export default async function verifyRecaptchaEnterprise(token: string): Promise<boolean> {
+export default async function verifyRecaptchaEnterprise(
+  token: string,
+): Promise<boolean> {
   const apiKey = process.env.RECAPTCHA_ENTERPRISE_API_KEY;
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
   const project = process.env.RECAPTCHA_PROYECT;

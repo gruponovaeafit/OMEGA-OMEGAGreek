@@ -1,86 +1,89 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Button } from "@/app/components/UI/Button";
-import { Select, TextQuestion } from "@/app/components/forms/registration/individual/questions";
+import {
+  Select,
+  TextQuestion,
+} from "@/app/components/forms/registration/individual/questions";
 import FormHeader from "@/app/components/UI/FormHeader";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React, { useEffect } from "react";
 
-
 export default function View3() {
-
   const router = useRouter();
 
-    // Verificación continua del JWT
-    useEffect(() => {
-      const checkAuthentication = async () => {
-        try {
-          const res = await fetch("/api/cookiesChecker", { method: "GET" });
-          if (res.status !== 200) {
-            router.push("/");
-          }
-        } catch (error) {
-          console.error("Error verificando autenticación:", error);
+  // Verificación continua del JWT
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      try {
+        const res = await fetch("/api/cookiesChecker", { method: "GET" });
+        if (res.status !== 200) {
           router.push("/");
         }
-      };
-
-      checkAuthentication();
-      const interval = setInterval(checkAuthentication, 15000);
-      return () => clearInterval(interval);
-    }, [router]);
-
-    const checkUserStatus = async () => {
-      try {
-        const res = await fetch("/api/forms/userCheckStatusConfirmation", { method: "GET" });
-        const result = await res.json();
-
-        if (res.ok && result.redirectUrl) {
-          router.push(result.redirectUrl);
-          return false;
-        }
-
-        return true;
       } catch (error) {
-        console.error("Error al verificar estado del usuario:", error);
-        return true;
+        console.error("Error verificando autenticación:", error);
+        router.push("/");
       }
     };
 
-    const checkTeamStatus = async () => {
-      try {
-        const res = await fetch("/api/forms/teamCheckStatus", { method: "GET" });
-        const result = await res.json(); // ✅ siempre lee el body
+    checkAuthentication();
+    const interval = setInterval(checkAuthentication, 15000);
+    return () => clearInterval(interval);
+  }, [router]);
 
-        if (res.status === 400 && result.notification?.message) {
-          toast.error(result.notification.message); // ✅ show toast
-          return false;
-        }
+  const checkUserStatus = async () => {
+    try {
+      const res = await fetch("/api/forms/userCheckStatusConfirmation", {
+        method: "GET",
+      });
+      const result = await res.json();
 
-        if (res.ok && result.redirectUrl) {
-          router.push(result.redirectUrl);
-          return false;
-        }
-
-        return true;
-      } catch (error) {
-        console.error("Error al verificar estado del equipo:", error);
-        toast.error("Error inesperado al verificar estado del equipo.");
+      if (res.ok && result.redirectUrl) {
+        router.push(result.redirectUrl);
         return false;
       }
-    };
+
+      return true;
+    } catch (error) {
+      console.error("Error al verificar estado del usuario:", error);
+      return true;
+    }
+  };
+
+  const checkTeamStatus = async () => {
+    try {
+      const res = await fetch("/api/forms/teamCheckStatus", { method: "GET" });
+      const result = await res.json(); // ✅ siempre lee el body
+
+      if (res.status === 400 && result.notification?.message) {
+        toast.error(result.notification.message); // ✅ show toast
+        return false;
+      }
+
+      if (res.ok && result.redirectUrl) {
+        router.push(result.redirectUrl);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error al verificar estado del equipo:", error);
+      toast.error("Error inesperado al verificar estado del equipo.");
+      return false;
+    }
+  };
 
   const [formData, setFormData] = useState({
     eps: "",
     emergency_contact_name: "",
     emergency_contact_phone: "",
     relationship: "",
-    medical_info: ""
+    medical_info: "",
   });
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -88,7 +91,7 @@ export default function View3() {
   };
 
   const handleChange = (name: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -116,7 +119,12 @@ export default function View3() {
             name="eps"
             value={formData.eps}
             onChange={(val) => handleChange("eps", val)}
-            options={["Administrador", "Diseñador", "Mercadeo", "Desarrollador"]}
+            options={[
+              "Administrador",
+              "Diseñador",
+              "Mercadeo",
+              "Desarrollador",
+            ]}
           />
         </div>
 
@@ -157,11 +165,7 @@ export default function View3() {
         />
 
         <div className="flex flex-wrap justify-between items-center gap-4 w-full max-w-[320px]">
-          <img
-            src="/Afrodita.svg"
-            alt="Afrodita"
-            className="w-40 h-42"
-          />
+          <img src="/Afrodita.svg" alt="Afrodita" className="w-40 h-42" />
           <Button label="Siguiente" />
         </div>
 

@@ -8,7 +8,6 @@ import verifyRecaptchaEnterprise from "../verifyRecaptchaEnterprise";
 
 //Validar que esté en la vista de confirmación y redireccionar a los formularios correspondientes
 
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,

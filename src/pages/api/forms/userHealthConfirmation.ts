@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../db";
-import verifyRecaptchaEnterprise from '../verifyRecaptchaEnterprise';
-import { getEmailFromCookies } from '../getEmailFromCookies';
+import verifyRecaptchaEnterprise from "../verifyRecaptchaEnterprise";
+import { getEmailFromCookies } from "../getEmailFromCookies";
 import { VarChar } from "mssql";
 
 export default async function handler(
@@ -13,12 +13,12 @@ export default async function handler(
     if (req.method !== "POST") {
       return res.status(405).json({ message: "Método no permitido" });
     }
-  
+
     const {
       eps,
       emergency_contact_name,
       emergency_contact_phone,
-      relationship
+      relationship,
     } = req.body;
 
     // if (
@@ -58,7 +58,8 @@ export default async function handler(
         .input("emergency_contact_name", VarChar(100), emergency_contact_name)
         .input("relationship", VarChar(20), relationship)
         .input("email", VarChar(100), userEmail)
-        .input("emergency_contact_phone", VarChar(20), emergency_contact_phone).query(`
+        .input("emergency_contact_phone", VarChar(20), emergency_contact_phone)
+        .query(`
           UPDATE Applicant_details
           SET eps = @eps, emergency_contact_phone = @emergency_contact_phone,
           relationship = @relationship, emergency_contact_name = @emergency_contact_name
@@ -72,7 +73,7 @@ export default async function handler(
         },
         redirectUrl: "/confirmation/individual/view4",
       });
-    } catch(error) {
+    } catch (error) {
       console.error("❌ Error al guardar los datos:", error);
       return res.status(500).json({
         notification: {
@@ -81,7 +82,6 @@ export default async function handler(
         },
       });
     }
-
   } catch (error) {
     res.status(500).json({ error: "Error conectando a la base de datos" });
   }
