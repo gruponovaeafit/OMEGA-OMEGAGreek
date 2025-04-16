@@ -23,7 +23,7 @@ export const Question: React.FC<
     <div
       className={`mb-6 flex flex-col gap-1 w-full max-w-xs items-center ${className}`}
     >
-      <label htmlFor={questionLabelId} className="text-white font-bold text-base text-center">{question}</label>
+      <label htmlFor={questionLabelId} className="text-white font-bold text-2xl text-center">{question}</label>
       <div className="w-full">{children}</div>
     </div>
   );
@@ -127,7 +127,7 @@ export const TextQuestion: React.FC<
         name={name}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full h-12 px-4 text-center text-base font-light text-white rounded-xl placeholder-white placeholder-opacity-25 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
+        className="w-full h-12 px-4 text-center text-lg font-light text-white rounded-xl placeholder-white placeholder-opacity-25 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
         style={{
           backgroundImage:
             "linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)",
@@ -154,7 +154,7 @@ export const DateNativeQuestion: React.FC<DateNativeQuestionProps> = ({
           value={value}
           name="birth_date"
           onChange={(e) => onChange(e.target.value)}
-          className="w-full h-12 px-4 text-center text-base font-light text-white rounded-xl border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400 appearance-none"
+          className="w-full h-12 px-4 text-center text-lg font-light text-white rounded-xl border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400 appearance-none"
           style={{
             backgroundImage:
               "linear-gradient(to right, #3B2F8C, #9A2C2C, #84A23C)",
@@ -190,16 +190,16 @@ export const Select: React.FC<{
   }, []);
 
   return (
-    <div className="w-full mb-6">
+    <div className="w-full">
       {label && (
-        <label className="text-white font-bold text-sm mb-2 text-center block">
+        <label className="text-white font-bold text-2xl mb-2 text-center block">
           {label}
         </label>
       )}
   
       <div ref={ref} className="relative w-full">
         <div
-          className="w-full h-12 px-4 text-base font-light text-white rounded-xl flex items-center justify-center cursor-pointer"
+          className="w-full h-12 px-4 text-lg font-light text-white rounded-xl flex items-center justify-center cursor-pointer"
           style={{
             backgroundImage:
               "linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)",
