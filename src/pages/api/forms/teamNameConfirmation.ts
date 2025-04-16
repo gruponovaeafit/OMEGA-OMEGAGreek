@@ -14,24 +14,24 @@ export default async function handler(
       return res.status(405).json({ message: "Método no permitido" });
     }
 
-    const { recaptchaToken } = req.body;
+    // const { recaptchaToken } = req.body;
 
-    if (!recaptchaToken) {
-      return res.status(400).json({
-        notification: { type: "error", message: "Faltan datos requeridos." },
-      });
-    }
+    // if (!recaptchaToken) {
+    //   return res.status(400).json({
+    //     notification: { type: "error", message: "Faltan datos requeridos." },
+    //   });
+    // }
 
-    // Validar reCAPTCHA (posible cuello de botella)
-    const isHuman = await verifyRecaptchaEnterprise(recaptchaToken);
-    if (!isHuman) {
-    return res.status(400).json({
-        notification: {
-        type: "error",
-        message: "Validación reCAPTCHA fallida. Intenta de nuevo.",
-        },
-    });
-    }
+    // // Validar reCAPTCHA (posible cuello de botella)
+    // const isHuman = await verifyRecaptchaEnterprise(recaptchaToken);
+    // if (!isHuman) {
+    // return res.status(400).json({
+    //     notification: {
+    //     type: "error",
+    //     message: "Validación reCAPTCHA fallida. Intenta de nuevo.",
+    //     },
+    // });
+    // }
 
     const userEmail = getEmailFromCookies(req, res);
     if (!userEmail) {
