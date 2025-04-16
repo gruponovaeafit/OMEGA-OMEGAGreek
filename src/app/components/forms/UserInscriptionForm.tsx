@@ -1,85 +1,90 @@
-'use client'
+"use client";
 
-import { FormEvent, useState } from "react"
+import { FormEvent, useState } from "react";
 
 export function UserInscriptionForm(): React.ReactElement {
   const [formData, setFormData] = useState({
-    name: '',
-    surname: '',
-    id_number: '',
-    phone: '',
-    birth_date: '',
-    how_did_hear: '',
+    name: "",
+    surname: "",
+    id_number: "",
+    phone: "",
+    birth_date: "",
+    how_did_hear: "",
     has_availability: false,
     previous_participation: false,
     data_treatment: false,
-    institutional_email: '',
-    preferred_rol_1: '',
-    preferred_rol_2: '',
+    institutional_email: "",
+    preferred_rol_1: "",
+    preferred_rol_2: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target
-    setFormData(prev => ({
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }))
-  }
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!formData.data_treatment) {
-      alert('Debes aceptar el tratamiento de datos.')
-      return
+      alert("Debes aceptar el tratamiento de datos.");
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
-      const res = await fetch('/api/forms/userRegistrationForm', {
-        method: 'POST',
+      const res = await fetch("/api/forms/userRegistrationForm", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      })
+      });
 
       if (res.ok) {
-        const data = await res.json()
-        alert(data.message)
+        const data = await res.json();
+        alert(data.message);
         setFormData({
-          name: '',
-          surname: '',
-          institutional_email: '',
-          id_number: '',
-          phone: '',
-          birth_date: '',
-          how_did_hear: '',
+          name: "",
+          surname: "",
+          institutional_email: "",
+          id_number: "",
+          phone: "",
+          birth_date: "",
+          how_did_hear: "",
           has_availability: false,
           previous_participation: false,
-          preferred_rol_1: '',
-          preferred_rol_2: '',
+          preferred_rol_1: "",
+          preferred_rol_2: "",
           data_treatment: false,
-        })
+        });
       } else {
-        alert('Hubo un error al enviar los datos.')
+        alert("Hubo un error al enviar los datos.");
       }
     } catch (error) {
-      console.error('Error al enviar:', error)
-      alert('Error inesperado')
+      console.error("Error al enviar:", error);
+      alert("Error inesperado");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
-
+  };
 
   return (
-    <form onSubmit={onSubmit} className="max-w-md mx-auto my-2 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-md space-y-4 text-sm">
+    <form
+      onSubmit={onSubmit}
+      className="max-w-md mx-auto my-2 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-md space-y-4 text-sm"
+    >
       <div>
-        <label htmlFor="name" className="block font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label
+          htmlFor="name"
+          className="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+        >
           Nombre
         </label>
         <input
@@ -87,14 +92,16 @@ export function UserInscriptionForm(): React.ReactElement {
           id="name"
           name="name"
           className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-         
           value={formData.name}
           onChange={handleChange}
         />
       </div>
 
       <div>
-        <label htmlFor="surname" className="block font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label
+          htmlFor="surname"
+          className="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+        >
           Apellido
         </label>
         <input
@@ -109,7 +116,10 @@ export function UserInscriptionForm(): React.ReactElement {
       </div>
 
       <div>
-        <label htmlFor="id_number" className="block font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label
+          htmlFor="id_number"
+          className="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+        >
           Número de documento
         </label>
         <input
@@ -124,7 +134,10 @@ export function UserInscriptionForm(): React.ReactElement {
       </div>
 
       <div>
-        <label htmlFor="institutional_email" className="block font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label
+          htmlFor="institutional_email"
+          className="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+        >
           Correo institucional
         </label>
         <input
@@ -139,7 +152,10 @@ export function UserInscriptionForm(): React.ReactElement {
       </div>
 
       <div>
-        <label htmlFor="phone" className="block font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label
+          htmlFor="phone"
+          className="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+        >
           Teléfono
         </label>
         <input
@@ -154,7 +170,10 @@ export function UserInscriptionForm(): React.ReactElement {
       </div>
 
       <div>
-        <label htmlFor="birth_date" className="block font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label
+          htmlFor="birth_date"
+          className="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+        >
           Fecha de nacimiento
         </label>
         <input
@@ -169,7 +188,10 @@ export function UserInscriptionForm(): React.ReactElement {
       </div>
 
       <div>
-        <label htmlFor="preferred_rol_1" className="block font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label
+          htmlFor="preferred_rol_1"
+          className="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+        >
           Rol preferido 1
         </label>
         <input
@@ -184,7 +206,10 @@ export function UserInscriptionForm(): React.ReactElement {
       </div>
 
       <div>
-        <label htmlFor="preferred_rol_2" className="block font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label
+          htmlFor="preferred_rol_2"
+          className="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+        >
           Rol preferido 2
         </label>
         <input
@@ -198,7 +223,10 @@ export function UserInscriptionForm(): React.ReactElement {
       </div>
 
       <div>
-        <label htmlFor="how_did_hear" className="block font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label
+          htmlFor="how_did_hear"
+          className="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+        >
           ¿Cómo se enteró?
         </label>
         <input
@@ -221,7 +249,10 @@ export function UserInscriptionForm(): React.ReactElement {
           onChange={handleChange}
           required
         />
-        <label htmlFor="has_availability" className="text-gray-700 dark:text-gray-200">
+        <label
+          htmlFor="has_availability"
+          className="text-gray-700 dark:text-gray-200"
+        >
           ¿Tiene disponibilidad?
         </label>
       </div>
@@ -235,7 +266,10 @@ export function UserInscriptionForm(): React.ReactElement {
           checked={formData.previous_participation}
           onChange={handleChange}
         />
-        <label htmlFor="previous_participation" className="text-gray-700 dark:text-gray-200">
+        <label
+          htmlFor="previous_participation"
+          className="text-gray-700 dark:text-gray-200"
+        >
           ¿Ha participado anteriormente?
         </label>
       </div>
@@ -250,7 +284,10 @@ export function UserInscriptionForm(): React.ReactElement {
           checked={formData.data_treatment}
           onChange={handleChange}
         />
-        <label htmlFor="data_treatment" className="text-gray-700 dark:text-gray-200">
+        <label
+          htmlFor="data_treatment"
+          className="text-gray-700 dark:text-gray-200"
+        >
           Acepto el tratamiento de datos
         </label>
       </div>
@@ -260,12 +297,12 @@ export function UserInscriptionForm(): React.ReactElement {
         disabled={isSubmitting}
         className={`w-full bg-blue-600 text-white py-2 rounded-xl transition ${
           isSubmitting
-            ? 'opacity-50 cursor-not-allowed'
-            : 'hover:bg-blue-700 dark:hover:bg-blue-500'
+            ? "opacity-50 cursor-not-allowed"
+            : "hover:bg-blue-700 dark:hover:bg-blue-500"
         }`}
       >
-        {isSubmitting ? 'Enviando...' : 'Enviar'}
+        {isSubmitting ? "Enviando..." : "Enviar"}
       </button>
     </form>
-  )
+  );
 }

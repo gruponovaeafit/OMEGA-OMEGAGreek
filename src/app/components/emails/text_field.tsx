@@ -6,10 +6,15 @@ interface EmailInputProps {
   placeholder?: string;
 }
 
-const EmailInput: React.FC<EmailInputProps> = ({ value, onChange, placeholder }) => {
+const EmailInput: React.FC<EmailInputProps> = ({
+  value,
+  onChange,
+  placeholder,
+}) => {
   return (
     <input
       type="email"
+      name="institutional_email"
       value={value}
       onChange={onChange}
       placeholder={placeholder || "usuario@correo.edu.co"}

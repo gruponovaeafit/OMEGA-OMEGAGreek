@@ -47,6 +47,7 @@ export default function Home() {
           value={leaderEmail}
           onChange={setLeaderEmail}
           placeholder="lider@institucion.edu.co"
+          name="leaderEmail"
         />
         <div className="w-80 mb-6">
           <h3 className="text-white font-bold text-sm mb-2 text-center">Rol Lider</h3>
@@ -54,6 +55,7 @@ export default function Home() {
            value={leaderRol}
             onChange={setLeaderRol}
             options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
+            name="leaderRol"
           />
          </div>
          
@@ -62,6 +64,7 @@ export default function Home() {
           value={email1}
           onChange={setEmail1}
           placeholder="Participante1@institucion.edu.co"
+          name="email1"
         />
         <div className="w-80 mb-6">
           <h3 className="text-white font-bold text-sm mb-2 text-center">Rol participante 1</h3>
@@ -69,6 +72,7 @@ export default function Home() {
            value={rol1}
             onChange={setRol1}
             options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
+            name="rol1"
           />
          </div>
 
@@ -77,6 +81,7 @@ export default function Home() {
           value={email2}
           onChange={setEmail2}
           placeholder="participante2@institucion.edu.co"
+          name="email2"
         />
         <div className="w-80 mb-6">
           <h3 className="text-white font-bold text-sm mb-2 text-center">Rol participante 2</h3>
@@ -84,6 +89,7 @@ export default function Home() {
            value={rol2}
             onChange={setRol2}
             options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
+            name="rol2"
           />
          </div>
 
@@ -92,6 +98,7 @@ export default function Home() {
           value={email3}
           onChange={setEmail3}
           placeholder="participante3@institucion.edu.co"
+          name="email3"
         />
         <div className="w-80 mb-6">
           <h3 className="text-white font-bold text-sm mb-2 text-center">Rol participante 3</h3>
@@ -99,6 +106,7 @@ export default function Home() {
            value={rol3}
             onChange={setRol3}
             options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
+            name="rol3"
           />
          </div>
 
@@ -107,6 +115,7 @@ export default function Home() {
           value={email4}
           onChange={setEmail4}
           placeholder="participante4@institucion.edu.co"
+          name="email4"
         />
         <div className="w-80 mb-6">
           <h3 className="text-white font-bold text-sm mb-2 text-center">Rol participante 4</h3>
@@ -114,6 +123,7 @@ export default function Home() {
            value={rol4}
             onChange={setRol4}
             options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
+            name="rol4"
           />
          </div>
 
@@ -122,6 +132,7 @@ export default function Home() {
           value={email5}
           onChange={setEmail5}
           placeholder="participante5@institucion.edu.co"
+          name="email5"
         />
         <div className="w-80 mb-6">
           <h3 className="text-white font-bold text-sm mb-2 text-center">Rol participante 5</h3>
@@ -129,7 +140,8 @@ export default function Home() {
            value={rol5}
             onChange={setRol5}
             options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
-          />
+            name="rol5"
+         />
          </div>
         
         <div className="flex items-center justify-center gap-4 mt-10 mb-8">

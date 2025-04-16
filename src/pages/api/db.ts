@@ -26,7 +26,10 @@ export async function connectToDatabase() {
 }
 
 // Exportación por defecto para la API
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   try {
     const pool = await connectToDatabase();
     res.status(200).json({ message: "Conexión exitosa" });

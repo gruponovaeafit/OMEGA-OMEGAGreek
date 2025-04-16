@@ -1,89 +1,91 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../db";
-import { Date, DateTime, Text, TinyInt, VarChar } from "mssql";
+import { Date as SqlDate, TinyInt, VarChar } from "mssql";
+import { getEmailFromCookies } from "../getEmailFromCookies";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse){
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      notification: { type: "error", message: "El método no es permitido" },
+    });
+  }
 
-    //Db connection
-    try {
+  const {
+    name,
+    surname,
+    id_number,
+    phone,
+    birth_date,
+    data_treatment = 0,
+  } = req.body;
 
-        if (req.method !== "POST") {
-            return res.status(405).json({ message: "Método no permitido" });
-        }
+  if (!name || !surname || !id_number || !birth_date) {
+    return res.status(400).json({
+      notification: { type: "error", message: "Faltan datos requeridos" },
+    });
+  }
 
-        const pool = await connectToDatabase();
-        res.status(200).json({ message: "Conexión exitosa" });
-        // Get data from the request body;
+  // ✅ Validar que se haya aceptado la política de tratamiento de datos
+  if (data_treatment !== true && data_treatment !== 1) {
+    return res.status(400).json({
+      notification: {
+        type: "error",
+        message: "Debes aceptar la política de tratamiento de datos para continuar.",
+      },
+    });
+  }
 
-        const {name , surname , institutional_email , id_number , phone , birth_date , how_did_hear , has_availability , previous_participation , preferred_rol_1 , preferred_rol_2 , data_treatment } = req.body;
-        console.log("Datos recibidos:", req.body);
+  const birthDate = new globalThis.Date(birth_date);
+  const age = new Date().getFullYear() - birthDate.getFullYear();
 
-        // Validate that the data is not empty
+  if (isNaN(birthDate.getTime()) || age < 15) {
+    return res.status(400).json({
+      notification: {
+        type: "error",
+        message: "La edad ingresada no es válida, debes ser mayor a 15 años",
+      },
+    });
+  }
 
-        if (!name || !surname || !id_number || !phone || !birth_date || !how_did_hear || has_availability === undefined || previous_participation === undefined || data_treatment === undefined) {
-            return res.status(400).json({ error: "Faltan datos requeridos" });
-        }
+  const userEmail = getEmailFromCookies(req, res);
+  if (!userEmail) {
+    return res.status(400).json({ redirectUrl: "/email" });
+  }
 
-        // Validate that the birthdate  is  more than 15 years ago
-        const birthDate = new global.Date(birth_date);
-        const today = new global.Date();
-        const age = today.getFullYear() - birthDate.getFullYear();
-        if (age < 15) {
-          console.error("Edad inválida:", { birth_date });
-            return res.status(400).json({ error: "Debes tener al menos 16 años para registrarte." });
-        }
+  try {
+    const pool = await connectToDatabase();
 
-        // Validate that the email is in the correct format
-        if (!institutional_email || !institutional_email.endsWith("@eafit.edu.co")) {
-            console.error("Correo inválido o faltante:", { institutional_email });
-            return res.status(400).json({
-              notification: {
-                type: "error",
-                message: "El correo debe ser del dominio @eafit.edu.co.",
-              },
-            });
-          }
-        // valitade that the institutional email is not already registered
+    await pool
+      .request()
+      .input("name", VarChar(50), name)
+      .input("surname", VarChar(50), surname)
+      .input("id_number", VarChar(50), id_number)
+      .input("birth_date", SqlDate, birth_date)
+      .input("data_treatment", TinyInt, 1)
+      .input("userEmail", VarChar(100), userEmail).query(`
+        UPDATE Personal_data
+        SET name = @name,
+            surname = @surname,
+            id_number = @id_number,
+            birth_date = @birth_date,
+            data_treatment = @data_treatment
+        WHERE institutional_email = @userEmail
+      `);
 
-        try {
-            const result = await pool.request()
-                .input("institutional_email", VarChar(50), institutional_email)
-                .query("SELECT * FROM Personal_data WHERE institutional_email = @institutional_email");
-            if (result.recordset.length > 0) {
-                console.error("El correo ya está registrado:", { institutional_email });
-                return res.status(400).json({ error: "El correo ya está registrado" });
-            }
-        }
-        catch (error) {console.error("Error al verificar el correo:", error);}
-
-
-        try {
-            const timestamp = new global.Date(); // Get the current date and time
-            pool.request()
-            .input("name", VarChar(50), name)
-            .input("surname", VarChar, surname)
-            .input("institutional_email", VarChar, institutional_email)
-            .input("id_number", VarChar, id_number)
-            .input("phone", VarChar, phone)
-            .input("birth_date", Date, birth_date)
-            .input("how_did_hear", Text, how_did_hear)
-            .input("has_time", TinyInt, has_availability)
-            .input("previous_participation", TinyInt, previous_participation)
-            .input("preferred_rol_1", VarChar, preferred_rol_1)
-            .input("preferred_rol_2", VarChar, preferred_rol_2)
-            .input("data_treatment", TinyInt, data_treatment)
-            .query("INSERT INTO Personal_data (name, surname, institutional_email, id_number, phone, birth_date, how_did_hear, has_time, previous_participation, data_treatment) VALUES (@name, @surname, @institutional_email, @id_number, @phone, @birth_date, @how_did_hear, @has_time, @previous_participation, @data_treatment)");
-
-            console.log("Usuario insertado correctamente:");
-            return res.status(200).json({ message: "Usuario insertado correctamente" });
-
-        } catch (error) {
-            return res.status(400).json({ error: "Error al insertar el usuario en la base de datos" });
-        }
-
-      } catch (error) {
-        res.status(500).json({ error: "Error conectando a la base de datos" });
-    }
-    
-
+    return res.status(200).json({
+      notification: {
+        type: "info",
+        message: "Tus datos han sido guardados correctamente",
+      },
+      redirectUrl: "/registration/individual/view2",
+    });
+  } catch (error) {
+    console.error("❌ Error al guardar los datos:", error);
+    return res.status(500).json({
+      notification: { type: "error", message: "Error al guardar los datos" },
+    });
+  }
 }
