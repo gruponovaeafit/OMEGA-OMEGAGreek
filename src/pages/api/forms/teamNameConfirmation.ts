@@ -94,7 +94,7 @@ export default async function handler(
                     type: "success",
                     message: "Nombre de equipo actualizado correctamente.",
                 },
-                redirectUrl: "/teamRolesConfirmationForm",
+                redirectUrl: "confirmation/teams/view2",
             });
 
             }catch (error) {

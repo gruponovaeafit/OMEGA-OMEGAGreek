@@ -287,7 +287,7 @@ export default async function handler(
           type: 'info',
           message: 'Equipo actualizado con éxito',
         },
-        redirectUrl: "/confirmation/view3"
+        redirectUrl: "/confirmation/team/view3"
         });
 
    }catch(err){
