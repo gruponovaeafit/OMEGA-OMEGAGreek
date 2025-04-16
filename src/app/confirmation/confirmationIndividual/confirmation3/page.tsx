@@ -37,7 +37,7 @@ export default function Confirmation3() {
           />
         </div>
 
-        <Button label="Siguiente" />
+        <Button variant="secondary" label="Siguiente" />
 
         <Footer />
       </form>

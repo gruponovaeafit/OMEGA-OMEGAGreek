@@ -8,7 +8,7 @@ interface ButtonProps {
   type?: "button" | "submit";
   isDisabled?: boolean;
   className?: string;
-  variant?: "primary";
+  variant?: "primary" | "secondary";
   iconName?: "arrow" | "check" | "close" | "chevron-right";
 }
 
@@ -25,6 +25,9 @@ export const Button: React.FC<ButtonProps> = ({
     switch (variant) {
       case "primary":
         return `bg-primary-button hover:brightness-110 active:brightness-95 focus:ring-2 
+                focus:ring-offset-2 focus:ring-primary-button/50 text-white`;
+      case "secondary":
+        return `bg-secondary-button hover:brightness-110 active:brightness-95 focus:ring-2 
                 focus:ring-offset-2 focus:ring-primary-button/50 text-white`;
       default:
         return `bg-primary-button hover:brightness-110 active:brightness-95 focus:ring-2 
