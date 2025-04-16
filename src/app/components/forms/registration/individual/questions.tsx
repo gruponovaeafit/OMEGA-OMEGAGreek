@@ -127,7 +127,7 @@ export const TextQuestion: React.FC<
         name={name}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full h-12 px-4 text-center text-lg font-light text-white rounded-xl placeholder-white placeholder-opacity-25 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
+        className="w-full h-12 px-4 font-light text-white rounded-lg placeholder-white placeholder-opacity-90 border border-white focus:outline-none focus:ring-2 focus:ring-purple-400 text-base"
         style={{
           backgroundImage:
             "linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)",
@@ -175,7 +175,8 @@ export const Select: React.FC<{
   name: string;
   onChange: (value: string) => void;
   options: string[];
-}> = ({ label, value, onChange, options, name }) => {
+  placeholder: string;
+}> = ({ label, value, onChange, options, name, placeholder }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -197,9 +198,9 @@ export const Select: React.FC<{
         </label>
       )}
   
-      <div ref={ref} className="relative w-full">
+      <div ref={ref} className="relative w-full border border-white rounded-lg">
         <div
-          className="w-full h-12 px-4 text-lg font-light text-white rounded-xl flex items-center justify-center cursor-pointer"
+          className="w-full h-12 px-4 text-lg font-light text-white rounded-lg flex items-center justify-center cursor-pointer"
           style={{
             backgroundImage:
               "linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)",
@@ -208,10 +209,11 @@ export const Select: React.FC<{
           onClick={() => setOpen(!open)}
         >
           <input
-            className="w-full text-center truncate bg-transparent border-none outline-none cursor-pointer"
+            className="w-full truncate bg-transparent border-none outline-none cursor-pointer text-base placeholder-white placeholder-opacity-90"
             value={value}
             name={name}
             type="text"
+            placeholder={placeholder}
             readOnly
           />
         </div>

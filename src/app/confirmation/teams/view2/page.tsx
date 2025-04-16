@@ -16,22 +16,22 @@ const handleSiguiente = () => {
 
 export default function Home() {
   const [leaderEmail, setLeaderEmail] = useState("");
-  const [leaderRol, setLeaderRol] = useState("Selecciones Rol Lider");
-
-  const [email1, setEmail1] = useState("");
-  const [rol1, setRol1] = useState("Selecciones Rol 1"); 
+  const [leaderRol, setLeaderRol] = useState("Seleccione Rol Lider");
 
   const [email2, setEmail2] = useState("");
-  const [rol2, setRol2] = useState("Selecciones Rol 2"); 
+  const [rol2, setRol2] = useState("Seleccione Rol 2"); 
 
   const [email3, setEmail3] = useState("");
-  const [rol3, setRol3] = useState("Selecciones Rol 3"); 
+  const [rol3, setRol3] = useState("Seleccione Rol 3"); 
 
   const [email4, setEmail4] = useState("");
-  const [rol4, setRol4] = useState("Selecciones Rol 4"); 
+  const [rol4, setRol4] = useState("Seleccione Rol 4"); 
 
   const [email5, setEmail5] = useState("");
-  const [rol5, setRol5] = useState("Selecciones Rol 5"); 
+  const [rol5, setRol5] = useState("Seleccione Rol 5"); 
+
+  const [email6, setEmail6] = useState("");
+  const [rol6, setRol6] = useState("Seleccione Rol 6"); 
 
   return (
     <div className="h-screen flex flex-col">
@@ -63,34 +63,15 @@ export default function Home() {
       </div>
         
       <div className="border-b">
-        <TextQuestion //email 1
-            question="Correo electronico del participante 1"
-            value={email1}
-            onChange={setEmail1}
-            placeholder="Participante1@institucion.edu.co"
-            name="email1"
+        <TextQuestion //email 2
+            question="Correo electronico del participante 2"
+            value={email2}
+            onChange={setEmail2}
+            placeholder="Participante2@institucion.edu.co"
+            name="email2"
         />
         <div className="w-80 mb-6">
           <Select
-            label="Rol Participante 1"
-            value={rol1}
-            onChange={setRol1}
-            options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
-            name="rol1"
-          />
-        </div>
-      </div>
-        
-      <div className="border-b">
-        <TextQuestion //email 2
-          question="Correo electronico del participante 2"
-          value={email2}
-          onChange={setEmail2}
-          placeholder="participante2@institucion.edu.co"
-          name="email2"
-        />
-        <div className="w-80 mb-6">
-          <Select  
             label="Rol Participante 2"
             value={rol2}
             onChange={setRol2}
@@ -99,7 +80,7 @@ export default function Home() {
           />
         </div>
       </div>
-         
+        
       <div className="border-b">
         <TextQuestion //email 3
           question="Correo electronico del participante 3"
@@ -109,16 +90,16 @@ export default function Home() {
           name="email3"
         />
         <div className="w-80 mb-6">
-          <Select
+          <Select  
             label="Rol Participante 3"
             value={rol3}
             onChange={setRol3}
             options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
-            name="rol3" 
+            name="rol3"
           />
         </div>
       </div>
-
+         
       <div className="border-b">
         <TextQuestion //email 4
           question="Correo electronico del participante 4"
@@ -133,7 +114,7 @@ export default function Home() {
             value={rol4}
             onChange={setRol4}
             options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
-            name="rol4"
+            name="rol4" 
           />
         </div>
       </div>
@@ -153,6 +134,25 @@ export default function Home() {
             onChange={setRol5}
             options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
             name="rol5"
+          />
+        </div>
+      </div>
+
+      <div className="border-b">
+        <TextQuestion //email 6
+          question="Correo electronico del participante 6"
+          value={email6}
+          onChange={setEmail6}
+          placeholder="participante6@institucion.edu.co"
+          name="email6"
+        />
+        <div className="w-80 mb-6">
+          <Select
+            label="Rol Participante 6"
+            value={rol6}
+            onChange={setRol6}
+            options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
+            name="rol6"
           />
         </div>
       </div>
