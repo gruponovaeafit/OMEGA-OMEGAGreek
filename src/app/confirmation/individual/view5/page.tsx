@@ -23,6 +23,7 @@ export default function Confirmation2() {
         />
         <div className="w-80 mb-6">
             <Select
+                placeholder="Selecciona tu preferencia alimentaria"
                 label="¿Cuál es tu preferencia alimentaria?"
                 value={food}
                 onChange={setFood}
