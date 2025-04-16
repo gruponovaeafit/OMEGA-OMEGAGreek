@@ -1,15 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../db";
 import { getEmailFromCookies } from "../getEmailFromCookies";
+import sql from "mssql";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  // Db connection
-  // We need to validate that the leader select right the roles of their team. 
-  // If the team members is equal to 4, each role could not repeat 
-  // If the team members is mayor to 4, each role could not repeat more than a time.
+
   try {
 
     if (req.method !== "POST") {
@@ -26,7 +24,6 @@ export default async function handler(
     ];
 
     const {leader_rol,
-        leader_email,
         member2_rol,
         member2_email,
         member3_rol,
@@ -39,7 +36,7 @@ export default async function handler(
         member6_email
      } = req.body
 
-    //const leader_email = getEmailFromCookies(req, res);
+    const leader_email = getEmailFromCookies(req, res);
 
     const roleMap: Record<string, number> = {
         Administrador: 1,
@@ -47,8 +44,6 @@ export default async function handler(
         Mercadeo: 3,
         Desarrollador: 4,
     };
-
-  
 
     // Validate the members information
     const membersInfo = [
@@ -68,9 +63,6 @@ export default async function handler(
 
       //Team data parsing
       for (const field of membersInfo) {
-
-        console.log("Email: ", field.email)
-        console.log("Role: ", field.role)
 
         //Case if the member data exist
         if(field.role && field.email){
@@ -169,7 +161,7 @@ export default async function handler(
     }catch(err){
 
       console.log("Error parseando los datos del equipo", err)
-      return res.status(400).json({
+      return res.status(500).json({
         notification: {
           type: 'error',
           message: 'Error parseando los datos',
@@ -177,17 +169,44 @@ export default async function handler(
         });
     };
 
-  //Inserting data
+  //Inserting and updating data
    const pool = await connectToDatabase();
+
+    // Validate that all emails in teamEmails are registered in the Personal_data table
+    const unregisteredEmails = [];
+
+    for (const email of teamEmails) {
+      const emailCheck = await pool.request()
+        .input('email', email)
+        .query(`
+          SELECT institutional_email
+          FROM Personal_data
+          WHERE institutional_email = @email
+        `);
+
+      if (emailCheck.recordset.length === 0) {
+        unregisteredEmails.push(email);
+      }
+    }
+
+    if (unregisteredEmails.length > 0) {
+      return res.status(400).json({
+        notification: {
+          type: 'error',
+          message: `Los siguientes correos no están registrados en el sistema: ${unregisteredEmails.join(', ')}`,
+        },
+      });
+    }
 
    try{
 
-      // 1. Obtener el team_id
+      // 1. Obtain team_id
       const result = await pool.request()
       .input('leader_email', leader_email)
       .query('SELECT id FROM Teams_data WHERE leader_email = @leader_email');
 
       if (result.recordset.length === 0) {
+      console.log("No se encontró un equipo registrado con ese correo de lider")
       return res.status(404).json({
         notification: {
           type: 'error',
@@ -197,43 +216,80 @@ export default async function handler(
       }
 
       const team_id = result.recordset[0].id;
+      const existingMemberEmail = []
 
       const teamData = await pool.request()
                                  .input("team_id", team_id)
                                  .query(`
-                                    SELECT institutional_email where team_id = @team_id
+                                    SELECT institutional_email FROM Teams_members where team_id = @team_id
                                   `)
-      
-      if (teamData.recordset.length == 0){
-        
+      if (teamData.recordset.length > 0){
+
+        for (let i = 0; i < teamData.recordset.length; i++){
+            existingMemberEmail.push(teamData.recordset[i].institutional_email)
+        }
+        //Sending the existing emails
+        console.log("Datos enviados al front:", existingMemberEmail)
+        res.status(200).json({
+          notification: {
+            type: 'info',
+            message: 'Emails enviados al front',
+          },
+          teamEmails : existingMemberEmail
+          });
       }
 
-      // 2. Insertar miembros al equipo
+
+      // 2. Insert member to the team
       for (let i = 0; i < teamEmails.length; i++) {
-      const email = teamEmails[i];
-      const role = teamRoles[i];
+        const email = teamEmails[i];
+        const roleName = teamRoles[i];
+        const role = roleMap[roleName];
 
-      await pool.request()
-        .input('team_id', team_id)
-        .input('leader_email', leader_email)
-        .input('institutional_email', email)
-        .input('role', role)
-        .query(`
-          INSERT INTO Teams_members (
-            team_id,
-            leader_email,
-            institutional_email,
-            role,
 
-          ) VALUES (
-            @team_id,
-            @leader_email,
-            @institutional_email,
-            @role,
+        // Insert the member only if they do not already exist
+        if (!existingMemberEmail.includes(email)) {
+          await pool.request()
+            .input('team_id', sql.Int ,team_id)
+            .input('leader_email', sql.VarChar ,leader_email)
+            .input('institutional_email', sql.VarChar ,email)
+            .input('role', sql.Int ,role)
+            .query(`
+              INSERT INTO TEAMS_MEMBERS (
+          team_id,
+          leader_email,
+          institutional_email,
+          role
+              ) VALUES (
+          @team_id,
+          @leader_email,
+          @institutional_email,
+          @role
+              )
+            `);
+            console.log("Miembro insertado con éxito")
 
-          )
-        `);
+        } else {
+          await pool.request()
+            .input('team_id', sql.Int ,team_id)
+            .input('institutional_email', sql.VarChar ,email)
+            .input('role', sql.Int ,role)
+            .query(`
+              UPDATE TEAMS_MEMBERS
+              SET role = @role
+              WHERE team_id = @team_id AND institutional_email = @institutional_email
+            `);
+            console.log("Miembro actualizado con éxito")
+        }
       }
+      return res.status(200).json({
+        notification: {
+          type: 'info',
+          message: 'Equipo actualizado con éxito',
+        },
+        redirectUrl: "/confirmation/view3"
+        });
+
    }catch(err){
     console.log(err)
     return res.status(500).json({
