@@ -56,6 +56,8 @@ export default async function handler(
       { role: member6_rol, email: member6_email },
     ];
 
+    console.log("Data: ",membersInfo)
+
     const teamRoles = [];
     const teamEmails = [];
 
@@ -99,6 +101,7 @@ export default async function handler(
 
         //Validate if one of the members data is missing
         if (!field.email && field.role){
+          console.log("Rol: ",field.role)
           return res.status(400).json({
             notification: {
               type: 'error',
@@ -109,6 +112,7 @@ export default async function handler(
         }
 
         if (field.email && !field.role){
+          console.log("Email: ",field.email)
           return res.status(400).json({
             notification: {
               type: 'error',
@@ -239,13 +243,11 @@ export default async function handler(
           });
       }
 
-
       // 2. Insert member to the team
       for (let i = 0; i < teamEmails.length; i++) {
         const email = teamEmails[i];
         const roleName = teamRoles[i];
         const role = roleMap[roleName];
-
 
         // Insert the member only if they do not already exist
         if (!existingMemberEmail.includes(email)) {
@@ -287,7 +289,7 @@ export default async function handler(
           type: 'info',
           message: 'Equipo actualizado con éxito',
         },
-        redirectUrl: "/confirmation/team/view3"
+        redirectUrl: "/confirmation/teams/send"
         });
 
    }catch(err){

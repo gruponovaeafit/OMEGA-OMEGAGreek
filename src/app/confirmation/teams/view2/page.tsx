@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Footer } from '@/app/components/Footer';
 import { Header } from '@/app/components/Header';
 import { Button } from '@/app/components/UI/Button';
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import {toast, ToastContainer} from "react-toastify"
 
@@ -38,38 +38,38 @@ export default function Home() {
       return () => clearInterval(interval);
     }, [router]);
 
-  const [leaderEmail, setLeaderEmail] = useState("");
-  const [leaderRol, setLeaderRol] = useState("Seleccione Rol Lider");
+
+  const [leaderRol, setLeaderRol] = useState("Seleccione Rol");
 
   const [email2, setEmail2] = useState("");
-  const [rol2, setRol2] = useState("Seleccione Rol 2"); 
+  const [rol2, setRol2] = useState("Seleccione Rol"); 
 
   const [email3, setEmail3] = useState("");
-  const [rol3, setRol3] = useState("Seleccione Rol 3"); 
+  const [rol3, setRol3] = useState("Seleccione Rol"); 
 
   const [email4, setEmail4] = useState("");
-  const [rol4, setRol4] = useState("Seleccione Rol 4"); 
+  const [rol4, setRol4] = useState("Seleccione Rol"); 
 
   const [email5, setEmail5] = useState("");
-  const [rol5, setRol5] = useState("Seleccione Rol 5"); 
+  const [rol5, setRol5] = useState("Seleccione Rol"); 
 
   const [email6, setEmail6] = useState("");
-  const [rol6, setRol6] = useState("Seleccione Rol 6"); 
+  const [rol6, setRol6] = useState("Seleccione Rol"); 
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formObject = {
-      leader_rol: leaderRol,
-      member2_email: email2,
-      member2_rol: rol2,
-      member3_email: email3,
-      member3_rol: rol3,
-      member4_email: email4,
-      member4_rol: rol4,
-      member5_email: email5,
-      member5_rol: rol5,
-      member6_email: email6,
-      member6_rol: rol6,
+      leader_rol: leaderRol === "Seleccione Rol" ? null : leaderRol,
+      member2_email: email2 === "" ? null : email2,
+      member2_rol: rol2 === "Seleccione Rol" ? null : rol2,
+      member3_email: email3 === "" ? null : email3,
+      member3_rol: rol3 === "Seleccione Rol" ? null : rol3,
+      member4_email: email4 === "" ? null : email4,
+      member4_rol: rol4 === "Seleccione Rol" ? null : rol4,
+      member5_email: email5 === "" ? null : email5,
+      member5_rol: rol5 === "Seleccione Rol" ? null : rol5,
+      member6_email: email6 === "" ? null : email6,
+      member6_rol: rol6 === "Seleccione Rol" ? null : rol6,
     };
 
     try {
@@ -100,7 +100,7 @@ export default function Home() {
         result.notification?.message || "Formulario enviado con éxito.",
         {
           onClose: () =>
-            router.push(result.redirectUrl || "/confirmation/teams/view3"),
+            router.push(result.redirectUrl || "/confirmation/teams/send"),
         },
       );
     } catch (error) {
@@ -130,7 +130,7 @@ export default function Home() {
             label="Rol Lider"
             value={leaderRol}
             onChange={setLeaderRol}
-            options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
+            options={["Administrador", "Diseñador", "Mercadeo", "Desarrollador"]}
             name="leader_rol"
           />
         </div>
@@ -150,12 +150,12 @@ export default function Home() {
             label="Rol Participante 2"
             value={rol2}
             onChange={setRol2}
-            options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
+            options={["Administrador", "Diseñador", "Mercadeo", "Desarrollador"]}
             name="member2_rol"
           />
         </div>
       </div>
-        
+
       <div className="border-b">
         <TextQuestion //email 3
           question="Correo electronico del participante 3"
@@ -170,12 +170,12 @@ export default function Home() {
             label="Rol Participante 3"
             value={rol3}
             onChange={setRol3}
-            options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
+            options={["Administrador", "Diseñador", "Mercadeo", "Desarrollador"]}
             name="member3_rol"
           />
         </div>
       </div>
-         
+
       <div className="border-b">
         <TextQuestion //email 4
           question="Correo electronico del participante 4"
@@ -190,7 +190,7 @@ export default function Home() {
             label="Rol Participante 4"
             value={rol4}
             onChange={setRol4}
-            options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
+            options={["Administrador", "Diseñador", "Mercadeo", "Desarrollador"]}
             name="member4_rol" 
           />
         </div>
@@ -210,7 +210,7 @@ export default function Home() {
             label="Rol Participante 5"
             value={rol5}
             onChange={setRol5}
-            options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
+            options={["Administrador", "Diseñador", "Mercadeo", "Desarrollador"]}
             name="member5_rol"
           />
         </div>
@@ -230,7 +230,7 @@ export default function Home() {
             label="Rol Participante 6"
             value={rol6}
             onChange={setRol6}
-            options={["Administrador", "Diseñador", "Marketing", "Desarrollador"]}
+            options={["Administrador", "Diseñador", "Mercadeo", "Desarrollador"]}
             name="member6_rol"
           />
         </div>

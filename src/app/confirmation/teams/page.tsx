@@ -33,29 +33,12 @@ export default function Confirmation2() {
         return () => clearInterval(interval);
       }, [router]);
 
-      const checkUserStatus = async () => {
-        try {
-          const res = await fetch("/api/forms/userCheckStatus", { method: "GET" });
-          const result = await res.json();
-
-          if (res.ok && result.redirectUrl) {
-            router.push(result.redirectUrl);
-            return false;
-          }
-
-          return true;
-        } catch (error) {
-          console.error("Error al verificar estado del usuario:", error);
-          return true;
-        }
-      };
-
     const [teamName, setTeamName] = useState("");
 
     const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formObject = {
-          teamName: teamName,
+          team_name: teamName,
         };
 
         try {
@@ -82,7 +65,7 @@ export default function Confirmation2() {
             result.notification?.message || "Formulario enviado con éxito.",
             {
               onClose: () =>
-                router.push(result.redirectUrl || "/confirmation/view2"),
+                router.push(result.redirectUrl),
             },
           );
         } catch (error) {
@@ -107,7 +90,7 @@ export default function Confirmation2() {
                 alt="reminder"
             />
             <TextButton text="Nombre del equipo"/>
-            <TextQuestion name="Nombre de equipo" question="" type="string" value={teamName} onChange={setTeamName} placeholder="Ingrese nombre de equipo"/>
+            <TextQuestion name="team_name" question="" type="string" value={teamName} onChange={setTeamName} placeholder="Ingrese nombre de equipo"/>
             <div className="flex justify-center items-center">
                 <img
                 src="/Dionisio.svg"

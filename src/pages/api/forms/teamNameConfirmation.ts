@@ -14,24 +14,20 @@ export default async function handler(
       return res.status(405).json({ message: "Método no permitido" });
     }
 
-    const { recaptchaToken } = req.body;
+    const { team_name, recaptchaToken } = req.body;
+    console.log(team_name)
 
-    if (!recaptchaToken) {
-      return res.status(400).json({
-        notification: { type: "error", message: "Faltan datos requeridos." },
-      });
-    }
 
     // Validar reCAPTCHA (posible cuello de botella)
-    const isHuman = await verifyRecaptchaEnterprise(recaptchaToken);
-    if (!isHuman) {
-    return res.status(400).json({
-        notification: {
-        type: "error",
-        message: "Validación reCAPTCHA fallida. Intenta de nuevo.",
-        },
-    });
-    }
+    // const isHuman = await verifyRecaptchaEnterprise(recaptchaToken);
+    // if (!isHuman) {
+    // return res.status(400).json({
+    //     notification: {
+    //     type: "error",
+    //     message: "Validación reCAPTCHA fallida. Intenta de nuevo.",
+    //     },
+    // });
+    // }
 
     const userEmail = getEmailFromCookies(req, res);
     if (!userEmail) {
@@ -49,6 +45,8 @@ export default async function handler(
     try {
         const pool = await connectToDatabase();
 
+        console.log("Obteniendo nombre actual")
+
         const result = await pool
         .request()
         .input("email", sql.VarChar, emailLower)
@@ -56,7 +54,8 @@ export default async function handler(
           "SELECT team_name FROM teams_data WHERE leader_email = @email"
         );
 
-        const teamName = result.recordset[0].team_name;
+        const currentTeamName = result.recordset[0].team_name;
+        console.log(" Nombre actual del grupo: ", currentTeamName)
 
         //send to the front the team name
         res.status(200).json({
@@ -64,13 +63,13 @@ export default async function handler(
                 type: "success",
                 message: "Nombre de equipo obtenido correctamente.",
             },
-            teamName: teamName,
+            teamName: currentTeamName,
+            redirectUrl: "/confirmation/teams/view2"
         });
 
         try{
 
-            // the field team_name should be a value in frontend
-            const {team_name} = req.body;
+
             if (!team_name) {
                 return res.status(400).json({
                     notification: { type: "error", message: "Faltan datos requeridos." },
