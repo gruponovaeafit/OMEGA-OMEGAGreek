@@ -26,7 +26,7 @@ export default function Confirmation2() {
             <img 
             src="/Dionisio.svg"
              alt="Dionisio" 
-             className="w-32 h-32"
+             className="w-50 h-50"
              />
             <img 
             src="/Siguiente.svg" 
