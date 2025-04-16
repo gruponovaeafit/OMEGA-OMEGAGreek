@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Footer } from "@/app/components/Footer";
 import { Header } from "@/app/components/Header";
+import { Button } from "@/app/components/UI/Button";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -120,6 +121,7 @@ export default function Home() {
         <TextQuestion
           name="name"
           question="Nombre"
+          questionLabelId="name"
           value={nombre}
           onChange={setNombre}
           placeholder="Nombre"
@@ -128,6 +130,7 @@ export default function Home() {
         <TextQuestion
           name="surname"
           question="Apellido"
+          questionLabelId="surname"
           value={apellido}
           onChange={setApellido}
           placeholder="Apellido"
@@ -148,6 +151,7 @@ export default function Home() {
         <TextQuestion
           name="id_number"
           question="Número de documento"
+          questionLabelId="idNumber"
           value={numeroDocumento}
           onChange={setNumeroDocumento}
           placeholder="ID"
@@ -155,6 +159,7 @@ export default function Home() {
 
         <DateNativeQuestion
           question="Fecha de nacimiento"
+          questionLabelId="dateOfBirth"
           value={fechaNacimiento}
           onChange={setFechaNacimiento}
         />
@@ -188,15 +193,8 @@ export default function Home() {
             alt="Pacho Zeus"
             className="w-44 h-auto"
           />
-          <button type="submit">
-            <img
-              src="https://novaeafit2.blob.core.windows.net/omega-2025/button_siguiente.svg"
-              alt="Botón siguiente"
-              className="w-32 h-auto cursor-pointer"
-            />
-          </button>
+          <Button type="submit" label="Siguiente" />
         </div>
-
         <Footer />
       </form>
     </div>

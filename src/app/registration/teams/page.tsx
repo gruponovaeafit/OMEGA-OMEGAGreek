@@ -82,6 +82,7 @@ export default function Home() {
         <TextQuestion
           name="teamname"
           question="Nombre del equipo"
+          questionLabelId="teamname"
           value={teamName}
           onChange={setTeamName}
           placeholder="Inserte nombre"
