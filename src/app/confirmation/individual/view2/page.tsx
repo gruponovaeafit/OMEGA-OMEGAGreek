@@ -53,7 +53,12 @@ export default function View2() {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleChangeUniversity = async (university: string) => {
-    setFormData((prev) => ({ ...prev, university, study_area: "", career: "" }));
+    setFormData((prev) => ({
+      ...prev,
+      university,
+      study_area: "",
+      career: "",
+    }));
     setCareers([]);
     setStudyAreaId(null);
     setCareerId(null);
@@ -66,7 +71,8 @@ export default function View2() {
       });
 
       const result = await response.json();
-      if (response.ok && Array.isArray(result.areas)) setStudyAreas(result.areas);
+      if (response.ok && Array.isArray(result.areas))
+        setStudyAreas(result.areas);
       else toast.error(result.notification?.message);
     } catch (error) {
       console.error("Error al obtener áreas:", error);
@@ -89,7 +95,8 @@ export default function View2() {
       });
 
       const result = await response.json();
-      if (response.ok && Array.isArray(result.careers)) setCareers(result.careers);
+      if (response.ok && Array.isArray(result.careers))
+        setCareers(result.careers);
       else toast.error(result.notification?.message);
     } catch (error) {
       console.error("Error al obtener carreras:", error);
@@ -126,7 +133,8 @@ export default function View2() {
       }
 
       toast.success(result.notification?.message, {
-        onClose: () => router.push(result.redirectUrl || "/confirmation/individual/view3"),
+        onClose: () =>
+          router.push(result.redirectUrl || "/confirmation/individual/view3"),
       });
     } catch (error) {
       console.error("Error al guardar datos:", error);
@@ -187,7 +195,9 @@ export default function View2() {
           />
         </div>
 
-        <CheckboxButtonIndividual onChange={(checked) => setIsChecked(checked)} />
+        <CheckboxButtonIndividual
+          onChange={(checked) => setIsChecked(checked)}
+        />
 
         <div className="flex flex-wrap justify-center items-center gap-4 w-full max-w-[320px]">
           <img src="/Hefesto.svg" alt="Hefesto" className="w-42 h-44" />

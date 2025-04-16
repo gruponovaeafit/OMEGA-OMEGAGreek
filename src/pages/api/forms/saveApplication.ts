@@ -3,7 +3,10 @@ import { connectToDatabase } from "../db";
 import { Int, TinyInt, VarChar } from "mssql";
 import { getEmailFromCookies } from "../getEmailFromCookies";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Método no permitido" });
   }
@@ -21,7 +24,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   };
 
   const universityId = universityMap[university];
-  if (!universityId || !study_area_id || !career_id || typeof data_treatment === "undefined") {
+  if (
+    !universityId ||
+    !study_area_id ||
+    !career_id ||
+    typeof data_treatment === "undefined"
+  ) {
     return res.status(400).json({
       notification: {
         type: "error",
@@ -43,13 +51,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const pool = await connectToDatabase();
-    await pool.request()
+    await pool
+      .request()
       .input("university", Int, universityId)
       .input("study_area", Int, study_area_id)
       .input("career", Int, career_id)
       .input("data_treatment", TinyInt, data_treatment)
-      .input("email", VarChar(255), userEmail)
-      .query(`
+      .input("email", VarChar(255), userEmail).query(`
         UPDATE Applicant_details
         SET university = @university, study_area = @study_area, career = @career, data_treatment = @data_treatment
         WHERE institutional_email = @email
@@ -62,7 +70,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
       redirectUrl: "/confirmation/individual/view3",
     });
-
   } catch (error) {
     console.error("❌ Error al guardar datos:", error);
     return res.status(500).json({

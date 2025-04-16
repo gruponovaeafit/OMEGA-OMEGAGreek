@@ -3,22 +3,22 @@ import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { TextButton } from "@/app/components/forms/confirmation/individual/text";
 import { TextQuestion } from "@/app/components/forms/registration/individual/questions";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function Confirmation2() {
   const router = useRouter();
 
+  const [teamName, setTeamName] = useState("");
+  const [defaultTeamName, setDefaultTeamName] = useState("");
+
   // Verificación continua del JWT
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
         const res = await fetch("/api/cookiesChecker", { method: "GET" });
-        if (res.status !== 200) {
-          router.push("/");
-        }
+        if (res.status !== 200) router.push("/");
       } catch (error) {
         console.error("Error verificando autenticación:", error);
         router.push("/");
@@ -30,13 +30,33 @@ export default function Confirmation2() {
     return () => clearInterval(interval);
   }, [router]);
 
-  const [teamName, setTeamName] = useState("");
+  // Obtener nombre actual del equipo al cargar
+  useEffect(() => {
+    const fetchTeamName = async () => {
+      try {
+        const res = await fetch("/api/forms/teamNameConfirmation", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ team_name: "" }), // Solo para obtener
+        });
+        const data = await res.json();
+
+        if (res.ok && data.teamName) {
+          setTeamName(data.teamName); // Valor editable por usuario
+          setDefaultTeamName(data.teamName); // Valor como placeholder
+        }
+      } catch (error) {
+        console.error("Error al obtener el nombre del equipo:", error);
+      }
+    };
+
+    fetchTeamName();
+  }, []);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formObject = {
-      team_name: teamName,
-    };
+
+    const formObject = { team_name: teamName };
 
     try {
       const response = await fetch("/api/forms/teamNameConfirmation", {
@@ -48,10 +68,6 @@ export default function Confirmation2() {
       });
 
       const result = await response.json();
-
-      if (result.teamName) {
-        setTeamName(result.teamName || "");
-      }
 
       if (!response.ok) {
         toast.error(result.notification?.message || "Error en el servidor.");
@@ -66,9 +82,7 @@ export default function Confirmation2() {
       );
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
-      toast.error(
-        "Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.",
-      );
+      toast.error("Hubo un error al enviar el formulario.");
     }
   };
 
@@ -88,7 +102,7 @@ export default function Confirmation2() {
           type="string"
           value={teamName}
           onChange={setTeamName}
-          placeholder="Ingrese nombre de equipo"
+          placeholder={defaultTeamName || "Ingrese nombre de equipo"}
         />
         <div className="flex justify-center items-center max-w-xs ">
           <img src="/Dionisio.svg" alt="Dionisio" className="w-40 h-40" />
@@ -96,7 +110,6 @@ export default function Confirmation2() {
             <img src="/Siguiente.svg" alt="Siguiente" />
           </button>
         </div>
-
         <Footer />
       </form>
       <ToastContainer />

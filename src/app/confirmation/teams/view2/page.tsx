@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Footer } from "@/app/components/Footer";
 import { Header } from "@/app/components/Header";
 import { Button } from "@/app/components/UI/Button";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
-
 import {
   Select,
   TextQuestion,
@@ -16,7 +14,6 @@ import {
 export default function Home() {
   const router = useRouter();
 
-  // Verificación continua del JWT
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
@@ -35,6 +32,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [router]);
 
+  const [leaderEmail, setLeaderEmail] = useState("");
   const [leaderRol, setLeaderRol] = useState("Seleccione Rol");
 
   const [email2, setEmail2] = useState("");
@@ -52,9 +50,49 @@ export default function Home() {
   const [email6, setEmail6] = useState("");
   const [rol6, setRol6] = useState("Seleccione Rol");
 
+  useEffect(() => {
+    const fetchTeamData = async () => {
+      try {
+        const response = await fetch("/api/forms/teamRolesConfirmationForm", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}),
+        });
+
+        const result = await response.json();
+        console.log("➡️ Datos del backend:", result);
+
+        if (response.ok && result.teamEmails && result.teamRoles) {
+          setLeaderEmail(result.teamEmails[0] || "");
+          setLeaderRol(result.teamRoles[0] || "Seleccione Rol");
+
+          setEmail2(result.teamEmails[1] || "");
+          setRol2(result.teamRoles[1] || "Seleccione Rol");
+
+          setEmail3(result.teamEmails[2] || "");
+          setRol3(result.teamRoles[2] || "Seleccione Rol");
+
+          setEmail4(result.teamEmails[3] || "");
+          setRol4(result.teamRoles[3] || "Seleccione Rol");
+
+          setEmail5(result.teamEmails[4] || "");
+          setRol5(result.teamRoles[4] || "Seleccione Rol");
+
+          setEmail6(result.teamEmails[5] || "");
+          setRol6(result.teamRoles[5] || "Seleccione Rol");
+        }
+      } catch (error) {
+        console.error("Error al cargar miembros existentes:", error);
+      }
+    };
+
+    fetchTeamData();
+  }, []);
+
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formObject = {
+      leader_email: leaderEmail === "" ? null : leaderEmail,
       leader_rol: leaderRol === "Seleccione Rol" ? null : leaderRol,
       member2_email: email2 === "" ? null : email2,
       member2_rol: rol2 === "Seleccione Rol" ? null : rol2,
@@ -78,14 +116,7 @@ export default function Home() {
       });
 
       const result = await response.json();
-
-      if (result.existingMembersEmail) {
-        setEmail2(result.existingMembersEmail[1] || "");
-        setEmail3(result.existingMembersEmail[2] || "");
-        setEmail4(result.existingMembersEmail[3] || "");
-        setEmail5(result.existingMembersEmail[4] || "");
-        setEmail6(result.existingMembersEmail[5] || "");
-      }
+      console.log("➡️ Datos del backend:", result);
 
       if (!response.ok) {
         toast.error(result.notification?.message || "Error en el servidor.");
@@ -119,10 +150,17 @@ export default function Home() {
           />
 
           <div className="border-b">
+            <TextQuestion
+              question="Correo del líder"
+              value={leaderEmail}
+              onChange={setLeaderEmail}
+              placeholder="lider@institucion.edu.co"
+              name="leader_email"
+            />
             <div className="w-80 mb-4 mt-4">
               <Select
-                placeholder="Rol del lider"
-                label="Rol Lider"
+                placeholder="Rol del líder"
+                label="Rol Líder"
                 value={leaderRol}
                 onChange={setLeaderRol}
                 options={[
@@ -136,133 +174,35 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="border-b">
-            <TextQuestion //email 2
-              question="Participante 2"
-              value={email2}
-              onChange={setEmail2}
-              placeholder="Participante2@institucion.edu.co"
-              name="member2_email"
-            />
-            <div className="w-80 mb-4 mt-4">
-              <Select
-                placeholder="Participante 2"
-                label="Rol Participante 2"
-                value={rol2}
-                onChange={setRol2}
-                options={[
-                  "Administrador",
-                  "Diseñador",
-                  "Mercadeo",
-                  "Desarrollador",
-                ]}
-                name="member2_rol"
+          {[2, 3, 4, 5, 6].map((n) => (
+            <div className="border-b" key={n}>
+              <TextQuestion
+                question={`Participante ${n}`}
+                value={eval(`email${n}`)}
+                onChange={(val) => eval(`setEmail${n}`)(val)}
+                placeholder={`participante${n}@institucion.edu.co`}
+                name={`member${n}_email`}
               />
+              <div className="w-80 mb-6">
+                <Select
+                  placeholder={`Rol del participante ${n}`}
+                  label={`Rol Participante ${n}`}
+                  value={eval(`rol${n}`)}
+                  onChange={(val) => eval(`setRol${n}`)(val)}
+                  options={[
+                    "Administrador",
+                    "Diseñador",
+                    "Mercadeo",
+                    "Desarrollador",
+                  ]}
+                  name={`member${n}_rol`}
+                />
+              </div>
             </div>
-          </div>
-
-          <div className="border-b">
-            <TextQuestion //email 3
-              question="Participante 3"
-              value={email3}
-              onChange={setEmail3}
-              placeholder="participante3@institucion.edu.co"
-              name="member3_email"
-            />
-            <div className="w-80 mb-6">
-              <Select
-                placeholder="Rol del participante 3"
-                label="Rol Participante 3"
-                value={rol3}
-                onChange={setRol3}
-                options={[
-                  "Administrador",
-                  "Diseñador",
-                  "Mercadeo",
-                  "Desarrollador",
-                ]}
-                name="member3_rol"
-              />
-            </div>
-          </div>
-
-          <div className="border-b">
-            <TextQuestion //email 4
-              question="Participante 4"
-              value={email4}
-              onChange={setEmail4}
-              placeholder="participante4@institucion.edu.co"
-              name="member4_email"
-            />
-            <div className="w-80 mb-6">
-              <Select
-                placeholder="Rol del participante 4"
-                label="Rol Participante 4"
-                value={rol4}
-                onChange={setRol4}
-                options={[
-                  "Administrador",
-                  "Diseñador",
-                  "Mercadeo",
-                  "Desarrollador",
-                ]}
-                name="member4_rol"
-              />
-            </div>
-          </div>
-
-          <div className="border-b">
-            <TextQuestion //email 5
-              question="Participante 5"
-              value={email5}
-              onChange={setEmail5}
-              placeholder="participante5@institucion.edu.co"
-              name="member5_email"
-            />
-            <div className="w-80 mb-6">
-              <Select
-                placeholder="Rol del participante 5"
-                label="Rol Participante 5"
-                value={rol5}
-                onChange={setRol5}
-                options={[
-                  "Administrador",
-                  "Diseñador",
-                  "Mercadeo",
-                  "Desarrollador",
-                ]}
-                name="member5_rol"
-              />
-            </div>
-          </div>
-
-          <div className="">
-            <TextQuestion //email 6
-              question="Participante 6"
-              value={email6}
-              onChange={setEmail6}
-              placeholder="participante6@institucion.edu.co"
-              name="member6_email"
-            />
-            <div className="w-80 mb-6">
-              <Select
-                placeholder="Rol del participante 6"
-                label="Rol Participante 6"
-                value={rol6}
-                onChange={setRol6}
-                options={[
-                  "Administrador",
-                  "Diseñador",
-                  "Mercadeo",
-                  "Desarrollador",
-                ]}
-                name="member6_rol"
-              />
-            </div>
-          </div>
+          ))}
 
           <div className="flex flex-col items-center justify-center">
-            <img //bottom pacho artemisa and send.
+            <img
               src="/personajes_teams.svg"
               alt="Personajes Teams"
               className="w-70 h-auto mb-4"

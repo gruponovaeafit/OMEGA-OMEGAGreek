@@ -6,20 +6,18 @@ import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 export default function View1() {
-    const router = useRouter();
-  
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        router.push("/confirmation");
-      }, 10000);
-      return () => clearTimeout(timer);
-    }, [router]);
-    
+  const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push("/confirmation");
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, [router]);
+
   return (
     <div className="h-screen flex flex-col">
-      <form
-        className="background_individual_view2 flex-1 flex flex-col items-center gap-2"
-      >
+      <form className="background_individual_view2 flex-1 flex flex-col items-center gap-2">
         <Header />
 
         <img

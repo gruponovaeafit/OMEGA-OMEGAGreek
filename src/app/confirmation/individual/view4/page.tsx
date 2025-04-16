@@ -41,16 +41,17 @@ export default function View4() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ food_preferences: food }),
       });
-  
+
       const result = await response.json();
-  
+
       if (!response.ok) {
         toast.error(result.notification?.message || "Error al guardar.");
         return;
       }
-  
+
       toast.success(result.notification?.message, {
-        onClose: () => router.push(result.redirectUrl || "/confirmation/teams/send"),
+        onClose: () =>
+          router.push(result.redirectUrl || "/confirmation/teams/send"),
       });
     } catch (error) {
       console.error("Error al enviar preferencia alimentaria:", error);

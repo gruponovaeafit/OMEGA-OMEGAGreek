@@ -21,7 +21,9 @@ export default async function handler(
     const { recordset } = await pool
       .request()
       .input("email", sql.VarChar, email)
-      .query("SELECT * FROM APPLICANT_DETAILS WHERE institutional_email = @email");
+      .query(
+        "SELECT * FROM APPLICANT_DETAILS WHERE institutional_email = @email",
+      );
 
     const user = recordset[0];
     if (!user)
@@ -62,7 +64,6 @@ export default async function handler(
     }
 
     return res.status(200).json({ redirectUrl });
-
   } catch (error) {
     console.error("❌ Error al verificar estado del usuario:", error);
     return res.status(500).json({

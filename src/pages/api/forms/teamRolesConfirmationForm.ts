@@ -7,12 +7,96 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Método no permitido" });
+  }
+
+  const {
+    leader_email,
+    leader_rol,
+    member2_rol,
+    member2_email,
+    member3_rol,
+    member3_email,
+    member4_rol,
+    member4_email,
+    member5_rol,
+    member5_email,
+    member6_rol,
+    member6_email,
+  } = req.body;
+
+  const roleMap: Record<string, number> = {
+    Administrador: 1,
+    Diseñador: 2,
+    Mercadeo: 3,
+    Desarrollador: 4,
+  };
+
+  const inverseRoleMap: Record<number, string> = {
+    1: "Administrador",
+    2: "Diseñador",
+    3: "Mercadeo",
+    4: "Desarrollador",
+  };
+
   try {
-    if (req.method !== "POST") {
-      return res.status(405).json({ message: "Método no permitido" });
+    const pool = await connectToDatabase();
+
+    const result = await pool
+      .request()
+      .input("leader_email", leader_email)
+      .query("SELECT id FROM Teams_data WHERE leader_email = @leader_email");
+
+    if (!result.recordset || result.recordset.length === 0) {
+      return res.status(404).json({
+        notification: {
+          type: "error",
+          message: "No se encontró un equipo con ese correo de líder",
+        },
+      });
     }
 
-    // List of valid email domains to validate the memebers emails
+    const team_id = result.recordset[0].id;
+
+    const teamData = await pool.request().input("team_id", team_id).query(`
+      SELECT institutional_email, role
+      FROM Teams_members
+      WHERE team_id = @team_id
+    `);
+
+    const noFieldsProvided =
+      !leader_email &&
+      !leader_rol &&
+      !member2_email &&
+      !member2_rol &&
+      !member3_email &&
+      !member3_rol &&
+      !member4_email &&
+      !member4_rol &&
+      !member5_email &&
+      !member5_rol &&
+      !member6_email &&
+      !member6_rol;
+
+    if (noFieldsProvided) {
+      const existingMemberEmail = teamData.recordset.map(
+        (row) => row.institutional_email,
+      );
+      const existingRoles = teamData.recordset.map(
+        (row) => inverseRoleMap[row.role] || "Seleccione Rol",
+      );
+
+      return res.status(200).json({
+        notification: {
+          type: "info",
+          message: "Miembros ya registrados.",
+        },
+        teamEmails: existingMemberEmail,
+        teamRoles: existingRoles,
+      });
+    }
+
     const emailDomains = [
       "@eafit.edu.co",
       "@unal.edu.co",
@@ -21,30 +105,6 @@ export default async function handler(
       "@udea.edu.co",
     ];
 
-    const {
-      leader_rol,
-      member2_rol,
-      member2_email,
-      member3_rol,
-      member3_email,
-      member4_rol,
-      member4_email,
-      member5_rol,
-      member5_email,
-      member6_rol,
-      member6_email,
-    } = req.body;
-
-    const leader_email = getEmailFromCookies(req, res);
-
-    const roleMap: Record<string, number> = {
-      Administrador: 1,
-      Diseñador: 2,
-      Mercadeo: 3,
-      Desarrollador: 4,
-    };
-
-    // Validate the members information
     const membersInfo = [
       { role: leader_rol, email: leader_email },
       { role: member2_rol, email: member2_email },
@@ -54,129 +114,94 @@ export default async function handler(
       { role: member6_rol, email: member6_email },
     ];
 
-    console.log("Data: ", membersInfo);
-
     const teamRoles = [];
     const teamEmails = [];
 
-    try {
-      //Team data parsing
-      for (const field of membersInfo) {
-        //Case if the member data exist
-        if (field.role && field.email) {
-          if (!(field.role in roleMap)) {
-            return res.status(400).json({
-              notification: {
-                type: "error",
-                message: "Rol no encontrado",
-              },
-            });
-          }
-          //Push into teamRoles each role
-          teamRoles.push(field.role);
-
-          //Validate all members emails domain
-          const isValidDomain = emailDomains.some((domain) =>
-            field.email.endsWith(domain),
-          );
-
-          if (isValidDomain) {
-            teamEmails.push(field.email);
-          } else if (!isValidDomain) {
-            return res.status(400).json({
-              notification: {
-                type: "error",
-                message:
-                  "El correo electronico de todos los integrantes debe ser de un dominio valido",
-              },
-            });
-          }
-        }
-
-        //Validate if one of the members data is missing
-        if (!field.email && field.role) {
-          console.log("Rol: ", field.role);
+    for (const field of membersInfo) {
+      if (field.role && field.email) {
+        if (!(field.role in roleMap)) {
           return res.status(400).json({
-            notification: {
-              type: "error",
-              message: "Falta el correo de alguno de los miembros",
-            },
+            notification: { type: "error", message: "Rol no encontrado" },
           });
         }
+        teamRoles.push(field.role);
 
-        if (field.email && !field.role) {
-          console.log("Email: ", field.email);
+        const isValidDomain = emailDomains.some((domain) =>
+          field.email.endsWith(domain),
+        );
+
+        if (isValidDomain) {
+          teamEmails.push(field.email);
+        } else {
           return res.status(400).json({
             notification: {
               type: "error",
-              message: "Falta el rol de alguno de los roles",
+              message:
+                "El correo electronico de todos los integrantes debe ser de un dominio valido",
             },
           });
         }
       }
+      if (!field.email && field.role) {
+        return res.status(400).json({
+          notification: {
+            type: "error",
+            message: "Falta el correo de alguno de los miembros",
+          },
+        });
+      }
+      if (field.email && !field.role) {
+        return res.status(400).json({
+          notification: {
+            type: "error",
+            message: "Falta el rol de alguno de los roles",
+          },
+        });
+      }
+    }
 
-      console.log("team roles: ", teamRoles);
-      console.log("team emails: ", teamEmails);
-
-      //Validate that the team has at least 2 members
-      if (teamRoles.length < 2) {
-        return res.status(400).json({
-          notification: {
-            type: "error",
-            message: "El equipo debe de tener al menos 2 integrantes",
-          },
-        });
-      }
-
-      //Validate that the team has the correct roles distribution
-      const uniqueRoles = new Set(teamRoles);
-      if (uniqueRoles.size < 2 && teamRoles.length == 2) {
-        return res.status(400).json({
-          notification: {
-            type: "error",
-            message: "El equipo debe tener al menos 2 roles diferentes",
-          },
-        });
-      }
-      if (uniqueRoles.size < 3 && teamRoles.length == 3) {
-        return res.status(400).json({
-          notification: {
-            type: "error",
-            message: "El equipo debe tener al menos 3 roles diferentes",
-          },
-        });
-      }
-      if (uniqueRoles.size < 4 && teamRoles.length >= 4) {
-        return res.status(400).json({
-          notification: {
-            type: "error",
-            message: "El equipo debe tener al menos 4 roles diferentes",
-          },
-        });
-      }
-    } catch (err) {
-      console.log("Error parseando los datos del equipo", err);
-      return res.status(500).json({
+    if (teamRoles.length < 2) {
+      return res.status(400).json({
         notification: {
           type: "error",
-          message: "Error parseando los datos",
+          message: "El equipo debe de tener al menos 2 integrantes",
         },
       });
     }
 
-    //Inserting and updating data
-    const pool = await connectToDatabase();
+    const uniqueRoles = new Set(teamRoles);
+    if (uniqueRoles.size < 2 && teamRoles.length === 2) {
+      return res.status(400).json({
+        notification: {
+          type: "error",
+          message: "El equipo debe tener al menos 2 roles diferentes",
+        },
+      });
+    }
+    if (uniqueRoles.size < 3 && teamRoles.length === 3) {
+      return res.status(400).json({
+        notification: {
+          type: "error",
+          message: "El equipo debe tener al menos 3 roles diferentes",
+        },
+      });
+    }
+    if (uniqueRoles.size < 4 && teamRoles.length >= 4) {
+      return res.status(400).json({
+        notification: {
+          type: "error",
+          message: "El equipo debe tener al menos 4 roles diferentes",
+        },
+      });
+    }
 
-    // Validate that all emails in teamEmails are registered in the Personal_data table
     const unregisteredEmails = [];
-
     for (const email of teamEmails) {
       const emailCheck = await pool.request().input("email", email).query(`
-          SELECT institutional_email
-          FROM Personal_data
-          WHERE institutional_email = @email
-        `);
-
+        SELECT institutional_email
+        FROM Personal_data
+        WHERE institutional_email = @email
+      `);
       if (emailCheck.recordset.length === 0) {
         unregisteredEmails.push(email);
       }
@@ -191,108 +216,59 @@ export default async function handler(
       });
     }
 
-    try {
-      // 1. Obtain team_id
-      const result = await pool
-        .request()
-        .input("leader_email", leader_email)
-        .query("SELECT id FROM Teams_data WHERE leader_email = @leader_email");
+    const existingMemberEmail = teamData.recordset.map(
+      (row) => row.institutional_email,
+    );
 
-      if (result.recordset.length === 0) {
-        console.log(
-          "No se encontró un equipo registrado con ese correo de lider",
-        );
-        return res.status(404).json({
-          notification: {
-            type: "error",
-            message: "No se encontró un equipo con ese correo de líder",
-          },
-        });
+    for (let i = 0; i < teamEmails.length; i++) {
+      const email = teamEmails[i];
+      const roleName = teamRoles[i];
+      const role = roleMap[roleName];
+
+      if (!existingMemberEmail.includes(email)) {
+        await pool
+          .request()
+          .input("team_id", sql.Int, team_id)
+          .input("leader_email", sql.VarChar, leader_email)
+          .input("institutional_email", sql.VarChar, email)
+          .input("role", sql.Int, role).query(`
+            INSERT INTO TEAMS_MEMBERS (
+              team_id,
+              leader_email,
+              institutional_email,
+              role
+            ) VALUES (
+              @team_id,
+              @leader_email,
+              @institutional_email,
+              @role
+            )
+          `);
+      } else {
+        await pool
+          .request()
+          .input("team_id", sql.Int, team_id)
+          .input("institutional_email", sql.VarChar, email)
+          .input("role", sql.Int, role).query(`
+            UPDATE TEAMS_MEMBERS
+            SET role = @role
+            WHERE team_id = @team_id AND institutional_email = @institutional_email
+          `);
       }
-
-      const team_id = result.recordset[0].id;
-      const existingMemberEmail = [];
-
-      const teamData = await pool.request().input("team_id", team_id).query(`
-                                    SELECT institutional_email FROM Teams_members where team_id = @team_id
-                                  `);
-      if (teamData.recordset.length > 0) {
-        for (let i = 0; i < teamData.recordset.length; i++) {
-          existingMemberEmail.push(teamData.recordset[i].institutional_email);
-        }
-        //Sending the existing emails
-        console.log("Datos enviados al front:", existingMemberEmail);
-        res.status(200).json({
-          notification: {
-            type: "info",
-            message: "Emails enviados al front",
-          },
-          teamEmails: existingMemberEmail,
-        });
-      }
-
-      // 2. Insert member to the team
-      for (let i = 0; i < teamEmails.length; i++) {
-        const email = teamEmails[i];
-        const roleName = teamRoles[i];
-        const role = roleMap[roleName];
-
-        // Insert the member only if they do not already exist
-        if (!existingMemberEmail.includes(email)) {
-          await pool
-            .request()
-            .input("team_id", sql.Int, team_id)
-            .input("leader_email", sql.VarChar, leader_email)
-            .input("institutional_email", sql.VarChar, email)
-            .input("role", sql.Int, role).query(`
-              INSERT INTO TEAMS_MEMBERS (
-          team_id,
-          leader_email,
-          institutional_email,
-          role
-              ) VALUES (
-          @team_id,
-          @leader_email,
-          @institutional_email,
-          @role
-              )
-            `);
-          console.log("Miembro insertado con éxito");
-        } else {
-          await pool
-            .request()
-            .input("team_id", sql.Int, team_id)
-            .input("institutional_email", sql.VarChar, email)
-            .input("role", sql.Int, role).query(`
-              UPDATE TEAMS_MEMBERS
-              SET role = @role
-              WHERE team_id = @team_id AND institutional_email = @institutional_email
-            `);
-          console.log("Miembro actualizado con éxito");
-        }
-      }
-      return res.status(200).json({
-        notification: {
-          type: "info",
-          message: "Equipo actualizado con éxito",
-        },
-        redirectUrl: "/confirmation/teams/send",
-      });
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        notification: {
-          type: "error",
-          message: "Error insertando datos",
-        },
-      });
     }
+
+    return res.status(200).json({
+      notification: {
+        type: "info",
+        message: "Equipo actualizado con éxito",
+      },
+      redirectUrl: "/confirmation/teams/send",
+    });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       notification: {
         type: "error",
-        message: "Error conectando con la base de datos",
+        message: "Error interno al procesar la solicitud.",
       },
     });
   }

@@ -2,7 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../db";
 import { Int } from "mssql";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Método no permitido" });
   }
@@ -31,7 +34,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const pool = await connectToDatabase();
-    const result = await pool.request()
+    const result = await pool
+      .request()
       .input("university", Int, universityId)
       .query(`SELECT id, area_name FROM Areas WHERE university = @university`);
 
@@ -42,7 +46,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
       areas: result.recordset,
     });
-
   } catch (error) {
     console.error("❌ Error al obtener áreas:", error);
     return res.status(500).json({

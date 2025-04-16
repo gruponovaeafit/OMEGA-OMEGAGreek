@@ -3,7 +3,10 @@ import { connectToDatabase } from "../db";
 import { getEmailFromCookies } from "../getEmailFromCookies";
 import { VarChar } from "mssql";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Método no permitido" });
   }
@@ -27,14 +30,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const pool = await connectToDatabase();
 
-    await pool.request()
+    await pool
+      .request()
       .input("email", VarChar(255), email)
       .input("eps", VarChar(255), eps)
       .input("emergency_contact_name", VarChar(255), emergency_contact_name)
       .input("emergency_contact_phone", VarChar(255), emergency_contact_phone)
       .input("relationship", VarChar(255), relationship)
-      .input("medical_info", VarChar(255), medical_info)
-      .query(`
+      .input("medical_info", VarChar(255), medical_info).query(`
         UPDATE APPLICANT_DETAILS
         SET
           eps = @eps,
@@ -50,9 +53,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         type: "success",
         message: "Información médica guardada correctamente.",
       },
-      redirectUrl: "/confirmation/individual/view4", 
+      redirectUrl: "/confirmation/individual/view4",
     });
-
   } catch (err) {
     console.error("❌ Error al guardar información médica:", err);
     return res.status(500).json({

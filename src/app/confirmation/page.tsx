@@ -51,10 +51,10 @@ export default function Confirmation() {
   const checkTeamStatus = async () => {
     try {
       const res = await fetch("/api/forms/teamCheckStatus", { method: "GET" });
-      const result = await res.json(); 
+      const result = await res.json();
 
       if (res.status === 400 && result.notification?.message) {
-        toast.error(result.notification.message); 
+        toast.error(result.notification.message);
         return false;
       }
 

@@ -4,7 +4,10 @@ import { connectToDatabase } from "../db";
 import { getEmailFromCookies } from "../getEmailFromCookies";
 import { Bit, VarChar } from "mssql";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Método no permitido" });
   }
@@ -23,28 +26,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const pool = await connectToDatabase();
 
     // Verificar si ya existe un registro para ese email
-    const checkResult = await pool.request()
+    const checkResult = await pool
+      .request()
       .input("email", VarChar(255), email)
-      .query("SELECT COUNT(*) AS count FROM APPLICANT_DETAILS WHERE institutional_email = @email");
+      .query(
+        "SELECT COUNT(*) AS count FROM APPLICANT_DETAILS WHERE institutional_email = @email",
+      );
 
     const exists = checkResult.recordset[0].count > 0;
 
     if (exists) {
       // Actualiza si ya existe
-      await pool.request()
+      await pool
+        .request()
         .input("date_availability", Bit, date_availability)
-        .input("email", VarChar(255), email)
-        .query(`
+        .input("email", VarChar(255), email).query(`
           UPDATE APPLICANT_DETAILS
           SET date_availability = @date_availability
           WHERE institutional_email = @email
         `);
     } else {
       // Inserta si no existe
-      await pool.request()
+      await pool
+        .request()
         .input("email", VarChar(255), email)
-        .input("date_availability", Bit, date_availability)
-        .query(`
+        .input("date_availability", Bit, date_availability).query(`
           INSERT INTO APPLICANT_DETAILS (institutional_email, date_availability)
           VALUES (@email, @date_availability)
         `);
@@ -57,7 +63,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
       redirectUrl: "/confirmation/individual/view2",
     });
-
   } catch (err) {
     console.error("❌ Error al guardar disponibilidad:", err);
     return res.status(500).json({

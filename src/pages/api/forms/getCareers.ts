@@ -2,7 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../db";
 import { Int } from "mssql";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Método no permitido" });
   }
@@ -20,7 +23,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const pool = await connectToDatabase();
-    const result = await pool.request()
+    const result = await pool
+      .request()
       .input("area_id", Int, study_area_id)
       .query(`SELECT id, career_name FROM careers WHERE area = @area_id`);
 
@@ -31,7 +35,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
       careers: result.recordset,
     });
-
   } catch (error) {
     console.error("❌ Error al obtener carreras:", error);
     return res.status(500).json({
