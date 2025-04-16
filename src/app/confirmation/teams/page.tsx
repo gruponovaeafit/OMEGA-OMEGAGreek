@@ -33,7 +33,7 @@ export default function Confirmation2() {
             alt="Siguiente"
             onClick={() =>
                 (window.location.href =
-                "/confirmation/confirmationTeam/confirmation3")
+                "/confirmation/teams/view2")
             } 
             />
         </div>

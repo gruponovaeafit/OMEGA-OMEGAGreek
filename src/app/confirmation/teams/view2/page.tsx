@@ -11,7 +11,7 @@ import {
 } from "@/app/components/forms/registration/individual/questions";
 
 const handleSiguiente = () => {
-  window.location.href = '/confirmation/send';
+  window.location.href = '/confirmation/teams/send';
 };
 
 export default function Home() {
@@ -157,7 +157,7 @@ export default function Home() {
         </div>
       </div>
          
-          <div className="flex flex-col items-center justify-center gap-4 mt-10 mb-8">
+          <div className="flex flex-col items-center justify-center gap-4 mb-8">
             <img //bottom pacho artemisa and send.
               src="/personajes_teams.svg"
               alt="Personajes Teams"

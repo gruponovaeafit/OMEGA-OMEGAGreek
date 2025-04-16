@@ -9,22 +9,24 @@ export default function Confirmation() {
       <Header />
       <TextButton text="Confirmación Individual"/>
       <img 
-      src="/Confirmacion_individual.svg" 
+      src="/Confirmacion_Individual.svg" 
       alt="Confirmación Individual"
       className="w-72 h-auto cursor-pointer transition-transform duration-200 hover:scale-105 hover:brightness-110"
       onClick={() =>
         (window.location.href =
-          "/confirmation/confirmationIndividual/confirmation1")
+          "/confirmation/individual")
       }
       />
+      
       <TextButton text="Confirmación Grupal"/>
+
       <img 
       src="/Confirmacion_Grupal.svg" 
       alt="Confirmación Grupal"
       className="w-72 h-auto cursor-pointer transition-transform duration-200 hover:scale-105 hover:brightness-110"
       onClick={() =>
         (window.location.href =
-          "/confirmation/confirmationTeam/confirmation1")
+          "/confirmation/teams")
       } 
       />
       <Footer/>
