@@ -79,6 +79,22 @@ export default async function handler(
 
             const pool = await connectToDatabase();
 
+            //verify that the team name is not existing in the database
+            const existingTeamName = await pool
+            .request()
+            .input("team_name", sql.VarChar, team_name)
+            .query(
+                "SELECT * FROM teams_data WHERE team_name = @team_name"
+            );
+            if (existingTeamName.recordset.length > 0) {
+                return res.status(400).json({
+                    notification: {
+                        type: "error",
+                        message: "El nombre de equipo ya existe.",
+                    },
+                });
+            }
+
             const result = await pool
             .request()
             .input("team_name", sql.VarChar, team_name)
