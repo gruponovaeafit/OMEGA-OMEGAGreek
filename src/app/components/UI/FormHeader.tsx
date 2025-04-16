@@ -6,7 +6,7 @@ interface FormHeaderProps {
 export default function FormHeader({ title, note }: FormHeaderProps) {
   return (
     <>
-      <div className="relative border rounded-2xl px-6 py-1 w-[90%] ml-auto">
+      <div className="relative border rounded-2xl mt-5 px-6 py-1 w-[90%] ml-auto">
         <img
           src="/color-rullette.svg"
           alt=""

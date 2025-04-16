@@ -5,10 +5,9 @@ import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Button } from "@/app/components/UI/Button";
 import { Select, TextQuestion } from "@/app/components/forms/registration/individual/questions";
-import { CheckboxButtonIndividual } from "@/app/components/forms/confirmation/individual/buttons";
 import FormHeader from "@/app/components/UI/FormHeader";
 
-export default function Confirmation3() {
+export default function View4() {
   const [formData, setFormData] = useState({
     eps: "",
     emergency_contact_name: "",
@@ -17,11 +16,8 @@ export default function Confirmation3() {
     medical_info: ""
   });
 
-  const [isChecked, setIsChecked] = useState(false);
-
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form data:", formData, "Checkbox checked:", isChecked);
   };
 
   const handleChange = (name: string, value: string) => {
@@ -29,10 +25,6 @@ export default function Confirmation3() {
       ...prev,
       [name]: value,
     }));
-  };
-
-  const handleCheckboxChange = (checked: boolean) => {
-    setIsChecked(checked);
   };
 
   return (
@@ -97,11 +89,11 @@ export default function Confirmation3() {
           placeholder="Escríbelas aquí en caso de que aplique"
         />
 
-        <div className="flex flex-wrap justify-center items-center gap-4 px-4">
+        <div className="flex flex-wrap justify-between items-center gap-4 w-full max-w-[320px]">
           <img
             src="/Afrodita.svg"
             alt="Afrodita"
-            className="w-48 h-48"
+            className="w-40 h-42"
           />
           <Button label="Siguiente" />
         </div>

@@ -8,7 +8,7 @@ import { Select } from "@/app/components/forms/registration/individual/questions
 import { CheckboxButtonIndividual } from "@/app/components/forms/confirmation/individual/buttons";
 import FormHeader from "@/app/components/UI/FormHeader";
 
-export default function Confirmation3() {
+export default function View3() {
   const [formData, setFormData] = useState({
     university: "",
     study_area: "",
@@ -80,11 +80,11 @@ export default function Confirmation3() {
 
         <CheckboxButtonIndividual onChange={handleCheckboxChange} />
 
-        <div className="flex flex-wrap justify-center items-center gap-4 px-4">
+        <div className="flex flex-wrap justify-center items-center gap-4 w-full max-w-[320px]">
           <img
             src="/Hefesto.svg"
             alt="Hefesto"
-            className="w-48 h-48"
+            className="w-42 h-44"
           />
           <Button label="Siguiente" />
         </div>
