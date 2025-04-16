@@ -141,6 +141,7 @@ export default function Home() {
             Tipo de documento
           </h3>
           <Select
+            placeholder=""
             name="id_type"
             value={tipoDocumento}
             onChange={setTipoDocumento}
