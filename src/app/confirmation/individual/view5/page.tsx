@@ -4,6 +4,7 @@ import { Footer } from "@/app/components/Footer";
 import { useState } from "react";
 import { Button } from "@/app/components/UI/Button";
 import { Select } from "@/app/components/forms/registration/individual/questions";
+import FormHeader from "@/app/components/UI/FormHeader";
 
 const handleSiguiente = () => {
     window.location.href = '/confirmation/teams/send';
@@ -16,11 +17,9 @@ export default function Confirmation2() {
     return (  
         <div className="background_email min-h-screen flex flex-col items-center py-4">
         <Header />
-        
-        <img 
-            src="/Confirmation_Grupal.svg" 
-            alt="onfirmation_Grupal" 
-        />
+        <div className="w-full max-w-[320px] mb-6">
+          <FormHeader title="Formulario de confirmación" />
+        </div>
         <div className="w-80 mb-6">
             <Select
                 placeholder="Selecciona tu preferencia alimentaria"

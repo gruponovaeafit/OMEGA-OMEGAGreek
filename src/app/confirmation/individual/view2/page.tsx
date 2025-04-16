@@ -34,14 +34,6 @@ export default function View2() {
           onChange={setDateAvailability}
         />
 
-        <div className="flex flex-wrap justify-center items-center gap-4 px-4">
-          <img
-            src="/Afrodita.svg"
-            alt="Afrodita"
-            className="w-48 h-48"
-          />
-        </div>
-
         <Footer />
       </form>
     </div>
