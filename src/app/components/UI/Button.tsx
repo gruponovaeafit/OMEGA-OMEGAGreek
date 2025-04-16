@@ -1,5 +1,6 @@
 "use client";
 
+import { IconName } from "@/app/types/IconName.type";
 import Icon from "./Icon";
 
 interface ButtonProps {
@@ -9,7 +10,7 @@ interface ButtonProps {
   isDisabled?: boolean;
   className?: string;
   variant?: "primary" | "secondary";
-  iconName?: "arrow" | "check" | "close" | "chevron-right";
+  iconName?: IconName;
 }
 
 export const Button: React.FC<ButtonProps> = ({
