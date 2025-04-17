@@ -19,6 +19,15 @@ export default async function handler(
     medical_info,
   } = req.body;
 
+  if (!eps || !emergency_contact_name || !emergency_contact_phone || !relationship) {
+    return res.status(400).json({
+      notification: {
+        type: "error",
+        message: "Faltan datos requeridos para guardar.",
+      },
+    });
+  }
+
   const email = getEmailFromCookies(req, res);
   if (!email) {
     return res.status(401).json({

@@ -12,6 +12,18 @@ export default async function handler(
   }
 
   const { food_preferences } = req.body;
+
+  console.log("food_preferences", food_preferences);
+
+  if (!food_preferences) {
+    return res.status(400).json({
+      notification: {
+        type: "error",
+        message: "Faltan datos requeridos para guardar.",
+      },
+    });
+  }
+
   const email = getEmailFromCookies(req, res);
 
   if (!email) {
@@ -37,7 +49,7 @@ export default async function handler(
         type: "success",
         message: "Preferencia alimentaria guardada.",
       },
-      redirectUrl: "/confirmation/teams/send",
+      redirectUrl: "/confirmation/individual/send",
     });
   } catch (err) {
     console.error("❌ Error al guardar preferencia alimentaria:", err);
