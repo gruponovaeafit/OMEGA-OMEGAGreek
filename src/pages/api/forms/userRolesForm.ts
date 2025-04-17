@@ -53,8 +53,8 @@ export default async function handler(
       .input("rol1", Int, rol1)
       .input("rol2", Int, rol2)
       .input("email", VarChar(255), userEmail).query(`
-        UPDATE Personal_data 
-        SET preferred_role_1 = @rol1, preferred_role_2 = @rol2 
+        UPDATE Personal_data
+        SET preferred_role_1 = @rol1, preferred_role_2 = @rol2
         WHERE institutional_email = @email
       `);
 

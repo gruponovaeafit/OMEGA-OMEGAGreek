@@ -13,6 +13,24 @@ export default async function handler(
 
   const { university, study_area_id, career_id, data_treatment } = req.body;
 
+  if (!university || !study_area_id || !career_id || typeof data_treatment === "undefined") {
+    return res.status(400).json({
+      notification: {
+        type: "error",
+        message: "Faltan datos requeridos para guardar.",
+      },
+    });
+  }
+
+  if (data_treatment !== 1) {
+    return res.status(400).json({
+      notification: {
+        type: "error",
+        message: "Debes aceptar el tratamiento de datos.",
+      },
+    });
+  }
+
   const universityMap: Record<string, number> = {
     "Universidad Nacional": 1,
     "Universidad de Antioquia": 2,
