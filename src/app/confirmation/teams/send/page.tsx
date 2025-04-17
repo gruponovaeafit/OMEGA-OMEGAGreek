@@ -2,7 +2,8 @@
 import React from "react";
 import { Footer } from "@/app/components/Footer";
 import { Header } from "@/app/components/Header";
-import FormStaticAlert from "@/app/components/UI/FormStaticAlert";
+
+import Star from "@/app/components/Star"; 
 
 export default function Home() {
   return (
@@ -10,15 +11,8 @@ export default function Home() {
       <div className="background_individual_view2 flex-1 flex flex-col items-center gap-4 px-4 pt-6 overflow-y-auto">
         <Header />
 
-        <div className="w-full max-w-[320px] mt-4 mb-6">
-          <FormStaticAlert iconName="owl">
-            <p className="text-xl text-center font-bold text-white">
-              Formulario enviado con éxito
-            </p>
-          </FormStaticAlert>
-        </div>
+        <Star /> {/* estrellita */}
 
-        {/* imagen personajes */}
         <img
           src="/Confirmation_Grupal_Send.svg"
           alt="Grupo confirmacion"

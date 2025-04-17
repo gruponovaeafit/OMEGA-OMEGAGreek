@@ -1,5 +1,7 @@
+import { ReactNode } from 'react';
+
 interface FormHeaderProps {
-  title: string;
+  title: ReactNode; // Cambiado de string a ReactNode
   note?: string;
 }
 

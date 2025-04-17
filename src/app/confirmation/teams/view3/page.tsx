@@ -98,14 +98,19 @@ export default function Confirmation2() {
         
         {/* Reemplazo del banner con FormHeader */}
         <div className="w-full max-w-[320px] mb-6">
-          <FormHeader title="Confirmación grupal" />
+          <FormHeader title={
+            <>
+              Confirmación<br />
+              grupal
+            </>
+          } />
         </div>
         
         {/* Reemplazo del recordatorio con FormStaticAlert */}
         <div className="w-full max-w-[320px] mt-2 mb-6">
-          <FormStaticAlert iconName="owl">
+          <FormStaticAlert iconName="hammer">
             <p className="text-center">
-              Recuerda que cada integrante del grupo deberá responder el formulario de confirmación individual (disponible el lunes)
+              Recuerda que cada integrante del grupo deberá responder el formulario de confirmación individual (incluyendo el lider)
             </p>
           </FormStaticAlert>
         </div>
@@ -121,15 +126,19 @@ export default function Confirmation2() {
         />
         
         <div className="flex justify-center items-center max-w-xs gap-4 mt-4">
-          {/* Mantenemos Dionisio como imagen */}
-          <img src="/Dionisio.svg" alt="Dionisio" className="w-40 h-40" />
+          {/* Dionisio como imagen */}
+          <img 
+            src="/Dionisio.svg" 
+            alt="Dionisio" 
+            className="w-72 h-72 ml-[-40px] mt-3" 
+          />
           
-          {/* Reemplazo del botón imagen con el componente Button */}
           <Button 
             label="Siguiente" 
             type="submit" 
             variant="primary" 
             iconName="chevron-right"
+            className="ml-[-52px]"  
           />
         </div>
         <Footer />

@@ -95,30 +95,29 @@ export default function Confirmation() {
       </div>
       
       {/* Sección de confirmación individual */}
-      <div 
-        className="w-72 bg-gradient-to-b from-indigo-600/30 to-purple-600/30 p-4 rounded-xl border border-white/20 cursor-pointer transition-transform duration-200 hover:scale-105 hover:brightness-110"
-        onClick={handleClickIndividual}
-      >
-        <h2 className="text-center text-white text-xl font-semibold mb-3">Confirmación individual</h2>
-        <img
-          src="/Confirmacion_Individual.svg"
-          alt="Registro individual"
-          className="w-full h-auto"
-        />
-      </div>
+      
+<div 
+  className="w-72 bg-transparent p-0 rounded-xl cursor-pointer transition-transform duration-200 hover:scale-105"
+  onClick={handleClickIndividual}
+>
+  <img
+    src="/Confirmacion_Individual.svg"
+    alt="Registro individual"
+    className="w-full h-auto"
+  />
+</div>
 
-      {/* Sección de confirmación grupal */}
-      <div 
-        className="w-72 mt-6 bg-gradient-to-b from-teal-600/30 to-blue-600/30 p-4 rounded-xl border border-white/20 cursor-pointer transition-transform duration-200 hover:scale-105 hover:brightness-110"
-        onClick={handleClickGroup}
-      >
-        <h2 className="text-center text-white text-xl font-semibold mb-3">Confirmación grupal</h2>
-        <img
-          src="/Confirmacion_Grupal.svg"
-          alt="Registro grupal"
-          className="w-full h-auto"
-        />
-      </div>
+{/* Sección de confirmación grupal */}
+<div 
+  className="w-72 mt-6 bg-transparent p-0 rounded-xl cursor-pointer transition-transform duration-200 hover:scale-105"
+  onClick={handleClickGroup}
+>
+  <img
+    src="/Confirmacion_Grupal.svg"
+    alt="Registro grupal"
+    className="w-full h-auto"
+  />
+</div>
       
       <Footer />
     </div>
