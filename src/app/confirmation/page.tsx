@@ -1,11 +1,11 @@
 "use client";
-import { TextButton } from "../components/forms/confirmation/individual/text";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React, { useEffect } from "react";
+import FormHeader from "@/app/components/UI/FormHeader";
 
 export default function Confirmation() {
   const router = useRouter();
@@ -88,24 +88,38 @@ export default function Confirmation() {
   return (
     <div className="background_email min-h-screen flex flex-col items-center py-4">
       <Header />
-      <img
-        src="/Formulario_Inscripcion_Titulo.svg"
-        alt="Formulario de Inscripción Título"
-        className="w-72 h-auto"
-      />
-      <img
-        src="/Confirmacion_Individual.svg"
-        alt="Registro individual"
-        className="w-72 h-auto cursor-pointer transition-transform duration-200 hover:scale-105 hover:brightness-110"
+      
+      {/* Reemplazo el título con FormHeader */}
+      <div className="w-full max-w-[320px] mb-6">
+        <FormHeader title="Formulario de confirmación" />
+      </div>
+      
+      {/* Sección de confirmación individual */}
+      <div 
+        className="w-72 bg-gradient-to-b from-indigo-600/30 to-purple-600/30 p-4 rounded-xl border border-white/20 cursor-pointer transition-transform duration-200 hover:scale-105 hover:brightness-110"
         onClick={handleClickIndividual}
-      />
+      >
+        <h2 className="text-center text-white text-xl font-semibold mb-3">Confirmación individual</h2>
+        <img
+          src="/Confirmacion_Individual.svg"
+          alt="Registro individual"
+          className="w-full h-auto"
+        />
+      </div>
 
-      <img
-        src="/Confirmacion_Grupal.svg"
-        alt="Registro grupal"
-        className="w-72 h-auto mt-6 cursor-pointer transition-transform duration-200 hover:scale-105 hover:brightness-110"
+      {/* Sección de confirmación grupal */}
+      <div 
+        className="w-72 mt-6 bg-gradient-to-b from-teal-600/30 to-blue-600/30 p-4 rounded-xl border border-white/20 cursor-pointer transition-transform duration-200 hover:scale-105 hover:brightness-110"
         onClick={handleClickGroup}
-      />
+      >
+        <h2 className="text-center text-white text-xl font-semibold mb-3">Confirmación grupal</h2>
+        <img
+          src="/Confirmacion_Grupal.svg"
+          alt="Registro grupal"
+          className="w-full h-auto"
+        />
+      </div>
+      
       <Footer />
     </div>
   );

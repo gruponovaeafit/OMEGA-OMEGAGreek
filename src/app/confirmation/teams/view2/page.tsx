@@ -10,6 +10,8 @@ import {
   Select,
   TextQuestion,
 } from "@/app/components/forms/registration/individual/questions";
+import FormHeader from "@/app/components/UI/FormHeader";
+import FormStaticAlert from "@/app/components/UI/FormStaticAlert";
 
 export default function Home() {
   const router = useRouter();
@@ -143,15 +145,24 @@ export default function Home() {
       <form onSubmit={handleFormSubmit} className="h-screen flex flex-col">
         <div className="background_individual_view2 flex-1 flex flex-col items-center gap-2">
           <Header />
-          <img
-            src="/text_confirmacion_grupal.svg"
-            alt="Formulario de Confirmacion grupal"
-            className="w-72 h-auto"
-          />
+          
+          {/* Reemplazo del banner con FormHeader */}
+          <div className="w-full max-w-[320px] mb-4">
+            <FormHeader title="Confirmación grupal" />
+          </div>
+          
+          {/* Agregado mensaje informativo */}
+          <div className="w-full max-w-[320px] mb-6">
+          <FormStaticAlert iconName="owl">
+           <p className="text-center text-sm">
+             Recuerda tener activos a 6 participantes por rol
+           </p>
+          </FormStaticAlert>
+          </div>
 
           <div className="border-b">
             <TextQuestion
-              question="Correo del líder"
+              question="Correo electrónico participante (obligatorio)"
               value={leaderEmail}
               onChange={setLeaderEmail}
               placeholder="lider@institucion.edu.co"
@@ -160,7 +171,7 @@ export default function Home() {
             <div className="w-80 mb-4 mt-4">
               <Select
                 placeholder="Rol del líder"
-                label="Rol Líder"
+                label="Rol del líder"
                 value={leaderRol}
                 onChange={setLeaderRol}
                 options={[
@@ -174,34 +185,133 @@ export default function Home() {
             </div>
           </div>
 
-          {[2, 3, 4, 5, 6].map((n) => (
-            <div className="border-b" key={n}>
-              <TextQuestion
-                question={`Participante ${n}`}
-                value={eval(`email${n}`)}
-                onChange={(val) => eval(`setEmail${n}`)(val)}
-                placeholder={`participante${n}@institucion.edu.co`}
-                name={`member${n}_email`}
+          <div className="border-b">
+            <TextQuestion
+              question="Correo electrónico participante (obligatorio)"
+              value={email2}
+              onChange={setEmail2}
+              placeholder="participante2@institucion.edu.co"
+              name="member2_email"
+            />
+            <div className="w-80 mb-6">
+              <Select
+                placeholder="Rol del participante dos"
+                label="Rol del participante dos"
+                value={rol2}
+                onChange={setRol2}
+                options={[
+                  "Administrador",
+                  "Diseñador",
+                  "Mercadeo",
+                  "Desarrollador",
+                ]}
+                name="member2_rol"
               />
-              <div className="w-80 mb-6">
-                <Select
-                  placeholder={`Rol del participante ${n}`}
-                  label={`Rol Participante ${n}`}
-                  value={eval(`rol${n}`)}
-                  onChange={(val) => eval(`setRol${n}`)(val)}
-                  options={[
-                    "Administrador",
-                    "Diseñador",
-                    "Mercadeo",
-                    "Desarrollador",
-                  ]}
-                  name={`member${n}_rol`}
-                />
-              </div>
             </div>
-          ))}
+          </div>
+
+          <div className="border-b">
+            <TextQuestion
+              question="Correo electrónico participante (obligatorio)"
+              value={email3}
+              onChange={setEmail3}
+              placeholder="participante3@institucion.edu.co"
+              name="member3_email"
+            />
+            <div className="w-80 mb-6">
+              <Select
+                placeholder="Rol del participante tres"
+                label="Rol del participante tres"
+                value={rol3}
+                onChange={setRol3}
+                options={[
+                  "Administrador",
+                  "Diseñador",
+                  "Mercadeo",
+                  "Desarrollador",
+                ]}
+                name="member3_rol"
+              />
+            </div>
+          </div>
+
+          <div className="border-b">
+            <TextQuestion
+              question="Correo electrónico participante (obligatorio)"
+              value={email4}
+              onChange={setEmail4}
+              placeholder="participante4@institucion.edu.co"
+              name="member4_email"
+            />
+            <div className="w-80 mb-6">
+              <Select
+                placeholder="Rol del participante cuatro"
+                label="Rol del participante cuatro"
+                value={rol4}
+                onChange={setRol4}
+                options={[
+                  "Administrador",
+                  "Diseñador",
+                  "Mercadeo",
+                  "Desarrollador",
+                ]}
+                name="member4_rol"
+              />
+            </div>
+          </div>
+
+          <div className="border-b">
+            <TextQuestion
+              question="Correo electrónico participante (opcional)"
+              value={email5}
+              onChange={setEmail5}
+              placeholder="participante5@institucion.edu.co"
+              name="member5_email"
+            />
+            <div className="w-80 mb-6">
+              <Select
+                placeholder="Rol del participante cinco"
+                label="Rol del participante cinco"
+                value={rol5}
+                onChange={setRol5}
+                options={[
+                  "Administrador",
+                  "Diseñador",
+                  "Mercadeo",
+                  "Desarrollador",
+                ]}
+                name="member5_rol"
+              />
+            </div>
+          </div>
+
+          <div className="border-b">
+            <TextQuestion
+              question="Correo electrónico participante (opcional)"
+              value={email6}
+              onChange={setEmail6}
+              placeholder="participante6@institucion.edu.co"
+              name="member6_email"
+            />
+            <div className="w-80 mb-6">
+              <Select
+                placeholder="Rol del participante seis"
+                label="Rol del participante seis"
+                value={rol6}
+                onChange={setRol6}
+                options={[
+                  "Administrador",
+                  "Diseñador",
+                  "Mercadeo",
+                  "Desarrollador",
+                ]}
+                name="member6_rol"
+              />
+            </div>
+          </div>
 
           <div className="flex flex-col items-center justify-center">
+            {/* imagen personaje */}
             <img
               src="/personajes_teams.svg"
               alt="Personajes Teams"

@@ -2,6 +2,7 @@
 import React from "react";
 import { Footer } from "@/app/components/Footer";
 import { Header } from "@/app/components/Header";
+import FormStaticAlert from "@/app/components/UI/FormStaticAlert";
 
 export default function Home() {
   return (
@@ -9,12 +10,15 @@ export default function Home() {
       <div className="background_individual_view2 flex-1 flex flex-col items-center gap-4 px-4 pt-6 overflow-y-auto">
         <Header />
 
-        <img
-          src="https://novaeafit2.blob.core.windows.net/omega-2025/text_enviado_exitoso.png"
-          alt="Formulario de confirmación"
-          className="w-52 h-auto"
-        />
+        <div className="w-full max-w-[320px] mt-4 mb-6">
+          <FormStaticAlert iconName="owl">
+            <p className="text-xl text-center font-bold text-white">
+              Formulario enviado con éxito
+            </p>
+          </FormStaticAlert>
+        </div>
 
+        {/* imagen personajes */}
         <img
           src="/Confirmation_Grupal_Send.svg"
           alt="Grupo confirmacion"
