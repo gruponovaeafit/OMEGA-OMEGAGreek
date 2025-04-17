@@ -87,28 +87,28 @@ export default function Home() {
         <Header />
 
         <img
-          src="https://novaeafit.blob.core.windows.net/omega-2025/text_registro_individual.svg"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/text_registro_individual.svg"
           alt="Formulario de Registro"
           className="w-72 h-auto"
         />
 
         <img
-          src="https://novaeafit.blob.core.windows.net/omega-2025/button_admin.svg"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/button_admin.svg"
           alt="Admin"
           className="w-72 h-auto"
         />
         <img
-          src="https://novaeafit.blob.core.windows.net/omega-2025/button_designer.svg"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/button_designer.svg"
           alt="Diseño"
           className="w-72 h-auto"
         />
         <img
-          src="https://novaeafit.blob.core.windows.net/omega-2025/button_marketing.svg"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/button_marketing.svg"
           alt="Marketing"
           className="w-72 h-auto"
         />
         <img
-          src="https://novaeafit.blob.core.windows.net/omega-2025/button_developer.svg"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/button_developer.svg"
           alt="Desarrollador"
           className="w-72 h-auto"
         />
@@ -119,6 +119,7 @@ export default function Home() {
           </h3>
           <Select
             name="preferred_role1"
+            placeholder="Rol preferido 1"
             value={preferred_role1}
             onChange={setPreferred_role1}
             options={[
@@ -136,6 +137,7 @@ export default function Home() {
           </h3>
           <Select
             name="preferred_role2"
+            placeholder="Rol preferido 2"
             value={preferred_role2}
             onChange={setPreferred_role2}
             options={[
@@ -149,7 +151,7 @@ export default function Home() {
 
         <button type="submit">
           <img
-            src="https://novaeafit.blob.core.windows.net/omega-2025/button_siguiente.svg"
+            src="https://novaeafit2.blob.core.windows.net/omega-2025/button_siguiente.svg"
             alt="Botón siguiente"
             className="w-32 h-auto cursor-pointer"
           />

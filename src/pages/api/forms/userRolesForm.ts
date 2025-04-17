@@ -18,7 +18,7 @@ export default async function handler(
   const roleMap: Record<string, number> = {
     Administrador: 1,
     Diseñador: 2,
-    Marketing: 3,
+    Mercadeo: 3,
     Desarrollador: 4,
   };
 

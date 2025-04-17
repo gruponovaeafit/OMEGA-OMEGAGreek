@@ -15,7 +15,7 @@ export default function Loading() {
   return (
     <div className="background">
       <img
-        src="https://novaeafit.blob.core.windows.net/omega-2025/LOGO-GRANDE.svg"
+        src="https://novaeafit2.blob.core.windows.net/omega-2025/LOGO-GRANDE.svg"
         alt="Logo NOVA"
         className="w-80 h-auto animate-breathing -ml-6"
       />

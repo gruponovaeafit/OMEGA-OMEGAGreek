@@ -47,7 +47,7 @@ export default async function handler(
 
     if (leaderRecordset.length > 0) {
       return res.status(200).json({
-        redirectUrl: "/registration/teams/view2",
+        redirectUrl: "/confirmation/teams",
       });
     }
 

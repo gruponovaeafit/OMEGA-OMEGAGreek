@@ -6,7 +6,7 @@ export default function Home() {
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
-          src="https://novaeafit.blob.core.windows.net/omega-2025/next.svg"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/next.svg"
           alt="Next.js logo"
           width={180}
           height={38}
@@ -32,7 +32,7 @@ export default function Home() {
           >
             <Image
               className="dark:invert"
-              src="https://novaeafit.blob.core.windows.net/omega-2025/vercel.svg"
+              src="https://novaeafit2.blob.core.windows.net/omega-2025/vercel.svg"
               alt="Vercel logomark"
               width={20}
               height={20}
@@ -58,7 +58,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="https://novaeafit.blob.core.windows.net/omega-2025/file.svg"
+            src="https://novaeafit2.blob.core.windows.net/omega-2025/file.svg"
             alt="File icon"
             width={16}
             height={16}
@@ -73,7 +73,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="https://novaeafit.blob.core.windows.net/omega-2025/window.svg"
+            src="https://novaeafit2.blob.core.windows.net/omega-2025/window.svg"
             alt="Window icon"
             width={16}
             height={16}
@@ -88,7 +88,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="https://novaeafit.blob.core.windows.net/omega-2025/globe.svg"
+            src="https://novaeafit2.blob.core.windows.net/omega-2025/globe.svg"
             alt="Globe icon"
             width={16}
             height={16}

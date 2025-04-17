@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "OMEGA Greek",
   icons: {
-    icon: "https://novaeafit.blob.core.windows.net/omega-2025/LOGO-OMEGA.svg",
+    icon: "https://novaeafit2.blob.core.windows.net/omega-2025/LOGO-OMEGA.svg",
   },
 };
 

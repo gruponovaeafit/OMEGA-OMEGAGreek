@@ -50,7 +50,7 @@ const Loading: React.FC = () => {
         return;
       }
 
-      const response = await fetch("/api/forms/userEmailForm", {
+      const response = await fetch("/api/forms/userEmailConfirmationForm", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ const Loading: React.FC = () => {
         className="background_email flex flex-col items-center justify-center gap-6 px-4 min-h-screen"
       >
         <img
-          src="https://novaeafit.blob.core.windows.net/omega-2025/logo_email_view.svg"
+          src="https://novaeafit2.blob.core.windows.net/omega-2025/logo_email_view.svg"
           alt="Logo OMEGA y Correo Electrónico"
           className="w-64 h-auto"
         />
@@ -100,7 +100,7 @@ const Loading: React.FC = () => {
 
         <button type="submit">
           <img
-            src="https://novaeafit.blob.core.windows.net/omega-2025/button_siguiente.svg"
+            src="https://novaeafit2.blob.core.windows.net/omega-2025/button_siguiente.svg"
             alt="Botón de siguiente"
             className="h-auto cursor-pointer self-end mr-4"
           />
