@@ -20,10 +20,10 @@ export default function Confirmation2() {
     const checkAuthentication = async () => {
       try {
         const res = await fetch("/api/cookiesChecker", { method: "GET" });
-        if (res.status !== 200) router.push("/");
+        // if (res.status !== 200) router.push("/");
       } catch (error) {
         console.error("Error verificando autenticación:", error);
-        router.push("/");
+        // router.push("/");
       }
     };
 
