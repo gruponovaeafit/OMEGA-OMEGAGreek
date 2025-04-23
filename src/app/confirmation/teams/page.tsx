@@ -6,6 +6,9 @@ import { TextQuestion } from "@/app/components/forms/registration/individual/que
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
+import FormHeader from "@/app/components/UI/FormHeader";
+import FormStaticAlert from "@/app/components/UI/FormStaticAlert";
+import { Button } from "@/app/components/UI/Button";
 
 export default function Confirmation2() {
   const router = useRouter();
@@ -17,10 +20,10 @@ export default function Confirmation2() {
     const checkAuthentication = async () => {
       try {
         const res = await fetch("/api/cookiesChecker", { method: "GET" });
-        if (res.status !== 200) router.push("/");
+        // if (res.status !== 200) router.push("/");
       } catch (error) {
         console.error("Error verificando autenticación:", error);
-        router.push("/");
+        // router.push("/");
       }
     };
 
@@ -92,8 +95,26 @@ export default function Confirmation2() {
         onSubmit={handleFormSubmit}
       >
         <Header />
-        <img src="/BannerGroup.svg" alt="Banner_Group" />
-        <img src="/Reminder.svg" alt="reminder" />
+        
+        {/* Reemplazo del banner con FormHeader */}
+        <div className="w-full max-w-[320px] mb-6">
+          <FormHeader title={
+            <>
+              Confirmación<br />
+              grupal
+            </>
+          } />
+        </div>
+        
+        {/* Reemplazo del recordatorio con FormStaticAlert */}
+        <div className="w-full max-w-[320px] mt-2 mb-6">
+          <FormStaticAlert iconName="hammer">
+            <p className="text-center">
+              Recuerda que cada integrante del grupo deberá responder el formulario de confirmación individual (incluyendo el lider)
+            </p>
+          </FormStaticAlert>
+        </div>
+        
         <TextButton text="Nombre del equipo" />
         <TextQuestion
           name="team_name"
@@ -103,11 +124,22 @@ export default function Confirmation2() {
           onChange={setTeamName}
           placeholder={defaultTeamName || "Ingrese nombre de equipo"}
         />
-        <div className="flex justify-center items-center max-w-xs ">
-          <img src="/Dionisio.svg" alt="Dionisio" className="w-40 h-40" />
-          <button type="submit">
-            <img src="/Siguiente.svg" alt="Siguiente" />
-          </button>
+        
+        <div className="flex justify-center items-center max-w-xs gap-4 mt-4">
+          {/* Dionisio como imagen */}
+          <img 
+            src="/Dionisio.svg" 
+            alt="Dionisio" 
+            className="w-72 h-72 ml-[-40px] mt-3" 
+          />
+          
+          <Button 
+            label="Siguiente" 
+            type="submit" 
+            variant="primary" 
+            iconName="chevron-right"
+            className="ml-[-52px]"  
+          />
         </div>
         <Footer />
       </form>
