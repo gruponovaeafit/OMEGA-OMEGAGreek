@@ -8,6 +8,7 @@ export default function Send() {
       <Header />
         <img src="/Onsite_send.svg" alt="" />
         <img src="/APOLO_2.svg" alt="" />
+        
       <Footer />
     </div>
   )
