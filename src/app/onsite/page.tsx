@@ -1,113 +1,125 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import EmailInput from "@/app/components/emails/text_field";
-import { ToastContainer, toast } from "react-toastify";
+import { Footer } from "../components/Footer";
+import { Header } from "../components/Header";
 import { useRouter } from "next/navigation";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect } from "react";
+import FormHeader from "@/app/components/UI/FormHeader";
 
-// Añadir propiedad a Window para evitar errores TS
-declare global {
-  interface Window {
-    grecaptcha: any;
-  }
-}
-
-const Loading: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [recaptchaReady, setRecaptchaReady] = useState(false);
+export default function Confirmation() {
   const router = useRouter();
 
-  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-
-  // Cargar reCAPTCHA Enterprise
+  // Verificación continua del JWT
   useEffect(() => {
-    const scriptId = "recaptcha-enterprise";
-    if (document.getElementById(scriptId)) return;
+    const checkAuthentication = async () => {
+      try {
+        const res = await fetch("/api/cookiesChecker", { method: "GET" });
+        if (res.status !== 200) {
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("Error verificando autenticación:", error);
+        router.push("/");
+      }
+    };
 
-    const script = document.createElement("script");
-    script.id = scriptId;
-    script.src = `https://www.google.com/recaptcha/enterprise.js?render=${siteKey}`;
-    script.async = true;
-    script.onload = () => setRecaptchaReady(true);
-    document.body.appendChild(script);
-  }, [siteKey]);
+    checkAuthentication();
+    const interval = setInterval(checkAuthentication, 15000);
+    return () => clearInterval(interval);
+  }, [router]);
 
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!recaptchaReady || !window.grecaptcha) {
-      toast.error("reCAPTCHA aún no está listo. Intenta de nuevo.");
-      return;
-    }
-
+  const checkUserStatus = async () => {
     try {
-      const token = await window.grecaptcha.enterprise.execute(siteKey, {
-        action: "LOGIN",
+      const res = await fetch("/api/forms/userCheckStatusConfirmation", {
+        method: "GET",
       });
+      const result = await res.json();
 
-      if (!token) {
-        toast.error("No se pudo obtener el token de reCAPTCHA.");
-        return;
+      if (res.ok && result.redirectUrl) {
+        router.push(result.redirectUrl);
+        return false;
       }
 
-      const response = await fetch("/api/forms/userEmailTwo", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          institutional_email: email,
-          recaptchaToken: token,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        toast.error(result.notification?.message || "Error en el servidor.");
-        return;
-      }
-
-      toast.success(
-        result.notification?.message || "Formulario enviado con éxito.",
-        {
-          onClose: () => {
-            if (result.redirectUrl) {
-              router.push(result.redirectUrl);
-            }
-          },
-        },
-      );
+      return true;
     } catch (error) {
-      console.error("Error al enviar el formulario:", error);
-      toast.error("Hubo un error. Intenta nuevamente.");
+      console.error("Error al verificar estado del usuario:", error);
+      return true;
+    }
+  };
+
+  const checkTeamStatus = async () => {
+    try {
+      const res = await fetch("/api/forms/teamCheckStatus", { method: "GET" });
+      const result = await res.json();
+
+      if (res.status === 400 && result.notification?.message) {
+        toast.error(result.notification.message);
+        return false;
+      }
+
+      if (res.ok && result.redirectUrl) {
+        router.push(result.redirectUrl);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error al verificar estado del equipo:", error);
+      toast.error("Error inesperado al verificar estado del equipo.");
+      return false;
+    }
+  };
+
+  const handleClickIndividual = async () => {
+    const canProceed = await checkUserStatus();
+    if (canProceed) {
+      router.push("/onsite/view2");
+    }
+  };
+
+  const handleClickGroup = async () => {
+    const canProceed = await checkTeamStatus();
+    if (canProceed) {
+      router.push("/confirmation/teams");
     }
   };
 
   return (
-    <div>
-      <form
-        onSubmit={handleFormSubmit}
-        className="background_email flex flex-col items-center justify-center gap-6 px-4 min-h-screen"
-      >
-        <img
-          src="https://novaeafit2.blob.core.windows.net/omega-2025/logo_email_view.svg"
-          alt="Logo OMEGA y Correo Electrónico"
-          className="w-64 h-auto"
-        />
+    <div className="background_email min-h-screen flex flex-col items-center py-4">
+      <Header />
+      
+      {/* Reemplazo el título con FormHeader */}
+      <div className="w-full max-w-[320px] mb-6">
+        <FormHeader title="Formulario de confirmación" />
+      </div>
+      
+      {/* Sección de confirmación individual */}
+      
+<div 
+  className="w-72 bg-transparent p-0 rounded-xl cursor-pointer transition-transform duration-200 hover:scale-105"
+  onClick={handleClickIndividual}
+>
+  <img
+    src="/Confirmacion_Individual.svg"
+    alt="Registro individual"
+    className="w-full h-auto"
+  />
+</div>
 
-        <EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
-
-        <button type="submit">
-          <img
-            src="https://novaeafit2.blob.core.windows.net/omega-2025/button_siguiente.svg"
-            alt="Botón de siguiente"
-            className="h-auto cursor-pointer self-end mr-4"
-          />
-        </button>
-      </form>
+{/* Sección de confirmación grupal */}
+<div 
+  className="w-72 mt-6 bg-transparent p-0 rounded-xl cursor-pointer transition-transform duration-200 hover:scale-105"
+  onClick={handleClickGroup}
+>
+  <img
+    src="/Confirmacion_Grupal.svg"
+    alt="Registro grupal"
+    className="w-full h-auto"
+  />
+</div>
+      
+      <Footer />
     </div>
   );
-};
-
-export default Loading;
+}
