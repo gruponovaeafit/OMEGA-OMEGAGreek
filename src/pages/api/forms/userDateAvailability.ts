@@ -13,6 +13,17 @@ export default async function handler(
   }
 
   const { date_availability } = req.body;
+
+  // Verificar que si ponga algun campo
+  if (date_availability === undefined || date_availability === null) {
+    return res.status(400).json({
+      notification: {
+        type: "error",
+        message: "Debes elegir alguna de las opciones.",
+      },
+    });
+  }
+
   const email = getEmailFromCookies(req, res);
 
   if (!email) {

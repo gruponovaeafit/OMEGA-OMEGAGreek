@@ -60,7 +60,7 @@ export default async function handler(
     } else if (!f4) {
       redirectUrl = "/confirmation/individual/view4";
     } else {
-      redirectUrl = "/registration/individual/final";
+      redirectUrl = "/confirmation/individual/send";
     }
 
     return res.status(200).json({ redirectUrl });

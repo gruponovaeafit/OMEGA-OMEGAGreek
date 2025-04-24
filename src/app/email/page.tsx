@@ -51,7 +51,7 @@ const Loading: React.FC = () => {
         return;
       }
 
-      const response = await fetch("/api/forms/userEmailConfirmationForm", {
+      const response = await fetch("/api/forms/userEmailTwo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
