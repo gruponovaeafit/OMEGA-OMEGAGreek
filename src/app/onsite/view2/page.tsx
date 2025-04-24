@@ -20,6 +20,9 @@ export default function Confirmation2Page() {
   const handleFormSubmit = (data: unknown) => {
   }
 
+  const handleChangeCity = (data: unknown) => {
+  }
+
   const handleChangeGender = (data: unknown) => {
   }
 
@@ -41,14 +44,17 @@ export default function Confirmation2Page() {
         <div className="w-full max-w-[320px] mb-6">
           <FormHeader title="Datos geográficos" />
         </div>
-        <div className="w-full max-w-[320px]">
-          <TextQuestion
-            question="¿En qué ciudad vives?"
-            questionLabelId="city"
+        <div className="w-full max-w-[320px] mb-6">
+          <Select
+            placeholder="Ciudad"
+            label="¿En qué ciudad vives?"
             name="city"
             value={formData.city}
-            onChange={(val) => handleChange("city", val)}
-            placeholder="Escribe la ciudad en la que vives"
+            onChange={handleChangeCity}
+            options={[
+              "Medellín",
+              "Otro",
+            ]}
           />
         </div>
         <div className="w-full max-w-[320px]">
