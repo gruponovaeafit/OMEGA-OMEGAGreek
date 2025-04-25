@@ -4,6 +4,7 @@ import EmailInput from "@/app/components/emails/text_field";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
+import { Button } from "../components/UI/Button";
 
 // Añadir propiedad a Window para evitar errores TS
 declare global {
@@ -102,13 +103,7 @@ const Loading: React.FC = () => {
 
         <EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
 
-        <button type="submit">
-          <img
-            src="https://novaeafit2.blob.core.windows.net/omega-2025/button_siguiente.svg"
-            alt="Botón de siguiente"
-            className="h-auto cursor-pointer self-end mr-4"
-          />
-        </button>
+        <Button type="submit" label="Siguiente" />
       </form>
     </div>
   );
