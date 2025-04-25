@@ -223,7 +223,7 @@ export const Select: React.FC<{
 
       <div ref={ref} className="relative w-full border border-white rounded-lg">
         <div
-          className="w-full h-12 px-4 text-lg font-light text-white rounded-lg flex items-center justify-center cursor-pointer"
+          className="w-full h-12 px-4 text-lg font-light text-white rounded-lg flex items-center justify-between cursor-pointer"
           style={{
             backgroundImage:
               "linear-gradient(to right, #3B2F8C 0%, #9A2C2C 48%, #84A23C 100%)",
@@ -239,6 +239,17 @@ export const Select: React.FC<{
             placeholder={placeholder}
             readOnly
           />
+          
+          {/* Triángulo invertido */}
+          <div className="pointer-events-none flex items-center text-white">
+            <svg 
+              className="h-4 w-4 fill-current"
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 20 20"
+            >
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
+          </div>
         </div>
 
         {open && (
