@@ -11,11 +11,10 @@ export default async function handler(
     return res.status(405).json({ message: "Método no permitido" });
   }
 
-  const { city, neigborhood, gender, data_treatment } = req.body;
+  const { city, neighborhood, gender, data_treatment } = req.body;
+  console.log("Datos recibidos:", req.body.city, req.body.neighborhood, req.body.gender, req.body.data_treatment);
 
- 
-
-  if (!city || !neigborhood || !gender || !data_treatment ) {
+  if (!city || !neighborhood || !gender || typeof data_treatment === "undefined" ) {
     return res.status(400).json({
       notification: {
         type: "error",
@@ -39,12 +38,12 @@ export default async function handler(
       .request()
       .input("email", VarChar(255), email)
       .input("city", Int, city)
-      .input("neigborhood", VarChar(255), neigborhood)
+      .input("neighborhood", VarChar(255), neighborhood)
       .input("gender", VarChar(255), gender)
       .query(`
-      UPDATE ONSITE_DATA
-      SET city = @city, neigborhood = @neigborhood, gender = @gender
-      WHERE institutional_email = @email
+        INSERT INTO ONSITE_DATA (institutional_email, city, neighborhood, gender)
+        VALUES (@email, @city, @neighborhood, @gender)
+     
       `);
 
     await pool
@@ -52,7 +51,7 @@ export default async function handler(
       .input("email", VarChar(255), email)
       .input("dt", TinyInt, data_treatment)
       .query(`
-      UPDATE PERSONAL_DATA 
+      UPDATE PERSONAL_DATA
       SET data_treatment = @dt
       WHERE institutional_email = @email
       `);
@@ -70,8 +69,9 @@ export default async function handler(
     return res.status(500).json({
       notification: {
         type: "error",
-        message: "Error interno al guardar datos.",
+        message: "Ya llenaste la encueta",
       },
+      redirectUrl: "/onsite/send",
     });
   }
 }
