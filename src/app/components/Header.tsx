@@ -4,8 +4,8 @@ export const Header = () => {
       <img
         src="https://novaeafit2.blob.core.windows.net/omega-2025/LOGO-OMEGA.svg"
         alt="Logo Omega"
-        width={60}
-        height={60}
+        width={100}
+        height={100}
         className="object-contain z-10 relative top-2" // Baja el logo 2 píxeles
       />
     </header>
